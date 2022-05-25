@@ -31,7 +31,7 @@
 #include <ui/GraphicBuffer.h>
 #endif
 
-#include "im2d_api/im2d.hpp"
+#include "im2d.hpp"
 #include "RockchipRga.h"
 #include "RgaUtils.h"
 #include "rga.h"
@@ -157,46 +157,24 @@ int AHardwareBuffer_Fill(AHardwareBuffer** buffer, int flag, int index) {
 #endif
 #endif
 
-int print_expected(rga_buffer_t src, rga_buffer_t dst) {
-    int ret;
-    long volume = 0, time = 0;
-    rga_info_table_entry info_table;
-
-    volume = src.wstride*src.hstride*get_bpp_from_format(src.format);
-    printf("Expected read data	: %ld bit\n", volume);
-    volume = dst.wstride*dst.hstride*get_bpp_from_format(dst.format);
-    printf("Expected write data	: %ld bit\n", volume );
-
-    ret = rga_get_info(&info_table);
-    if (ret == IM_STATUS_FAILED) {
-        printf("RGA get info error\n");
-        return -1;
-    }
-
-    /* The calculation formula only supports RGA copy mode:
-     * Number of pixels / pixels that aclk can process per second */
-    time = (src.wstride*src.hstride) / (info_table.performance*300);
-    printf("Expected time	 	: %ld us\n", time);
-
-    return 0;
-}
-
 int main(int argc, char*  argv[]) {
     int ret = 0, while_time = 0;
     int parm_data[MODE_MAX] = {0};
 
-    int       		COLOR;
-    IM_USAGE  		ROTATE;
-    IM_USAGE  		FLIP;
+    int               COLOR;
+    IM_USAGE          ROTATE;
+    IM_USAGE          FLIP;
 
-    int       		MODE;
-    IM_INFORMATION	IM_INFO;
-    IM_STATUS 		STATUS;
+    int               MODE;
+    IM_INFORMATION    IM_INFO;
+    IM_STATUS         STATUS;
 
-    im_rect 		src_rect;
-    im_rect 		dst_rect;
-    rga_buffer_t 	src;
-    rga_buffer_t 	dst;
+    im_rect         src_rect;
+    im_rect         dst_rect;
+    rga_buffer_t     src;
+    rga_buffer_t     dst;
+    rga_buffer_handle_t src_handle;
+    rga_buffer_handle_t dst_handle;
 
 #ifdef ANDROID
 #if USE_AHARDWAREBUFFER
@@ -213,19 +191,19 @@ int main(int argc, char*  argv[]) {
     char* dst_buf = NULL;
 #endif
 
-	memset(&src_rect, 0, sizeof(src_rect));
-	memset(&dst_rect, 0, sizeof(dst_rect));
-	memset(&src, 0, sizeof(src));
-	memset(&dst, 0, sizeof(dst));
+    memset(&src_rect, 0, sizeof(src_rect));
+    memset(&dst_rect, 0, sizeof(dst_rect));
+    memset(&src, 0, sizeof(src));
+    memset(&dst, 0, sizeof(dst));
 
     MODE = readArguments(argc, argv, parm_data);
     if (MODE & WHILE_FLAG) {
-		/* Remove flag of MODE_WHILE. */
-		MODE &= ~WHILE_FLAG;
+        /* Remove flag of MODE_WHILE. */
+        MODE &= ~WHILE_FLAG;
 
-		while_time = parm_data[MODE_WHILE];
-	}
-	printf("MODE = %x\n", MODE);
+        while_time = parm_data[MODE_WHILE];
+    }
+    printf("MODE = %x\n", MODE);
     if(MODE_NONE == MODE) {
         printf("%s, Unknow RGA mode\n", __FUNCTION__);
         return ERROR;
@@ -260,10 +238,14 @@ int main(int argc, char*  argv[]) {
             }
         }
 
-        src = wrapbuffer_AHardwareBuffer(src_buf);
-        dst = wrapbuffer_AHardwareBuffer(dst_buf);
-        if(src.width == 0 || dst.width == 0) {
-            printf("%s, %s", __FUNCTION__, imStrError());
+        src_handle = importbuffer_AHardwareBuffer(src_buf);
+        if (src_handle <= 0) {
+            printf("Failed to import AHardwareBuffer for src channel!\n");
+            return ERROR;
+        }
+        dst_handle = importbuffer_AHardwareBuffer(dst_buf);
+        if (dst_handle <= 0) {
+            printf("Failed to import AHardwareBuffer for dst channel!\n");
             return ERROR;
         }
 #else
@@ -290,16 +272,18 @@ int main(int argc, char*  argv[]) {
             }
         }
 
-        src = wrapbuffer_GraphicBuffer(src_buf);
-        dst = wrapbuffer_GraphicBuffer(dst_buf);
-        if(src.width == 0 || dst.width == 0) {
-            printf("%s, %s\n", __FUNCTION__, imStrError());
+        src_handle = importbuffer_GraphicBuffer(src_buf);
+        if (src_handle <= 0) {
+            printf("Failed to import GraphicBuffer for src channel!\n");
+            return ERROR;
+        }
+        dst_handle = importbuffer_GraphicBuffer(dst_buf);
+        if (dst_handle <= 0) {
+            printf("Failed to import GraphicBuffer for dst channel!\n");
             return ERROR;
         }
 #endif
-#endif
-
-#ifdef LINUX
+#elif LINUX
         src_buf = (char*)malloc(SRC_WIDTH*SRC_HEIGHT*get_bpp_from_format(SRC_FORMAT));
         dst_buf = (char*)malloc(DST_WIDTH*DST_HEIGHT*get_bpp_from_format(DST_FORMAT));
 
@@ -319,358 +303,380 @@ int main(int argc, char*  argv[]) {
             memset(dst_buf,0x00,DST_WIDTH*DST_HEIGHT*get_bpp_from_format(DST_FORMAT));
         }
 
-        src = wrapbuffer_virtualaddr(src_buf, SRC_WIDTH, SRC_HEIGHT, SRC_FORMAT);
-        dst = wrapbuffer_virtualaddr(dst_buf, DST_WIDTH, DST_HEIGHT, DST_FORMAT);
-        if(src.width == 0 || dst.width == 0) {
-            printf("%s, %s\n", __FUNCTION__, imStrError());
+        src_handle = importbuffer_virtualaddr(src_buf, SRC_WIDTH, SRC_HEIGHT, SRC_FORMAT);
+        if (src_handle <= 0) {
+            printf("Failed to import virtualaddr for src channel!\n");
+            return ERROR;
+        }
+        dst_handle = importbuffer_virtualaddr(dst_buf, DST_WIDTH, DST_HEIGHT, DST_FORMAT);
+        if (dst_handle <= 0) {
+            printf("Failed to import virtualaddr for dst channel!\n");
             return ERROR;
         }
 #endif
+
+        src = wrapbuffer_handle(src_handle, SRC_WIDTH, SRC_HEIGHT, SRC_FORMAT);
+        dst = wrapbuffer_handle(dst_handle, DST_WIDTH, DST_HEIGHT, DST_FORMAT);
+        if(src.width == 0 || dst.width == 0) {
+            printf("%s, %s", __FUNCTION__, imStrError());
+            return ERROR;
+        }
     }
 
-	do {
-		if (while_time) {
-			static int while_num = 1;
-			printf("This is %d time in the loop\n", while_num);
+    do {
+        if (while_time) {
+            static int while_num = 1;
+            printf("This is %d time in the loop\n", while_num);
 
-			while_num++;
-			while_time--;
-	    }
-	    /********** Execution function according to mode **********/
-	    switch(MODE) {
-	        case MODE_QUERYSTRING :
+            while_num++;
+            while_time--;
+        }
+        /********** Execution function according to mode **********/
+        switch(MODE) {
+            case MODE_QUERYSTRING :
 
-	            IM_INFO = (IM_INFORMATION)parm_data[MODE_QUERYSTRING];
-	            printf("\n%s\n", querystring(IM_INFO));
+                IM_INFO = (IM_INFORMATION)parm_data[MODE_QUERYSTRING];
+                printf("\n%s\n", querystring(IM_INFO));
 
-	            break;
+                break;
 
-	        case MODE_COPY :      //rgaImDemo --copy
+            case MODE_COPY :      //rgaImDemo --copy
 
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-				gettimeofday(&start, NULL);
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+                gettimeofday(&start, NULL);
 
-	            STATUS = imcopy(src, dst);
+                STATUS = imcopy(src, dst);
 
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("copying .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("copying .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
 
-				print_expected(src, dst);
+                break;
 
-	            break;
+            case MODE_RESIZE :    //rgaImDemo --resize=up/down
+                releasebuffer_handle(dst_handle);
+                dst_handle = -1;
 
-	        case MODE_RESIZE :    //rgaImDemo --resize=up/down
+                switch(parm_data[MODE_RESIZE]) {
+                    case IM_UP_SCALE :
+#ifdef ANDROID
+#if USE_AHARDWAREBUFFER
+                        if(ERROR == AHardwareBuffer_Init(1920, 1080, DST_FORMAT, &dst_buf)) {
+                            printf("AHardwareBuffer init error!\n");
+                            return ERROR;
+                        }
 
-	            switch(parm_data[MODE_RESIZE]) {
-	                case IM_UP_SCALE :
+                        if(ERROR == AHardwareBuffer_Fill(&dst_buf, EMPTY_BUFF, 0)) {
+                            printf("%s, write AHardwareBuffer error!\n", __FUNCTION__);
+                            return ERROR;
+                        }
+
+                        dst_handle = importbuffer_AHardwareBuffer(dst_buf);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import AHardwareBuffer for dst channel!\n");
+                            return ERROR;
+                        }
+#else
+                        dst_buf = GraphicBuffer_Init(1920, 1080, DST_FORMAT);
+                        if (dst_buf == NULL) {
+                            printf("dst GraphicBuff init error!\n");
+                            return ERROR;
+                        }
+                        if(ERROR == GraphicBuffer_Fill(dst_buf, EMPTY_BUFF, 1)) {
+                            printf("%s, write Graphicbuffer error!\n", __FUNCTION__);
+                            return ERROR;
+                        }
+
+                        dst_handle = importbuffer_GraphicBuffer(dst_buf);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import GraphicBuffer for dst channel!\n");
+                            return ERROR;
+                        }
+#endif
+#elif LINUX
+                        if (dst_buf != NULL) {
+                            free(dst_buf);
+                            dst_buf = NULL;
+                        }
+                        dst_buf = (char*)malloc(1920*1080*get_bpp_from_format(DST_FORMAT));
+
+                        memset(dst_buf,0x00,1920*1080*get_bpp_from_format(DST_FORMAT));
+
+                        dst_handle = importbuffer_virtualaddr(dst_buf, 1920, 1080, DST_FORMAT);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import virtualaddr for dst channel!\n");
+                            return ERROR;
+                        }
+#endif
+                        dst = wrapbuffer_handle(dst_handle, 1920, 1080, DST_FORMAT);
+                        if(dst.width == 0) {
+                            printf("%s, %s\n", __FUNCTION__, imStrError());
+                            return ERROR;
+                        }
+
+                        break;
+                    case IM_DOWN_SCALE :
 
 #ifdef ANDROID
 #if USE_AHARDWAREBUFFER
-	                    if(ERROR == AHardwareBuffer_Init(1920, 1080, DST_FORMAT, &dst_buf)) {
-	                        printf("AHardwareBuffer init error!\n");
-	                        return ERROR;
-	                    }
+                        if(ERROR == AHardwareBuffer_Init(720, 480, DST_FORMAT, &dst_buf)) {
+                            printf("AHardwareBuffer init error!\n");
+                            return ERROR;
+                        }
 
-	                    if(ERROR == AHardwareBuffer_Fill(&dst_buf, EMPTY_BUFF, 0)) {
-	                        printf("%s, write AHardwareBuffer error!\n", __FUNCTION__);
-	                        return ERROR;
-	                    }
-	                    dst = wrapbuffer_AHardwareBuffer(dst_buf);
-	                    if(dst.width == 0) {
-	                        printf("%s, dst: %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
+                        if(ERROR == AHardwareBuffer_Fill(&dst_buf, EMPTY_BUFF, 0)) {
+                            printf("%s, write AHardwareBuffer error!\n", __FUNCTION__);
+                            return ERROR;
+                        }
+
+                        dst_handle = importbuffer_AHardwareBuffer(dst_buf);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import AHardwareBuffer for dst channel!\n");
+                            return ERROR;
+                        }
 #else
-	                    dst_buf = GraphicBuffer_Init(1920, 1080, DST_FORMAT);
-	                    if (dst_buf == NULL) {
-	                        printf("dst GraphicBuff init error!\n");
-	                        return ERROR;
-	                    }
-	                    if(ERROR == GraphicBuffer_Fill(dst_buf, EMPTY_BUFF, 1)) {
-	                        printf("%s, write Graphicbuffer error!\n", __FUNCTION__);
-	                        return ERROR;
-	                    }
-	                    dst = wrapbuffer_GraphicBuffer(dst_buf);
-	                    if(dst.width == 0) {
-	                        printf("%s, dst: %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
+                        dst_buf = GraphicBuffer_Init(720, 480, DST_FORMAT);
+                        if (dst_buf == NULL) {
+                            printf("dst GraphicBuff init error!\n");
+                            return ERROR;
+                        }
+                        if(ERROR == GraphicBuffer_Fill(dst_buf, EMPTY_BUFF, 1)) {
+                            printf("%s, write Graphicbuffer error!\n", __FUNCTION__);
+                            return ERROR;
+                        }
+
+                        dst_handle = importbuffer_GraphicBuffer(dst_buf);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import GraphicBuffer for dst channel!\n");
+                            return ERROR;
+                        }
 #endif
+#elif LINUX
+                        if (dst_buf != NULL) {
+                            free(dst_buf);
+                            dst_buf = NULL;
+                        }
+                        dst_buf = (char*)malloc(720*480*get_bpp_from_format(DST_FORMAT));
+
+                        memset(dst_buf,0x00,720*480*get_bpp_from_format(DST_FORMAT));
+
+                        dst_handle = importbuffer_virtualaddr(dst_buf, 720, 480, DST_FORMAT);
+                        if (dst_handle <= 0) {
+                            printf("Failed to import virtualaddr for dst channel!\n");
+                            return ERROR;
+                        }
 #endif
+                        dst = wrapbuffer_handle(dst_handle, 720, 480, DST_FORMAT);
+                        if(dst.width == 0) {
+                            printf("%s, %s\n", __FUNCTION__, imStrError());
+                            return ERROR;
+                        }
+                        break;
+                }
 
-#ifdef LINUX
-	                    if (dst_buf != NULL) {
-	                        free(dst_buf);
-	                        dst_buf = NULL;
-	                    }
-	                    dst_buf = (char*)malloc(1920*1080*get_bpp_from_format(DST_FORMAT));
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
 
-	                    memset(dst_buf,0x00,1920*1080*get_bpp_from_format(DST_FORMAT));
+                gettimeofday(&start, NULL);
 
-	                    dst = wrapbuffer_virtualaddr(dst_buf, 1920, 1080, DST_FORMAT);
-	                    if(dst.width == 0) {
-	                        printf("%s, %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
-#endif
+                STATUS = imresize(src, dst);
 
-	                    break;
-	                case IM_DOWN_SCALE :
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("resizing .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_CROP :      //rgaImDemo --crop
+
+                src_rect.x      = 100;
+                src_rect.y      = 100;
+                src_rect.width  = 300;
+                src_rect.height = 300;
+
+                ret = imcheck(src, dst, src_rect, dst_rect, IM_CROP);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+
+                gettimeofday(&start, NULL);
+
+                STATUS = imcrop(src, dst, src_rect);
+
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("cropping .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_ROTATE :    //rgaImDemo --rotate=90/180/270
+
+                ROTATE = (IM_USAGE)parm_data[MODE_ROTATE];
+
+                if (IM_HAL_TRANSFORM_ROT_90 ==  ROTATE || IM_HAL_TRANSFORM_ROT_270 == ROTATE) {
+                    dst.width   = src.height;
+                    dst.height  = src.width;
+                    dst.wstride = src.hstride;
+                    dst.hstride = src.wstride;
+                }
+
+                ret = imcheck(src, dst, src_rect, dst_rect, ROTATE);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+
+                gettimeofday(&start, NULL);
+
+                STATUS = imrotate(src, dst, ROTATE);
+
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("rotating .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_FLIP :      //rgaImDemo --flip=H/V
+
+                FLIP = (IM_USAGE)parm_data[MODE_FLIP];
+
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+
+                gettimeofday(&start, NULL);
+
+                STATUS = imflip(src, dst, FLIP);
+
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("flipping .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_TRANSLATE : //rgaImDemo --translate
+
+                src_rect.x = 300;
+                src_rect.y = 300;
+
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+
+                gettimeofday(&start, NULL);
+
+                STATUS = imtranslate(src, dst, src_rect.x, src_rect.y);
+
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("translating .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_BLEND :     //rgaImDemo --blend
+
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
+
+                gettimeofday(&start, NULL);
+
+                STATUS = imblend(src, dst);
+
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("blending .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+
+                break;
+
+            case MODE_CVTCOLOR :  //rgaImDemo --cvtcolor
 
 #ifdef ANDROID
-#if USE_AHARDWAREBUFFER
-	                    if(ERROR == AHardwareBuffer_Init(720, 480, DST_FORMAT, &dst_buf)) {
-	                        printf("AHardwareBuffer init error!\n");
-	                        return ERROR;
-	                    }
-
-	                    if(ERROR == AHardwareBuffer_Fill(&dst_buf, EMPTY_BUFF, 0)) {
-	                        printf("%s, write AHardwareBuffer error!\n", __FUNCTION__);
-	                        return ERROR;
-	                    }
-
-	                    dst = wrapbuffer_AHardwareBuffer(dst_buf);
-	                    if(dst.width == 0) {
-	                        printf("%s, dst: %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
-#else
-	                    dst_buf = GraphicBuffer_Init(720, 480, DST_FORMAT);
-	                    if (dst_buf == NULL) {
-	                        printf("dst GraphicBuff init error!\n");
-	                        return ERROR;
-	                    }
-	                    if(ERROR == GraphicBuffer_Fill(dst_buf, EMPTY_BUFF, 1)) {
-	                        printf("%s, write Graphicbuffer error!\n", __FUNCTION__);
-	                        return ERROR;
-	                    }
-	                    dst = wrapbuffer_GraphicBuffer(dst_buf);
-	                    if(dst.width == 0) {
-	                        printf("%s, dst: %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
-#endif
-#endif
-
-#ifdef LINUX
-	                    if (dst_buf != NULL) {
-	                        free(dst_buf);
-	                        dst_buf = NULL;
-	                    }
-	                    dst_buf = (char*)malloc(720*480*get_bpp_from_format(DST_FORMAT));
-
-	                    memset(dst_buf,0x00,720*480*get_bpp_from_format(DST_FORMAT));
-
-	                    dst = wrapbuffer_virtualaddr(dst_buf, 720, 480, DST_FORMAT);
-	                    if(dst.width == 0) {
-	                        printf("%s, %s\n", __FUNCTION__, imStrError());
-	                        return ERROR;
-	                    }
-#endif
-
-	                    break;
-	            }
-
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imresize(src, dst);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("resizing .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_CROP :      //rgaImDemo --crop
-
-	            src_rect.x      = 100;
-	            src_rect.y      = 100;
-	            src_rect.width  = 300;
-	            src_rect.height = 300;
-
-	            ret = imcheck(src, dst, src_rect, dst_rect, IM_CROP);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imcrop(src, dst, src_rect);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("cropping .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_ROTATE :    //rgaImDemo --rotate=90/180/270
-
-	            ROTATE = (IM_USAGE)parm_data[MODE_ROTATE];
-
-	            if (IM_HAL_TRANSFORM_ROT_90 ==  ROTATE || IM_HAL_TRANSFORM_ROT_270 == ROTATE) {
-	                dst.width   = src.height;
-	                dst.height  = src.width;
-	                dst.wstride = src.hstride;
-	                dst.hstride = src.wstride;
-	            }
-
-	            ret = imcheck(src, dst, src_rect, dst_rect, ROTATE);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imrotate(src, dst, ROTATE);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("rotating .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_FLIP :      //rgaImDemo --flip=H/V
-
-	            FLIP = (IM_USAGE)parm_data[MODE_FLIP];
-
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imflip(src, dst, FLIP);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("flipping .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_TRANSLATE : //rgaImDemo --translate
-
-	            src_rect.x = 300;
-	            src_rect.y = 300;
-
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imtranslate(src, dst, src_rect.x, src_rect.y);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("translating .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_BLEND :     //rgaImDemo --blend
-
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
-
-				gettimeofday(&start, NULL);
-
-	            STATUS = imblend(src, dst);
-
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("blending .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
-
-	            break;
-
-	        case MODE_CVTCOLOR :  //rgaImDemo --cvtcolor
-
-#ifdef ANDROID
-	            src.format = HAL_PIXEL_FORMAT_RGBA_8888;
-	            dst.format = HAL_PIXEL_FORMAT_YCrCb_NV12;
+                src.format = HAL_PIXEL_FORMAT_RGBA_8888;
+                dst.format = HAL_PIXEL_FORMAT_YCrCb_NV12;
 #endif
 #ifdef LINUX
-	            src.format = RK_FORMAT_RGBA_8888;
-	            dst.format = RK_FORMAT_YCbCr_420_SP;
+                src.format = RK_FORMAT_RGBA_8888;
+                dst.format = RK_FORMAT_YCbCr_420_SP;
 #endif
 
-	            ret = imcheck(src, dst, src_rect, dst_rect);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
+                ret = imcheck(src, dst, src_rect, dst_rect);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
 
-				gettimeofday(&start, NULL);
+                gettimeofday(&start, NULL);
 
-	            STATUS = imcvtcolor(src, dst, src.format, dst.format);
+                STATUS = imcvtcolor(src, dst, src.format, dst.format);
 
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("cvtcolor .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("cvtcolor .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
 
-	            break;
+                break;
 
-	        case MODE_FILL :      //rgaImDemo --fill=blue/green/red
+            case MODE_FILL :      //rgaImDemo --fill=blue/green/red
 
-	            COLOR = parm_data[MODE_FILL];
+                COLOR = parm_data[MODE_FILL];
 
-	            dst_rect.x      = 100;
-	            dst_rect.y      = 100;
-	            dst_rect.width  = 300;
-	            dst_rect.height = 300;
+                dst_rect.x      = 100;
+                dst_rect.y      = 100;
+                dst_rect.width  = 300;
+                dst_rect.height = 300;
 
-	            ret = imcheck(src, dst, src_rect, dst_rect, IM_COLOR_FILL);
-	            if (IM_STATUS_NOERROR != ret) {
-	                printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-	                return -1;
-	            }
+                ret = imcheck(src, dst, src_rect, dst_rect, IM_COLOR_FILL);
+                if (IM_STATUS_NOERROR != ret) {
+                    printf("%d, check error! %s\n", __LINE__, imStrError((IM_STATUS)ret));
+                    return -1;
+                }
 
-				gettimeofday(&start, NULL);
+                gettimeofday(&start, NULL);
 
-	            STATUS = imfill(dst, dst_rect, COLOR);
+                STATUS = imfill(dst, dst_rect, COLOR);
 
-	            gettimeofday(&end, NULL);
-	            usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
-	            printf("filling .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
+                gettimeofday(&end, NULL);
+                usec1 = 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
+                printf("filling .... cost time %ld us, %s\n", usec1, imStrError(STATUS));
 
-	            break;
+                break;
 
-	        case MODE_NONE :
+            case MODE_NONE :
 
-	            printf("%s, Unknown mode\n", __FUNCTION__);
+                printf("%s, Unknown mode\n", __FUNCTION__);
 
-	            break;
+                break;
 
-	        default :
+            default :
 
-	            printf("%s, Invalid mode\n", __FUNCTION__);
+                printf("%s, Invalid mode\n", __FUNCTION__);
 
-	            break;
-	    }
+                break;
+        }
 
-	    if (while_time) {
-			/* 200ms */
-			usleep(200000);
-	    }
-	}while(while_time);
+        if (while_time) {
+            /* 200ms */
+            usleep(200000);
+        }
+    }while(while_time);
+
+    /********** release rga buffer handle **********/
+    releasebuffer_handle(src_handle);
+    releasebuffer_handle(dst_handle);
 
     /********** output buf data to file **********/
 #ifdef ANDROID
@@ -678,13 +684,13 @@ int main(int argc, char*  argv[]) {
 #if USE_AHARDWAREBUFFER
     sp<GraphicBuffer> gbuffer = reinterpret_cast<GraphicBuffer*>(dst_buf);
     if (gbuffer != NULL) {
-        ret = gbuffer->lock(GRALLOC_USAGE_SW_WRITE_OFTEN, (void**)&outbuf);
+        ret = gbuffer->lock(GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN, (void**)&outbuf);
         output_buf_data_to_file(outbuf, dst.format, dst.wstride, dst.hstride, 0);
         ret = gbuffer->unlock();
     }
 #else
     if (dst_buf != NULL) {
-        ret = dst_buf->lock(GRALLOC_USAGE_SW_WRITE_OFTEN, (void**)&outbuf);
+        ret = dst_buf->lock(GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN, (void**)&outbuf);
         output_buf_data_to_file(outbuf, dst.format, dst.wstride, dst.hstride, 0);
         ret = dst_buf->unlock();
     }

@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include "args.h"
-#include "im2d_api/im2d.hpp"
+#include "im2d.hpp"
 
 void help_function() {
     printf("\n=============================================================================================\n");

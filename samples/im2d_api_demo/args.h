@@ -20,7 +20,7 @@
 #ifndef ARGS_H
 #define ARGS_H
 
-#include "im2d_api/im2d.hpp"
+#include "im2d.hpp"
 
 typedef enum _mode_code {
     MODE_QUERYSTRING = 0,

@@ -30,7 +30,7 @@ LOCAL_SHARED_LIBRARIES := \
     libGLESv1_CM \
     libhardware \
     librga \
-	libnativewindow
+    libnativewindow
 
 LOCAL_HEADER_LIBRARIES += \
     libutils_headers \
@@ -68,7 +68,7 @@ endif
 
 LOCAL_SRC_FILES:= \
     rgaImDemo.cpp \
-	args.cpp
+    args.cpp
 
 LOCAL_MODULE:= rgaImDemo
 
