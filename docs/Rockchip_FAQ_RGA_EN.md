@@ -103,8 +103,8 @@ The driver version number consists of major, minor, revision and build. The four
   Different chip platforms have different opening paths for debug nodes. Usually, there are two paths as follows.
 
   ```
-  cat /sys/kernel/debug/rkrga/driver_verison
-  cat /proc/rkrga/driver_verison
+  cat /sys/kernel/debug/rkrga/driver_version
+  cat /proc/rkrga/driver_version
   ```
 
 

@@ -103,8 +103,8 @@ API版本号分为主版本号、次版本号、修订版本号、编译版本�
   不同芯片平台debug节点开启路径不同，通常有以下两个路径。
 
   ```
-  cat /sys/kernel/debug/rkrga/driver_verison
-  cat /proc/rkrga/driver_verison
+  cat /sys/kernel/debug/rkrga/driver_version
+  cat /proc/rkrga/driver_version
   ```
 
   

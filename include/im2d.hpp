@@ -63,9 +63,8 @@ IM_API rga_buffer_handle_t importbuffer_physicaladdr(uint64_t pa, int width, int
 
 #undef wrapbuffer_handle
 IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
-                                      int width, int height,
-                                      int wstride, int hstride,
-                                      int format);
+                                      int width, int height, int format,
+                                      int wstride, int hstride);
 IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
                                       int width, int height,
                                       int format);
