@@ -6,11 +6,12 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
 **RGA API** 版本: 1.8.1
 
-**RGA 驱动** 适配版本：
+**驱动版本**适配：
 
-- 最低适配1.2.4驱动版本，建议更新至1.2.14及以上驱动版本。
+- 驱动版本查询方法可以查看[FAQ文档《版本说明》章节](https://github.com/airockchip/librga/blob/main/docs/Rockchip_FAQ_RGA_CN.md#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)。
+- 当前api版本最低适配1.2.4驱动版本，建议更新至1.2.14及以上驱动版本。
 
-- 当使用没有版本号的驱动时，请使用1.3.2及以下librga版本。
+- 无法获取版本号的驱动时，请使用[1.3.2_release 分支](https://github.com/airockchip/librga/tree/1.3.2_release)的预编译仓库。
 
 ### 适用芯片平台
 
