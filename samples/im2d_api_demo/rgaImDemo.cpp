@@ -34,7 +34,6 @@
 #include "im2d.hpp"
 #include "RockchipRga.h"
 #include "RgaUtils.h"
-#include "rga.h"
 #include "args.h"
 
 #define ERROR               -1
@@ -69,14 +68,25 @@ enum {
     EMPTY_BUFF = 1
 };
 
+/*
+ *   In order to be compatible with different android versions,
+ * some gralloc usage is defined here.
+ *   The correct usage should be to refer to the corresponding header file:
+ *   Android 12 and above: #include "hardware/gralloc_rockchip.h"
+ *   Android 11 and below: #include "hardware/gralloc.h"
+ */
+#define GRALLOC_USAGE_PRIVATE_11                (1ULL << 56)
+#define RK_GRALLOC_USAGE_WITHIN_4G              GRALLOC_USAGE_PRIVATE_11
+#define RK_GRALLOC_USAGE_RGA_ACCESS             RK_GRALLOC_USAGE_WITHIN_4G
+
 sp<GraphicBuffer> GraphicBuffer_Init(int width, int height,int format) {
-#ifdef ANDROID_7_DRM
-    sp<GraphicBuffer> gb(new GraphicBuffer(width,height,format,
-                                           GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN | GRALLOC_USAGE_HW_FB));
-#else
-    sp<GraphicBuffer> gb(new GraphicBuffer(width,height,format,
-                                           GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN));
-#endif
+    uint64_t usage = 0;
+
+    /* cacheable */
+    // usage |= GRALLOC_USAGE_SW_READ_OFTEN;
+    usage |= RK_GRALLOC_USAGE_WITHIN_4G;
+
+    sp<GraphicBuffer> gb(new GraphicBuffer(width, height, format, 0, usage));
 
     if (gb->initCheck()) {
         printf("GraphicBuffer check error : %s\n",strerror(errno));
@@ -152,6 +162,10 @@ int AHardwareBuffer_Fill(AHardwareBuffer** buffer, int flag, int index) {
     AHardwareBuffer_acquire(*buffer);
     printf("AHardwareBuffer %s ok!\n", flag==0?"fill":"empty");
     return 0;
+}
+
+void AHardwareBuffer_Deinit(AHardwareBuffer* buffer) {
+    AHardwareBuffer_release(buffer);
 }
 
 #endif
@@ -688,6 +702,9 @@ int main(int argc, char*  argv[]) {
         output_buf_data_to_file(outbuf, dst.format, dst.wstride, dst.hstride, 0);
         ret = gbuffer->unlock();
     }
+
+    AHardwareBuffer_Deinit(src_buf);
+    AHardwareBuffer_Deinit(dst_buf);
 #else
     if (dst_buf != NULL) {
         ret = dst_buf->lock(GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN, (void**)&outbuf);

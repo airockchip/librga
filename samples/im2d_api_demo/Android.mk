@@ -19,8 +19,8 @@ LOCAL_CFLAGS += -Wall -Werror -Wunreachable-code
 
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/../.. \
-    $(LOCAL_PATH)/../../include \
-    $(LOCAL_PATH)/../../im2d_api
+    $(LOCAL_PATH)/../../im2d_api \
+    $(LOCAL_PATH)/../../include
 
 LOCAL_SHARED_LIBRARIES := \
     libcutils \

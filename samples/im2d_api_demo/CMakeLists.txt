@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
+
+if (EXISTS ${BUILD_TOOLCHAINS_PATH})
+message("load ${BUILD_TOOLCHAINS_PATH}")
+include(${BUILD_TOOLCHAINS_PATH})
+endif()
 
 project(rgaImDemo)
 
@@ -10,20 +15,17 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 if(CMAKE_BUILD_TARGET STREQUAL android_ndk)
-    message("set ndk toolchain")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -DLOG_TAG=librga")
+    message("cmake build android ndk")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-error -DLOG_TAG=librga")
     add_compile_options(-DLINUX)
     add_compile_options(-DANDROID_VNDK)
     string(REPLACE "-DANDROID" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 endif()
 
 if(CMAKE_BUILD_TARGET STREQUAL buildroot)
-    message("set ${BUILD_TOOlCHAINS_PATH} toolchain")
-    set(CMAKE_TOOLCHAIN_FILE
-        ${CMAKE_SOURCE_DIR}/${BUILD_TOOlCHAINS_PATH})
-    include(${CMAKE_SOURCE_DIR}/${BUILD_TOOlCHAINS_PATH})
-    add_compile_options(-DLINUX)
+    message("cmake build buildroot")
     set(CMAKE_CXX_FLAGS "-std=c++11 -O2 -pthread")
+    add_compile_options(-DLINUX)
 endif()
 
 if(CMAKE_BUILD_TARGET STREQUAL cmake_linux)
@@ -42,36 +44,29 @@ if(CMAKE_BUILD_TARGET STREQUAL cmake_linux)
 
 endif()
 
-set(IM2D_DEMO_NAME ${PROJECT_NAME})
+if (EXISTS ${LIBRGA_FILE_LIB}/librga.so)
+	message("load ${LIBRGA_FILE_LIB}/librga.so")
+    set(RGA_LIB ${LIBRGA_FILE_LIB}/librga.so)
+else ()
+    set(RGA_LIB rga)
+endif()
 
+#install path
+if (NOT DEFINED CMAKE_INSTALL_BINDIR)
+    set(CMAKE_INSTALL_BINDIR bin)
+endif()
+
+set(IM2D_DEMO_NAME ${PROJECT_NAME})
 set(IM2D_DEMO_SRCS
     args.cpp
     rgaImDemo.cpp)
-
 set(IM2D_DEMO_INCLUDE
     ./
     ../../include
     ../../im2d_api)
 
 add_executable(${IM2D_DEMO_NAME} ${IM2D_DEMO_SRCS})
-
 target_include_directories(${IM2D_DEMO_NAME} PUBLIC ${IM2D_DEMO_INCLUDE})
-
-if ((BUILD_WITH_LIBDRM STREQUAL true) AND (EXISTS ${LIBDRM_FILE_LIB}/libdrm.so))
-    target_link_libraries(${IM2D_DEMO_NAME} ${LIBDRM_FILE_LIB}/libdrm.so)
-elseif (BUILD_WITH_LIBDRM STREQUAL true)
-    target_link_libraries(${IM2D_DEMO_NAME} drm)
-endif()
-
-if ((BUILD_WITH_LIBRGA STREQUAL true) AND (EXISTS ${LIBRGA_FILE_LIB}/librga.so))
-	message("load ${LIBRGA_FILE_LIB}/librga.so")
-	target_link_libraries(${IM2D_DEMO_NAME} ${LIBRGA_FILE_LIB}/librga.so)
-else ()
-	target_link_libraries(${IM2D_DEMO_NAME} rga)
-endif()
-
-if (NOT DEFINED CMAKE_INSTALL_BINDIR)
-    set(CMAKE_INSTALL_BINDIR bin)
-endif()
+target_link_libraries(${IM2D_DEMO_NAME} ${RGA_LIB})
 
 install(TARGETS ${IM2D_DEMO_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

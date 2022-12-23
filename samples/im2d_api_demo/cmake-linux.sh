@@ -1,36 +1,26 @@
 #!/bin/bash
 
 SCRIPT_DIR=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
-BUILD_DIR=build_linux
-BINARY_DIR=$BUILD_DIR/bin
-LIBRGA_PATH=${SCRIPT_DIR}/../../libs
+SAMPLES_DIR=${SCRIPT_DIR}/..
+
+# The following options require configuration
+TOOLCHAIN_PATH=${SAMPLES_DIR}/../toolchains/toolchain_linux.cmake
+LIBRGA_PATH=${SAMPLES_DIR}/../build/build_linux/install/lib
+BUILD_DIR=build/build_linux
+BUILD_TYPE=Release
 
 rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR
-mkdir -p $BINARY_DIR
 pushd $BUILD_DIR
 
-if [ "$1" = "drm" ];then
-	echo "using drm"
-	cmake -DCMAKE_BUILD_TARGET=buildroot \
-		  -DBUILD_TOOlCHAINS_PATH=../../buildroot.cmake \
-		  -DBUILD_WITH_LIBDRM=true \
-		  -DBUILD_WITH_LIBRGA=true \
-		  -DLIBRGA_FILE_LIB=${LIBRGA_PATH} \
-		  -DCMAKE_INSTALL_PREFIX=install \
-		  ..
-else
-	echo "Default mode $1"
-	cmake -DCMAKE_BUILD_TARGET=buildroot \
-		  -DBUILD_TOOlCHAINS_PATH=../../buildroot.cmake \
-		  -DBUILD_WITH_LIBRGA=true \
-		  -DLIBRGA_FILE_LIB=${LIBRGA_PATH} \
-		  -DCMAKE_INSTALL_PREFIX=install \
-		  ..
-fi
+cmake ../.. \
+	-DCMAKE_BUILD_TARGET=buildroot \
+	-DLIBRGA_FILE_LIB=${LIBRGA_PATH} \
+	-DBUILD_TOOLCHAINS_PATH=${TOOLCHAIN_PATH} \
+	-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+	-DCMAKE_INSTALL_PREFIX=install \
 
-make
+make -j8
 make install
 
 popd
-

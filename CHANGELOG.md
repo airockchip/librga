@@ -1,15 +1,62 @@
 # 更新日志
 
+## 1.9.0 （2022-12-20）
+
+该版本RGA驱动建议更新至1.2.22即以上版本，最低支持1.2.4。
+
+### 新增
+
+- 新增支持芯片RK3528。
+
+- 适配Android 12 gralloc 0.3
+- 新增头文件校验接口。
+- 新增批处理接口（im2d_task.h）。
+- 新增数组模式接口。
+- 新增padding接口。
+- 支持通过Android属性/环境变量动态的开启/关闭 librga 运行日志。
+- 增加对drm_fourcc格式支持。
+- 增加示例代码单独编译说明。
+- 增加多种常见场景示例代码。
+  - allocator_demo
+  - alpha_demo
+  - async_demo
+  - config_demo
+  - copy_demo
+  - crop_demo
+  - cvtcolor_demo
+  - fill_demo
+  - mosaic_demo
+  - resize_demo
+  - rop_demo
+  - transform_demo
+  - padding_demo
+
+### 优化
+
+- 兼容rga2 driver、multi_rga driver。
+- 优化librga与驱动之间版本校验机制。
+- 优化头文件结构。
+- 头文件添加更多描述信息。
+- 优化cmake编译脚本。
+
+### 修复
+
+- 修复RGA3 dst-over模式对YUV格式处理异常问题。
+
+
+
 ## 1.8.1 （2022-06-20）
 
 ### 修复
 
-- 更正wrapbuffer_handle宏函数与C++函数定义不同的问题。
+- 更正wrapbuffer_handle宏函数与C++函数定义不同的问题，更正后与宏函数传参相同。。
 - 修复部分编译warning。
+
+
 
 ## 1.8.0 （2022-05-25）
 
-该版本RGA驱动须更新至1.2.4。
+该版本RGA驱动须更新至1.2.6。
 
 ### 新增
 
@@ -31,7 +78,7 @@
 
 ## 1.7.2 （2022-01-20）
 
-该版本RGA驱动须更新至1.2.0。
+该版本RGA驱动须更新至1.2.6。
 
 ### 新增
 
@@ -74,6 +121,7 @@
 
 - 驱动支持变更为 multi_rga。
 - improcess增加传参：input_fence_fd、output_fence_fd、im_opt_t结构体。
+- imsync增加传参：release_fence_fd。
 - im2d_api 中 color/colorkey/nn/rop 模式将通过 im_opt_t 结构体进行配置。
 - Linux平台暂时不支持Async模式。
 - 头文件的数据类型与驱动重新对齐。（头文件存在修改）
@@ -211,6 +259,8 @@
 - 一些无用打印。
 - 对于旋转模式不合理的校验。
 
+
+
 ## 1.2.0 (2021-04-26)
 
 ### 新增
@@ -265,6 +315,8 @@
 * librga初始化的打印。
 * C_API对RGA模块的初始化。
 
+
+
 ## 1.1.1 (2020-11-12)
 
 ### 新增
@@ -292,6 +344,8 @@
 
 * 修复一些已知错误。
 
+
+
 ## 1.0.3 (2020-09-18)
 
 ### 新增
@@ -306,6 +360,8 @@
 ### 优化
 
 * 整合源代码，使Linux和Android共用同一套源码。
+
+
 
 ## 1.0.0 （2020-06-03）
 

@@ -1,10 +1,8 @@
 # RGA IM2D API Instruction
 
-File No.：RK-PC-YF-0002
+Current Version：V2.2.0
 
-Current Version：V2.1.0
-
-Finish Date：2022-01-20
+Finish Date：2022-09-15
 
 Security Class：□Top-Secret   □Secret   □Internal   ■Public
 
@@ -57,6 +55,8 @@ This document is intended for:
 | 2020/10/16 | 1.0.1    | Chen Cheng, Li Huang, Yu Qiaowei | Update part of the APIs.                                                 |
 | 2021/12/07 | 2.0.0    | Chen Cheng, Li Huang, Yu Qiaowei | Add RGA3 related support.                                             |
 | 2022/01/20 | 2.1.0    | Chen Cheng, Li Huang, Yu Qiaowei | - Update im2d api description.<br/>- Updated hardware index description and alignment restrictions.<br/>- Add data structure description. |
+| 2022/01/20 | 2.1.1 | Chen Cheng, Li Huang, Yu Qiaowei | Supplemental formatting support/alignment instructions. |
+| 2022/09/15 | 2.2.0 | Chen Cheng, Li Huang, Yu Qiaowei | - Supplementary default value description<br/>- New array api<br/>- New task api<br/>- New rectangle border drawing api |
 
 
 
@@ -100,7 +100,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="4">8192x8192</td>
       <td rowspan="4">2x2</td>
       <td rowspan="4">2048x2048</td>
-      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/2~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>ROP</td>
+      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/2~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>ROP<br/>IOMMU(32bit)</td>
       <td rowspan="4">1</td>
    </tr>
    <tr>
@@ -123,7 +123,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">8192x8192</td>
       <td rowspan="2">2x2</td>
       <td rowspan="2">2048x2048</td>
-      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/2~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette</td>
+      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/2~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>IOMMU(32bit)</td>
       <td rowspan="2">1</td>
    </tr>
    <tr>
@@ -138,7 +138,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">8192x8192</td>
       <td rowspan="2">2x2</td>
       <td rowspan="2">4096x4096</td>
-      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP</td>
+      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP<br/>IOMMU(32bit)</td>
       <td rowspan="2">2</td>
    </tr>
    <tr>
@@ -153,7 +153,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">8192x8192</td>
       <td rowspan="2">2x2</td>
       <td rowspan="2">4096x4096</td>
-      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP</td>
+      <td rowspan="2">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP<br/>IOMMU(32bit)</td>
       <td rowspan="2">2</td>
    </tr>
    <tr>
@@ -168,7 +168,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="4">8192x8192</td>
       <td rowspan="4">2x2</td>
       <td rowspan="4">4096x4096</td>
-      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette</td>
+      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>IOMMU(32bit)</td>
       <td rowspan="4">2</td>
    </tr>
    <tr>
@@ -191,7 +191,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="6">8192x8192</td>
       <td rowspan="6">2x2</td>
       <td rowspan="6">4096x4096</td>
-      <td rowspan="6">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP(NA for 1108/1109)<br/>NN quantize(NA for 3399/1108)<br/>osd(only 1106/1103)</td>
+      <td rowspan="6">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP(NA for 1108/1109)<br/>NN quantize(NA for 3399/1108)<br/>osd(only 1106/1103)<br/>IOMMU(32bit, RK3528为40bit，NA for RV1106/1103)</td>
       <td rowspan="6">2</td>
    </tr>
    <tr>
@@ -218,18 +218,23 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="1">RGA3</td>
       <td>Orion</td>
       <td>RK3588</td>
-      <td rowspan="1">128x128</td>
+      <td rowspan="1">68x2</td>
       <td rowspan="1">8176x8176</td>
-      <td rowspan="1">128x128</td>
+      <td rowspan="1">68x2</td>
       <td rowspan="1">8128x8128</td>
-      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>FBC</td>
+      <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>Alpha blend<br/>Color key<br/>FBC<br/>IOMMU(40bit)</td>
       <td rowspan="1">3 (by pass)<br/>2 (scale)</td>
    </tr>
 </table>
 
 
-
-> The expected performance is calculated at the default RGA frequency. The actual performance is affected by the memory frequency. The data above is for reference only.
+> Note:
+>
+> 1). The capabilities of Pixels/cycle are theoretical data, and the actual operating performance is related to bandwidth, hardware frequency, etc. The list data is for reference only.
+>
+> 2). In addition to the minimum input resolution limit, the x, y, width, and height parameters of the actual operation rectangle that can be set for each channel must be greater than or equal to 2.
+>
+> 3). The addressing capability of RGA is related to the number of bits of IOMMU. For example, the actual physical addressing capability of RGA equipped with 32bit IOMMU only supports 0~4G memory space.
 
 
 
@@ -253,8 +258,11 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="4">RGA1</td>
       <td>Pagani</td>
       <td>RK3066</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar, only for Blur/sharpness)<br/>YUV422 8bit (planar/semi-planar, only for Blur/sharpness)</td>
+      <td rowspan="4"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_BPP1<br/>RK_FORMAT_BPP2<br/>RK_FORMAT_BPP4<br/>RK_FORMAT_BPP8
+      </td>
+      <td rowspan="4">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP (only for Blur/sharpness)<br/>RK_FORMAT_YCrCbr_420_SP (only for Blur/sharpness)<br/>RK_FORMAT_YCbCr_422_SP (only for Blur/sharpness)<br/>RK_FORMAT_YCrCbr_422_SP (only for Blur/sharpness)<br/>RK_FORMAT_YCbCr_420_P (only for Blur/sharpness)<br/>RK_FORMAT_YCrCbr_420_P (only for Blur/sharpness)<br/>RK_FORMAT_YCbCr_422_P (only for Blur/sharpness)<br/>RK_FORMAT_YCrCbr_422_P (only for Blur/sharpness)
+      </td>
    </tr>
    <tr>
       <td>Jaguar Plus</td>
@@ -272,8 +280,11 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">RGA1_plus</td>
       <td>Audi</td>
       <td>RK3128</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar, only for normal Bitblt without alpha)<br/>YUV422 8bit (planar/semi-planar, only for normal Bitblt without alpha)</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_BPP1<br/>RK_FORMAT_BPP2<br/>RK_FORMAT_BPP4<br/>RK_FORMAT_BPP8
+      </td>
+      <td rowspan="2">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCrCbr_420_SP (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCbCr_422_SP (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCrCbr_422_SP (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCbCr_420_P (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCrCbr_420_P (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCbCr_422_P (only for normal Bitblt without alpha)<br/>RK_FORMAT_YCrCbr_422_P (only for normal Bitblt without alpha)
+      </td>
    </tr>
    <tr>
       <td>Granite</td>
@@ -283,8 +294,10 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">RGA2</td>
       <td>Lincoln</td>
       <td>RK3288/3288w</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1 (only for color palette)</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P
+      </td>
    </tr>
    <tr>
       <td>Capricorn</td>
@@ -294,8 +307,10 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="2">RGA2-Lite0</td>
       <td>Maybach</td>
       <td>RK3368</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1 (only for color palette)</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P
+      </td>
    </tr>
    <tr>
       <td>BMW</td>
@@ -305,8 +320,10 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="4">RGA2-Lite1</td>
       <td>Benz</td>
       <td>RK3228</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>YUV420 10bit (planar/semi-planar)<br/>YUV422 10bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1 (only for color palette)</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)</td>
+      <td rowspan="4"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="4"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P
+      </td>
    </tr>
    <tr>
       <td>Infiniti</td>
@@ -324,8 +341,10 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="6">RGA2-Enhance</td>
       <td>Mclaren</td>
       <td>RK3399</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)<br/>YUV420 10bit (planar/semi-planar)<br/>YUV422 10bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1 (only for color palette)</td>
-      <td rowspan="2">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar/packed)<br/>YUV422 8bit (planar/semi-planar/packed)</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420
+      </td>
    </tr>
    <tr>
       <td>Mercury</td>
@@ -334,8 +353,11 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
    <tr>
       <td>Puma</td>
       <td>RV1126/ RV1109</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar/packed)<br/>YUV420 10bit (planar/semi-planar)<br/>YUV422 10bit (planar/semi-planar)<br/>BPP8/BPP4/BPP2/BPP1 (only for color palette)</td>
-      <td rowspan="4">RGBA/BGRA/ARGB/ABGR8888<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (planar/semi-planar/packed)<br/>YUV422 8bit (planar/semi-planar/packed)<br/>YUV400<br/>Y4/Y1</td>
+      <td rowspan="4"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="4">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4
+   	  </td>
    </tr>
    <tr>
       <td>skylarkV2</td>
@@ -353,13 +375,19 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="1">RGA3</td>
       <td>Orion</td>
       <td>RK3588</td>
-      <td rowspan="1">RGBA/BGRA/ARGB/ABGR8888<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (semi-planar)<br/>YUV422 8bit (semi-planar/packed)<br/>YUV420 10bit (semi-planar)<br/>YUV422 10bit (semi-planar)</td>
-      <td rowspan="1">RGBA/BGRA/ARGB/ABGR8888<br/>RGB/BGR888<br/>RGB/BGR565<br/>YUV420 8bit (semi-planar)<br/>YUV422 8bit (semi-planar/packed)<br/>YUV420 10bit (semi-planar)<br/>YUV422 10bit (semi-planar)</td>
+      <td rowspan="1">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+      </td>
+      <td rowspan="1">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+      </td>
    </tr>
 </table>
 
 
-> Note: Y4 format is 2 to the 4th power grayscale, Y400 format is 2 to the 8th power grayscale.
+> Note:
+>
+> 1). Y4 format is 2 to the 4th power grayscale, Y400 format is 2 to the 8th power grayscale.
 
 
 
@@ -371,101 +399,141 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
     <tr>
         <td>Version</td>
         <td>Byte_stride</td>
-        <td>Format<s/td>
+        <td>Format</td>
         <td>Alignment</td>
     </tr>
 	<tr>
         <td rowspan="4">RGA1<br/>RGA1_Plus</td>
         <td rowspan="4">4</td>
-        <td>RGBA/BGRA/ARGB/ABGR8888</td>
-        <td>width stride no alignment requirements</td>
+        <td>
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
+        </td>
+        <td>width stride无对齐要求</td>
     </tr>
     <tr>
-        <td>RGB/BGR888</td>
-        <td>width stride must be aligned to 4</td>
+        <td>
+RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
+        </td>
+        <td>width stride须2对齐</td>
     </tr>
     <tr>
-        <td>RGB/BGR565<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551</td>
-        <td>width stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
+        </td>
+        <td>width stride须4对齐</td>
     </tr>
     <tr>
-        <td>YUV420 8bit (planar/semi-planar)<br/>YUV422 8bit (planar/semi-planar)</td>
-        <td>width stride must be aligned to 4，x_offset、y_offset、width、height、height stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P
+        </td>
+        <td>width stride须4对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
     <tr>
-        <td rowspan="5">RGA2<br/>RGA2_Lite0<br/>RGA2_Lite1<br/>RGA2_Enhance</td>
-        <td rowspan="5">4</td>
-        <td>RGBA/BGRA/ARGB/ABGR8888</td>
-        <td>width stride no need to align</td>
+        <td rowspan="6">RGA2<br/>RGA2_Lite0<br/>RGA2_Lite1<br/>RGA2_Enhance</td>
+        <td rowspan="6">4</td>
+        <td>
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
+        </td>
+        <td>width stride无对齐要求</td>
     </tr>
     <tr>
-        <td>RGB/BGR888</td>
-        <td>width stride must be aligned to 4</td>
+        <td>
+RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
+        </td>
+        <td>width stride须2对齐</td>
     </tr>
     <tr>
-        <td>RGB/BGR565<br/>RGBA/BGRA/ARGB/ABGR4444<br/>RGBA/BGRA/ARGB/ABGR5551</td>
-        <td>width stride must be aligned to 2</td>
+    	<td>
+RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420
+        </td>
+        <td>width stride须2对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
     <tr>
-        <td>YUV420 8bit (planar/semi-planar/packed)<br/>YUV422 8bit (planar/semi-planar/packed)<br/>YUV400<br/>Y4/Y1</td>
-        <td>width stride must be aligned to 4，x_offset、y_offset、width、height、height stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
+        </td>
+        <td>width stride须4对齐</td>
     </tr>
     <tr>
-        <td>YUV420 10bit (planar/semi-planar)<br/>YUV422 10bit (planar/semi-planar)</td>
-        <td>width stride must be aligned to 16，x_offset、y_offset、width、height、height stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4
+        </td>
+        <td>width stride须4对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+    </tr>
+    <tr>
+        <td>
+RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+        </td>
+        <td>width stride须16对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
 	<tr>
-		<td rowspan="6">RGA3</td>
-        <td rowspan="6">16</td>
-        <td>RGBA/BGRA/ARGB/ABGR8888</td>
-        <td>width stride must be aligned to 4</td>
+		<td rowspan="7">RGA3</td>
+        <td rowspan="7">16</td>
+        <td>
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
+        </td>
+        <td>width stride须4对齐</td>
     </tr>
     <tr>
-        <td>RGB/BGR888</td>
-        <td>width stride must be aligned to 16</td>
+        <td>
+RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
+        </td>
+        <td>width stride须8对齐</td>
     </tr>
     <tr>
-        <td>RGB/BGR565</td>
-        <td>width stride must be aligned to 8</td>
+    	<td>
+RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422
+        </td>
+        <td>width stride须8对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+    </tr>
+    <tr>
+        <td>
+RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
+        </td>
+        <td>width stride须16对齐</td>
     </tr>
 	<tr>
-        <td>YUV420 8bit (semi-planar)<br/>YUV422 8bit (semi-planar/packed)</td>
-        <td>width stride must be aligned to 16，x_offset、y_offset、width、height、height stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP
+        </td>
+        <td>width stride须16对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
 	</tr>
     <tr>
-        <td>YUV420 10bit<br/>YUV422 10bit</td>
-        <td>width stride must be aligned to 64，x_offset、y_offset、width、height、height stride must be aligned to 2</td>
+        <td>
+RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+        </td>
+        <td>width stride须64对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
     <tr>
         <td>FBC mode</td>
-        <td>In addition to the alignment required for the formats mentioned above，width、height must be aligned to 16</td>
+        <td>除上述格式对齐要求外，width、height须16对齐</td>
     </tr>
 </table>
 
-
-> Alignment requirement formula: lcm(bpp，byte_stride * 8) / pixel_stride.
+> Note:
 >
-> When loaded with multiple versions of hardware, chip platform constraints according to the most strict alignment requirements.
+> 1). Alignment requirement formula: lcm(bpp，byte_stride * 8) / pixel_stride.
+>
+> 2). When loaded with multiple versions of hardware, chip platform constraints according to the most strict alignment requirements.
 
 
 
-## API Version Description
+## Version Description
 
-RGA's support library librga.so updates the version number according to certain rules, indicating the submission of new features, compatibility, and bug fixes, and provides several ways to query the version number, so that developers can clearly determine whether the current library version is suitable for the current development environment when using librga.so. Detailed version update logs can be found in CHANGLOG.md in the root directory of source code.
+RGA's support library librga.so updates the version number according to certain rules, indicating the submission of new features, compatibility, and bug fixes, and provides several ways to query the version number, so that developers can clearly determine whether the current library version is suitable for the current development environment when using librga.so. Detailed version update logs can be found in **CHANGLOG.md** in the root directory of source code.
 
+### librga API Version Description
 
-### Version Number Format and Update Rule
+#### Version Number Format and Update Rule
 
-#### API Version Number
-
-##### Format
+##### Version Number Format
 
 ```
 major.minor.revision_[build]
 ```
 
-> example：
->
+example：
+
 > 1.0.0_[0]
 
 
@@ -481,9 +549,9 @@ major.minor.revision_[build]
 
 
 
-### Version Number Query
+#### Version Number Query
 
-#### Query by Strings
+##### Query by Strings
 
 Take Android R 64bit as example:
 
@@ -494,7 +562,7 @@ rga_api version 1.0.0_[0]
 
 
 
-#### Log Print
+##### Log Print
 
 Version number is printed when each process first calls RGA API.
 
@@ -504,7 +572,7 @@ rockchiprga: rga_api version 1.0.0_[0]
 
 
 
-#### Query by API
+##### Query by API
 
 Call the following API to query the code version number, compilation version number, and RGA hardware version information. For details, see **API Description**.
 
@@ -519,7 +587,7 @@ querystring(RGA_VERSION);
 
 
 
-#### Query by Property
+##### Query by Property
 
 This method is supported only by Android system, and the property takes effect only after an existing process calls RGA.
 
@@ -530,6 +598,109 @@ This method is supported only by Android system, and the property takes effect o
 
 
 
+### Driver Version Description
+
+librga calls the RGA hardware based on the driver, it must be ensured that the driver version is within the supported range of the used librga library.
+
+#### Version Number Format and Update Rule
+
+##### Version Number Format
+
+```
+<driver_name>: v major.minor.revision
+```
+
+example：
+
+> RGA2 Device Driver: v2.1.0
+>
+> RGA multicore Device Driver: v1.2.23
+
+
+
+##### Update Rule
+
+| Name     | Rule                                                         |
+| -------- | ------------------------------------------------------------ |
+| major    | Major version number, when submitting a version that is not backward compatible. |
+| minor    | Minor version number, when the functional API with backward compatibility is added. |
+| revision | Revision version number, when submitting backward compatible feature additions or fatal bug fixes. |
+
+
+
+#### Version Number Query
+
+##### Boot log query:
+
+Use the following command to query the RGA driver initialization log after booting. Some early drivers do not print the version number, and this method is only applicable to some drivers.
+
+```
+ dmesg |grep rga
+```
+
+example：
+
+> [    2.382393] rga3_core0 fdb60000.rga: Adding to iommu group 2
+> [    2.382651] rga: rga3_core0, irq = 33, match scheduler
+> [    2.383058] rga: rga3_core0 hardware loaded successfully, hw_version:3.0.76831.
+> [    2.383121] rga: rga3_core0 probe successfully
+> [    2.383687] rga3_core1 fdb70000.rga: Adding to iommu group 3
+> [    2.383917] rga: rga3_core1, irq = 34, match scheduler
+> [    2.384313] rga: rga3_core1 hardware loaded successfully, hw_version:3.0.76831.
+> [    2.384412] rga: rga3_core1 probe successfully
+> [    2.384893] rga: rga2, irq = 35, match scheduler
+> [    2.385238] rga: rga2 hardware loaded successfully, hw_version:3.2.63318.
+> [    2.385257] rga: rga2 probe successfully
+> [    2.385455] rga_iommu: IOMMU binding successfully, default mapping core[0x1]
+> [    2.385586] rga: Module initialized. v1.2.23
+
+Among them, “v1.2.23” is the driver version number.
+
+
+
+##### debug node query
+
+The version number can be queried through the driver debugging node. If there is no following node, it means that the driver version that does not support query is currently running.
+
+- Use the kernel with the CONFIG_ROCKCHIP_RGA_DEBUG_FS compile config enabled by default.
+
+```shell
+cat /sys/kernel/debug/rkrga/driver_version
+```
+
+- Use the kernel with the CONFIG_ROCKCHIP_RGA_PROC_FS compile config enabled.
+
+```shell
+cat /proc/rkrga/driver_version
+```
+
+example：
+
+> cat /sys/kernel/debug/rkrga/driver_version
+> RGA multicore Device Driver: v1.2.23
+
+Here "RGA multicore Device Driver" means that the driver name is RGA multicore Device Driver, and "v1.2.23" means that the version is 1.2.23, which means that the current driver is the RGA multicore Device Driver(usually referred to as multi_rga driver) of version 1.2.23  .
+
+> cat /sys/kernel/debug/rkrga/driver_version
+> RGA2 Device Driver: v2.1.0
+
+Here "RGA2 Device Driver" means that the driver name is RGA2 Device Driver, and "v2.1.0" means that the version number is 2.1.0, which means that the current driver is the RGA2 Device Driver (usually referred to as rga2 driver) of version 2.1.0.
+
+
+
+### Correspondence between versions
+
+When using RGA, you need to confirm that the current operating environment can work normally. The following table shows the correspondence between commonly used librga and driver versions.
+
+| librga version    | driver version                                               | hardware         |
+| ----------------- | ------------------------------------------------------------ | ---------------- |
+| no version number | Drivers in the SDK                                           | RGA1、RGA2       |
+| 1.0.0 ~ 1.3.2     | RGA Device Driver（kernel - 4.4 and above）<br/>RGA2 Device Driver（no version number or v2.1.0） | RGA1、RGA2       |
+| > 1.4.0           | RGA multicore Device Driver（v1.2.0and above）               | RGA2、RGA3       |
+| > 1.9.0           | RGA Device Driver（kernel-4.4 and above）<br/>RGA2 Device Driver（no version number or v2.1.0）<br/>RGA multicore Device Driver（v1.2.0and above） | RGA1、RGA2、RGA3 |
+
+
+
 ## API Description
 
 RGA library librga.so realizes 2D graphics operations  through the image buffer structure rga_info configuration. In order to obtain a better development experience, the common 2D image operation API is further encapsulated. The new API mainly contains the following features:
@@ -537,6 +708,7 @@ RGA library librga.so realizes 2D graphics operations  through the image buffer 
 - To eliminate compatibility problems caused by RGA hardware version differences, RGA query is added. Query mainly includes version information, large resolution and image format support.
 - Add improcess API for 2D image compound operations. Compound operations are performed by passing in a set of predefined usage.
 - Before performing image operation, the input and output image buffers need to be processed. The wrapbuffer_T API is called to pass the input and output image information to  rga_buffer_t, which contains information such as resolution and image format.
+- It supports to bind the image composite operation that cannot be completed in a single time as an RGA image task, and submit it to the driver and execute it one by one.
 
 
 
@@ -547,24 +719,55 @@ RGA library librga.so realizes 2D graphics operations  through the image buffer 
 The software support library provides the following API, asynchronous mode only supports C++ implementation.
 
 - **querystring**： Query information about the RGA hardware version and supported functions of chip platform, return a string.
+- **imcheckHeader**:   Verify the difference between the currently used header file version and the librga version.
 - **importbuffer_T**： Import external buffer into RGA driver to achieve hardware fast access to discontinuous physical addresses (dma_fd, virtual address).
 - **releasebuffer_handle**： Remove reference and map of the external buffer from inside the RGA driver.
 - **wrapbuffer_handle** Quickly encapsulate the image buffer structure (rga_buffer_t）.
+- **imbeginJob**：Create an RGA image processing job.
+- **imendJob**： Submit and execute RGA image processing job.
+- **imcancelJob**： Cancel and delete the RGA image processing job.
 - **imcopy**： Call RGA for fast image copy.
+- **imcopyTask**： Added fast image copy operation to RGA image job.
 - **imresize**： Call RGA for fast image resize.
+- **imresizeTask**： Added fast image resize operation to RGA image job.
 - **impyramind**： Call RGA for fast image pyramid.
 - **imcrop**： Call RGA for fast image cropping.
-- **imrotate**： Call RGA for fast image rotation.
-- **imflip**： Call RGA for fast image flipping.
-- **imfill**： Call RGA for fast image filling.
+- **imcropTask**： Added fast image cropping operation to RGA image job.
 - **imtranslate**： Call RGA for fast image translation.
-- **imblend**： Call RGA for double channel fast image blending.
-- **imcomposite**： Call RGA for three-channel fast image  composite.
-- **imcolorkey**： Call RGA for fast image color key.
+- **imtranslateTask**： Added fast image translation operation to RGA image job.
 - **imcvtcolor**： Call RGA for fast image format conversion.
+- **imcvtcolorTask**： Added fast image format conversion operation to RGA image job.
+- **imrotate**： Call RGA for fast image rotation.
+- **imrotateTask**： Added fast image rotation operation to RGA image job.
+- **imflip**： Call RGA for fast image flipping.
+- **imflipTask**： Added fast image flipping operation to RGA image job.
+- **imblend**： Call RGA for double channel fast image blending.
+- **imblendTask**： Added double channel fast image blending operation to RGA image job.
+- **imcomposite**： Call RGA for three-channel fast image  composite.
+- **imcompositeTask**： Added three-channel fast image composite operation to RGA image job.
+- **imcolorkey**： Call RGA for fast image color key.
+- **imcolorkeyTask**： Added fast image color key operation to RGA image job.
+- **imosd**： Call RGA for fast  image OSD.
+- **imosdTask**：Added fast image OSD operation to RGA image job.
 - **imquantize**： Call RGA for fast image operation point preprocessing (quantization).
+- **imquantizeTask**： Added fast image operation point preprocessing (quantization) operation to RGA image job.
 - **imrop**： Call RGA for fast image ROP.
+- **imropTask**： Added fast image ROP operation to RGA image job.
+- **imfill**： Call RGA for fast image filling.
+- **imfillArray**： Call RGA to implement multiple groups of fast image filling.
+- **imfillTask**： Added fast image filling operation to RGA image job.
+- **imfillTaskArray**： Added multiple groups of fast image filling operation to RGA image job.
+- **imrectangle**： Call RGA for fast drawing operation of equidistant rectangle border.
+- **imrectangleArray**： Call RGA for multiple groups of fast drawing operation of equidistant rectangle border.
+- **imrectangleTask**： Added fast drawing operation of equidistant rectangle border operation to RGA image job.
+- **imrectangleTaskArray**： Added multiple groups of fast drawing operation of equidistant rectangle border operation to RGA image job.
+- **immakeBorder**： Call RGA for fast drawing operation of the border.
+- **immosaic**: call RGA for fast mosaic masking.
+- **immosaicArray**: call RGA for fast multiple groups of mosaic masking.
+- **immosaicTask**：Added fast mosaic masking operation to RGA image job.
+- **immosaicTaskArray**：Added fast multiple groups of mosaic masking operation to RGA image job.
 - **improcess**： Call RGA for fast image compound processing.
+- **improcessTask**： Added fast image compound processing operation to RGA image job.
 - **imcheck**： Verify whether the parameters are valid and whether the current hardware supports the operation.
 - **imsync**： Synchronize task completion status in asynchronous mode.
 - **imconfig**： Add default configuration to current thread context.
@@ -588,6 +791,26 @@ const char* querystring(int name);
 | name           | RGA_VENDOR                 - vendor information<br/>RGA_VERSION                 - RGA version<br/>RGA_MAX_INPUT            - max input resolution<br/>RGA_MAX_OUTPUT        - max output resolution<br/>RGA_BYTE_STRIDE          - stride alignment requirements<br/>RGA_SCALE_LIMIT           - scale limit<br/>RGA_INPUT_FORMAT     - input formats supported<br/>RGA_OUTPUT_FORMAT - output formats supported<br/>RGA_EXPECTED               - expected performance<br/>RGA_ALL                           - print all information |
 
  **Returns** a string describing properties of RGA.
+
+
+
+### header version check
+
+------
+
+#### imcheckHeader
+
+```C++
+IM_API IM_STATUS imcheckHeader(im_api_version_t header_version = RGA_CURRENT_API_HEADER_VERSION);
+```
+
+> Verify the difference between the currently used header file version and the librga version.
+
+| **Parameters** | **Description**                                              |
+| -------------- | ------------------------------------------------------------ |
+| header_version | Header file version, usually use the macro RGA_CURRENT_API_HEADER_VERSION. |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
 
 
 
@@ -615,6 +838,30 @@ const char* querystring(int name);
 > The recommended buffer type is fd.
 
 ```c++
+IM_API rga_buffer_handle_t importbuffer_fd(int fd, int size);
+IM_API rga_buffer_handle_t importbuffer_virtualaddr(void *va, int size);
+IM_API rga_buffer_handle_t importbuffer_physicaladdr(uint64_t pa, int size);
+```
+
+| Parameter | **Description**                |
+| --------- | ------------------------------ |
+| fd/va/pa  | **[required]** external buffer |
+| size      | **[required]** memory size     |
+
+```c++
+IM_API rga_buffer_handle_t importbuffer_fd(int fd, int width, int height, int format);
+IM_API rga_buffer_handle_t importbuffer_virtualaddr(void *va, int width, int height, int format);
+IM_API rga_buffer_handle_t importbuffer_physicaladdr(uint64_t pa, int width, int height, int format);
+```
+
+| Parameter | **Description**                                        |
+| --------- | ------------------------------------------------------ |
+| fd/va/pa  | **[required]** external buffer                         |
+| width     | **[required]** pixel width stride of the image buffer  |
+| height    | **[required]** pixel height stride of the image buffer |
+| format    | **[required]** pixel format of the image buffer        |
+
+```c++
 IM_API rga_buffer_handle_t importbuffer_fd(int fd, im_handle_param_t *param);
 IM_API rga_buffer_handle_t importbuffer_virtualaddr(void *va, im_handle_param_t *param);
 IM_API rga_buffer_handle_t importbuffer_physicaladdr(uint64_t pa, im_handle_param_t *param);
@@ -634,19 +881,6 @@ IM_API rga_buffer_handle_t importbuffer_AHardwareBuffer(AHardwareBuffer *buf);
 | Parameter | **Description**                |
 | --------- | ------------------------------ |
 | hnd/buf   | **[required]** external buffer |
-
-```c++
-IM_API rga_buffer_handle_t importbuffer_fd(int fd, int width, int height, int format);
-IM_API rga_buffer_handle_t importbuffer_virtualaddr(void *va, int width, int height, int format);
-IM_API rga_buffer_handle_t importbuffer_physicaladdr(uint64_t pa, int width, int height, int format);
-```
-
-| Parameter | **Description**                                        |
-| --------- | ------------------------------------------------------ |
-| fd/va/pa  | **[required]** external buffer                         |
-| width     | **[required]** pixel width stride of the image buffer  |
-| height    | **[required]** pixel height stride of the image buffer |
-| format    | **[required]** pixel format of the image buffer        |
 
 **Returns** rga_buffer_handle_t to describe the memory handle.
 
@@ -672,20 +906,86 @@ IM_API IM_STATUS releasebuffer_handle(rga_buffer_handle_t handle);
 rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle,
                                int width,
                                int height,
+                               int format,
                                int wstride = width,
-                               int hstride = height,
-                               int format);
+                               int hstride = height);
 ```
 | Parameter | **Description**                                              |
 | --------- | ------------------------------------------------------------ |
 | handle    | **[required]** RGA buffer handle                             |
 | width     | **[required]** pixel width of the image that needs to be processed |
 | height    | **[required]** pixel height of the image that needs to be processed |
+| format    | **[required]** pixel format                                  |
 | wtride    | **[optional]** pixel width stride of the image               |
 | hstride   | **[optional]** pixel width stride of the image               |
-| format    | **[required]** pixel format                                  |
 
  **Returns** a rga_buffer_t to desribe image information.
+
+
+
+### Image processing job create
+
+-----
+
+#### imbeginJob
+
+```c++
+IM_API im_job_handle_t imbeginJob(uint64_t flags = 0);
+```
+
+> Create an RGA image processing job, which will return a job handle, job_handle can be used to add/remove RGA image operations, submit/execute the job.
+
+| Parameter | **Description**          |
+| --------- | ------------------------ |
+| flags     | **[optional]** job flags |
+
+**Returns** im_job_handle_t to describe the job handle.
+
+
+
+### Image processing job submit
+
+----
+
+#### imendJob
+
+```c++
+IM_API IM_STATUS imendJob(im_job_handle_t job_handle,
+                          int sync_mode = IM_SYNC,
+                          int acquire_fence_fd = 0,
+                          int *release_fence_fd = NULL);
+```
+
+> Submit and execute RGA image processing job. When the job is complete, the currently completed RGA image processing job resource is deleted.
+
+| Parameter        | **Description**                                              |
+| ---------------- | ------------------------------------------------------------ |
+| job_handle       | **[required]** job handle                                    |
+| sync_mode        | **[optional]** wait until operation complete                 |
+| acquire_fence_fd | **[optional]** Used in async mode, run the job after waiting foracquire_fence signal |
+| release_fence_fd | **[optional]** Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+### Image processing job cancel
+
+---
+
+#### imcancelJob
+
+```c++
+IM_API IM_STATUS imcancelJob(im_job_handle_t job_handle);
+```
+
+> cancel and delete RGA image processing job.
+
+| Parameter  | **Description**           |
+| ---------- | ------------------------- |
+| job_handle | **[required]** job handle |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
 
 
 
@@ -698,7 +998,8 @@ rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle,
 ```C++
 IM_STATUS imcopy(const rga_buffer_t src,
                  rga_buffer_t dst,
-                 int sync = 1);
+                 int sync = 1),
+                 int *release_fence_fd = NULL);
 ```
 
 > Copy the image, RGA basic operation. Its function is similar to memcpy.
@@ -709,6 +1010,26 @@ IM_STATUS imcopy(const rga_buffer_t src,
 | dst              | **[required]** output image                                  |
 | sync             | **[optional]** wait until operation complete                 |
 | release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imcopyTask
+
+```C++
+IM_API IM_STATUS imcopyTask(im_job_handle_t job_handle,
+                            const rga_buffer_t src,
+                            rga_buffer_t dst);
+```
+
+> Add an image copy operation to the specified job through job_handle. The configuration parameters are the same as imcopy.
+
+| Parameter  | **Description**             |
+| ---------- | --------------------------- |
+| job_handle | **[required]** job handle   |
+| src        | **[required]** input image  |
+| dst        | **[required]** output image |
 
 **Return** IM_STATUS_SUCCESS on success or else negative error code.
 
@@ -727,7 +1048,8 @@ imresize(const rga_buffer_t src,
          double fx = 0,
          double fy = 0,
          int interpolation = INTER_LINEAR,
-         int sync = 1);
+         int sync = 1,
+         int *release_fence_fd = NULL);
 ```
 
 > According to different scenario, you can choose to configure dst to describe the output image size of resizing, or configure the scale factor fx/fy to resize at a specified ratio. When dst and fx/fy are configured at the same time, the calculated result of fx/fy is used as the output image size.
@@ -771,6 +1093,32 @@ IM_STATUS impyramid (const rga_buffer_t src,
 
 
 
+#### imresizeTask
+
+```C++
+IM_API IM_STATUS imresizeTask(im_job_handle_t job_handle,
+                              const rga_buffer_t src,
+                              rga_buffer_t dst,
+                              double fx = 0,
+                              double fy = 0,
+                              int interpolation = 0);
+```
+
+> Add an image resize operation to the specified job through job_handle. The configuration parameters are the same as imresize.
+
+| Parameters    | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| job_handle    | **[required]** job handle                                    |
+| src           | **[required]** input image                                   |
+| dst           | **[required]** output image; it has the size dsize (when it is non-zero) or the size computed from src.size(), fx, and fy; the type of dst is the same as of src. |
+| fx            | **[optional]** scale factor along the horizontal axis; when it equals 0, it is computed as:<br/>fx = (double) dst.width / src.width |
+| fy            | **[optional]** scale factor along the vertical axis; when it equals 0, it is computed as:<br/>fy = (double) dst.height / src.height |
+| interpolation | **[optional]** interpolation method:<br/>INTER_NEAREST - a nearest-neighbor interpolation<br/>INTER_LINEAR - a bilinear interpolation (used by default)<br/>INTER_CUBIC - a bicubic interpolation over 4x4 pixel neighborhood |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
 ### Image Cropping
 
 ------
@@ -781,10 +1129,11 @@ IM_STATUS impyramid (const rga_buffer_t src,
 IM_STATUS imcrop(const rga_buffer_t src,
                  rga_buffer_t dst,
                  im_rect rect,
-                 int sync = 1);
+                 int sync = 1,
+                 int *release_fence_fd = NULL);
 ```
 
-> Perform image clipping by specifying the size of the Rect region.
+> Perform image clipping by specifying the size of the region.
 
 | Parameter        | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
@@ -798,104 +1147,23 @@ IM_STATUS imcrop(const rga_buffer_t src,
 
 
 
-### Image Rotation
-
-------
-
-#### imrotate
-
-```c++
-IM_STATUS imrotate(const rga_buffer_t src,
-                   rga_buffer_t dst,
-                   int rotation,
-                   int sync = 1);
-```
-
-
->  Support image rotation 90,180,270 degrees.
-
-| Parameter        | Description                                                  |
-| ---------------- | ------------------------------------------------------------ |
-| src              | **[required]** input image                                   |
-| dst              | **[required]** output image                                  |
-| rotation         | **[required]** rotation angle:<br/>0<br/>IM_HAL_TRANSFORM_ROT_90<br/>IM_HAL_TRANSFORM_ROT_180<br/>IM_HAL_TRANSFORM_ROT_270 |
-| sync             | **[optional]** wait until operation complete                 |
-| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
-
-**Return** IM_STATUS_SUCCESS on success or else negative error code.
-
-
-
-### Image Mirror Flip
-
-------
-
-#### imfilp
-
-```c++
-IM_STATUS imflip (const rga_buffer_t src,
-                  rga_buffer_t dst,
-                  int mode,
-                  int sync = 1);
-```
-
-> Support image to do horizontal, vertical mirror flip.
-
-| Parameter        | Description                                                  |
-| ---------------- | ------------------------------------------------------------ |
-| src              | **[required]** input image                                   |
-| dst              | **[required]** output image                                  |
-| mode             | **[optional]** flip mode:<br/>0<br/>IM_HAL_TRANSFORM_FLIP_H<br/>IM_HAL_TRANSFORM_FLIP_V<br/> |
-| sync             | **[optional]** wait until operation complete                 |
-| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
-
-**Return** IM_STATUS_SUCCESS on success or else negative error code.
-
-
-
-### Image Color Filling, Memory R, Graph Drawing
-
-------
-
-#### imfill/imreset/imdraw
+#### imcropTask
 
 ```C++
-IM_STATUS imfill(rga_buffer_t buf,
-                 im_rect rect,
-                 int color = 0x00000000,
-                 int sync = 1);
+IM_API IM_STATUS imcropTask(im_job_handle_t job_handle,
+                            const rga_buffer_t src,
+                            rga_buffer_t dst,
+                            im_rect rect);
 ```
 
-> Color-fill specified region rect of RGBA image. Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
+> Add an image crop operation to the specified job through job_handle. The configuration parameters are the same as imcrop.
 
-```C++
-IM_STATUS imreset(rga_buffer_t buf,
-                 im_rect rect,
-                 int color = 0x00000000,
-                 int sync = 1);
-```
-
-> For RGBA image, set the memory of specified region rect to specified color. Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
-
-```C++
-IM_STATUS imdraw(rga_buffer_t buf,
-                 im_rect rect,
-                 int color = 0x00000000,
-                 int sync = 1);
-```
-
-> Paint the specified region rect of RGBA image with specified color. Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
-
-【 Note 】 The width and height of the rect must be greater than or equal to 2
-
-| Parameter        | Description                                                  |
-| ---------------- | ------------------------------------------------------------ |
-| src              | **[required]** input image                                   |
-| dst              | **[required]** output image                                  |
-| rect             | **[required]** image region to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
-| color            | **[required]** fill with color, default=0x00000000           |
-| sync             | **[optional]** wait until operation complete                 |
-| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required] **input image                                   |
+| dst        | **[required]** output image                                  |
+| rect       | **[required]** crop region<br/>x - upper-left x coordinate<br/>y - upper-left y coordinate<br/>width - region width<br/>height - region height |
 
 **Return** IM_STATUS_SUCCESS on success or else negative error code.
 
@@ -912,7 +1180,8 @@ IM_STATUS imtranslate(const rga_buffer_t src,
                       rga_buffer_t dst,
                       int x,
                       int y,
-                      int sync = 1)
+                      int sync = 1,
+                      int *release_fence_fd = NULL);
 ```
 
 > Image translation. Move to (x, y) position, the width and height of src and dst must be the same, the excess part will be clipped.
@@ -930,6 +1199,191 @@ IM_STATUS imtranslate(const rga_buffer_t src,
 
 
 
+#### imtranslateTask
+
+```C++
+IM_API IM_STATUS imtranslateTask(im_job_handle_t job_handle,
+                                 const rga_buffer_t src,
+                                 rga_buffer_t dst,
+                                 int x,
+                                 int y);
+```
+
+> Add an image translation operation to the specified job through job_handle. The configuration parameters are the same as imtranslate.
+
+| Parameter  | Description                           |
+| ---------- | ------------------------------------- |
+| job_handle | **[required]** job handle             |
+| src        | **[required]**input image             |
+| dst        | **[required]** output image           |
+| x          | **[required]** horizontal translation |
+| y          | **[required]** vertical translation   |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+### Image Format Conversion
+
+------
+
+#### imcvtcolor
+
+```C++
+IM_STATUS imcvtcolor(rga_buffer_t src,
+                     rga_buffer_t dst,
+                     int sfmt,
+                     int dfmt,
+                     int mode = IM_COLOR_SPACE_DEFAULT,
+                     int sync = 1,
+                     int *release_fence_fd = NULL);
+```
+
+> Image format conversion，specific format support varies according to soc, please refer to the **Image Format Supported** section.
+>
+> The format can be set by rga_buffer_t, or configure the input image and output image formats respectively by sfmt/dfmt. When it comes to YUV/RGB color gamut conversion, you can configure the converted color gamut through mode, and the conversion is performed according to the BT.601 limit range by default.
+
+| parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| src              | **[required]** input image                                   |
+| dst              | **[required]** output image                                  |
+| sfmt             | **[optional]** source image format                           |
+| dfmt             | **[optional]** destination image format                      |
+| Mode             | **[optional]** color space mode:<br/>IM_YUV_TO_RGB_BT601_LIMIT<br/>IM_YUV_TO_RGB_BT601_FULL<br/>IM_YUV_TO_RGB_BT709_LIMIT<br/>IM_RGB_TO_YUV_BT601_LIMIT<br/>IM_RGB_TO_YUV_BT601_FULL<br/>IM_RGB_TO_YUV_BT709_LIMIT |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS  on success or else negative error code.
+
+
+
+#### imcvtcolorTask
+
+```C++
+IM_API IM_STATUS imcvtcolorTask(im_job_handle_t job_handle,
+                                rga_buffer_t src,
+                                rga_buffer_t dst,
+                                int sfmt,
+                                int dfmt,
+                                int mode = IM_COLOR_SPACE_DEFAULT);
+```
+
+> Add an image format conversion operation to the specified job through job_handle. The configuration parameters are the same as imcvtcolor.
+
+| parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| sfmt       | **[optional]** source image format                           |
+| dfmt       | **[optional]** destination image format                      |
+| Mode       | **[optional]** color space mode:<br/>IM_YUV_TO_RGB_BT601_LIMIT<br/>IM_YUV_TO_RGB_BT601_FULL<br/>IM_YUV_TO_RGB_BT709_LIMIT<br/>IM_RGB_TO_YUV_BT601_LIMIT<br/>IM_RGB_TO_YUV_BT601_FULL<br/>IM_RGB_TO_YUV_BT709_LIMIT |
+
+**Return** IM_STATUS_SUCCESS  on success or else negative error code.
+
+
+
+### Image Rotation
+
+------
+
+#### imrotate
+
+```c++
+IM_STATUS imrotate(const rga_buffer_t src,
+                   rga_buffer_t dst,
+                   int rotation,
+                   int sync = 1,
+                   int *release_fence_fd = NULL);
+```
+
+
+>  Support image rotation 90,180,270 degrees.
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| src              | **[required]** input image                                   |
+| dst              | **[required]** output image                                  |
+| rotation         | **[required]** rotation angle:<br/>0<br/>IM_HAL_TRANSFORM_ROT_90<br/>IM_HAL_TRANSFORM_ROT_180<br/>IM_HAL_TRANSFORM_ROT_270 |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imrotateTask
+
+```c++
+IM_API IM_STATUS imrotateTask(im_job_handle_t job_handle,
+                              const rga_buffer_t src,
+                              rga_buffer_t dst,
+                              int rotation);
+```
+
+>Add an image rotation operation to the specified job through job_handle. The configuration parameters are the same as imrotate.
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| rotation   | **[required]** rotation angle:<br/>IM_HAL_TRANSFORM_ROT_90<br/>IM_HAL_TRANSFORM_ROT_180<br/>IM_HAL_TRANSFORM_ROT_270 |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+### Image Mirror Flip
+
+------
+
+#### imfilp
+
+```c++
+IM_STATUS imflip (const rga_buffer_t src,
+                  rga_buffer_t dst,
+                  int mode,
+                  int sync = 1,
+                  int *release_fence_fd = NULL);
+```
+
+> Support image to do horizontal, vertical mirror flip.
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| src              | **[required]** input image                                   |
+| dst              | **[required]** output image                                  |
+| mode             | **[optional]** flip mode:<br/>0<br/>IM_HAL_TRANSFORM_FLIP_H<br/>IM_HAL_TRANSFORM_FLIP_V<br/> |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imflipTask
+
+```c++
+IM_API IM_STATUS imflipTask(im_job_handle_t job_handle,
+                            const rga_buffer_t src,
+                            rga_buffer_t dst,
+                            int mode);
+```
+
+> Add an image flip operation to the specified job through job_handle. The configuration parameters are the same as imflip.
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| mode       | **[required]** flip mode:<br/>IM_HAL_TRANSFORM_FLIP_H_V<br/>IM_HAL_TRANSFORM_FLIP_H<br/>IM_HAL_TRANSFORM_FLIP_V |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
 ### Image Blending
 
 ------
@@ -940,17 +1394,19 @@ IM_STATUS imtranslate(const rga_buffer_t src,
 IM_STATUS imblend(const rga_buffer_t srcA,
                   rga_buffer_t dst,
                   int mode = IM_ALPHA_BLEND_SRC_OVER,
-                  int sync = 1);
+                  int sync = 1,
+                  int *release_fence_fd = NULL);
 ```
 
-> RGA uses A+B -> B image two-channel blending mode to perform Alpha superposition for foreground image (srcA channel) and background image (dst channel) according to the configured blending model, and output the blending result to dst channel.
+> RGA uses A+B -> B image two-channel blending mode to perform Alpha superposition for foreground image (srcA channel) and background image (dst channel) according to the configured blending model, and output the blending result to dst channel. When no mode is configured, it is set to src-over mode by default.
 
 ```c++
 IM_STATUS imcomposite(const rga_buffer_t srcA,
                       const rga_buffer_t srcB,
                       rga_buffer_t dst,
                       int mode = IM_ALPHA_BLEND_SRC_OVER,
-                      int sync = 1);
+                      int sync = 1,
+                      int *release_fence_fd = NULL);
 ```
 
 > RGA uses A+B -> C image three-channel blending mode to perform Alpha superposition for foreground image (srcA channel) and background image (srcB channel) according to the configured blending model, and output the blending result to dst channel.
@@ -1017,6 +1473,41 @@ RGA supports following blending models:
 
 
 
+#### imblendTask/imcompositeTask
+
+```c++
+IM_API IM_STATUS imblendTask(im_job_handle_t job_handle,
+                             const rga_buffer_t fg_image,
+                             rga_buffer_t bg_image,
+                             int mode = IM_ALPHA_BLEND_SRC_OVER);
+```
+
+> Add an A+B -> B image two-channel blending operation to the specified job through job_handle. The configuration parameters are the same as imblend. When no mode is configured, it is set to src-over mode by default.
+
+```c++
+IM_API IM_STATUS imcompositeTask(im_job_handle_t job_handle,
+                                 const rga_buffer_t fg_image,
+                                 const rga_buffer_t bg_image,
+                                 rga_buffer_t output_image,
+                                 int mode = IM_ALPHA_BLEND_SRC_OVER);
+```
+
+> Add an A+B -> C image three-channel blending operation to the specified job through job_handle. The configuration parameters are the same as imcomposite.
+
+【Note】Image blending model does not support the YUV format image blending, the YUV format is not support in dst image of imblend , the YUV format is not support in srcB image of imcomposite.
+
+| Parameter    | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| job_handle   | **[required]** job handle                                    |
+| fg_image     | **[required]** foreground image                              |
+| bg_image     | **[required]** background image, when A+B->B it is also the output destination image. |
+| output_image | **[required]** output destination image.                     |
+| mode         | **[optional]** blending mode:<br/>IM_ALPHA_BLEND_SRC —— SRC mode<br/>IM_ALPHA_BLEND_DST —— DST mode  <br/>IM_ALPHA_BLEND_SRC_OVER —— SRC OVER mode<br/>IM_ALPHA_BLEND_DST_OVER —— DST OVER mode<br />IM_ALPHA_BLEND_PRE_MUL —— Enable premultipling. When premultipling is required, this identifier must be processed with other mode identifiers, then assign to mode |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
 ### Color Key
 
 ------
@@ -1028,14 +1519,15 @@ IM_STATUS imcolorkey(const rga_buffer_t src,
                      rga_buffer_t dst,
                      im_colorkey_range range,
                      int mode = IM_ALPHA_COLORKEY_NORMAL,
-                     int sync = 1)
+                     int sync = 1,
+                     int *release_fence_fd = NULL);
 ```
 
 > Color Key is to preprocesses the source image, zeros the alpha component of pixels that meet the Color Key filtering conditions, wherein the Color Key filtering conditions are non-transparent color values, and performs the alpha blending mode between the preprocessed source image and the destination image.
 >
 > This mode only supports the Color Key operation on the source image (src) region of the image for the set Color range, and overlays on the destination image (dst) region.
 
-> IM_ALPHA_COLORKEY_NORMAL is the normal mode, that is, the colors in the set color range are used as the filtering condition. The Alpha components of pixels in this color range are set zero; IM_ALPHA_COLORKEY_INVERTED is inverted.
+> IM_ALPHA_COLORKEY_NORMAL is the normal mode, that is, the colors in the set color range are used as the filtering condition. The Alpha components of pixels in this color range are set zero; IM_ALPHA_COLORKEY_INVERTED is inverted. When no mode is configured, it is set to IM_ALPHA_COLORKEY_NORMAL mode by default.
 
 | **Parameters** | **Range**        | **Description**                           |
 | -------------- | ---------------- | ----------------------------------------- |
@@ -1055,34 +1547,84 @@ IM_STATUS imcolorkey(const rga_buffer_t src,
 
 
 
-### Image Format Conversion
+#### imcolorkeyTask
+
+```C++
+IM_API IM_STATUS imcolorkeyTask(im_job_handle_t job_handle,
+                                const rga_buffer_t fg_image,
+                                rga_buffer_t bg_image,
+                                im_colorkey_range range,
+                                int mode = IM_ALPHA_COLORKEY_NORMAL);
+```
+
+> Add an image Color Key operation to the specified job through job_handle. The configuration parameters are the same as imcolorkey.
+
+| **Parameters** | **Range**        | **Description**                                         |
+| -------------- | ---------------- | ------------------------------------------------------- |
+| max            | 0x0 ~ 0xFFFFFFFF | The max color range to cancel/scratch, arranged as ABGR |
+| min            | 0x0 ~ 0xFFFFFFFF | The min color range to cancel/scratch, arranged as ABGR |
+
+| parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| range      | **[required]** Target color range<br/>typedef struct im_colorkey_range {<br/>    int max;<br/>    int min;<br/>} im_colorkey_value; |
+| Mode       | **[required]** Color Key mode：<br/>IM_ALPHA_COLORKEY_NORMAL<br/>IM_ALPHA_COLORKEY_INVERTED |
+
+**Return** IM_STATUS_SUCCESS  on success or else negative error code.
+
+
+
+### OSD
 
 ------
 
-#### imcvtcolor
+#### imosd
 
-```C++
-IM_STATUS imcvtcolor(rga_buffer_t src,
-                     rga_buffer_t dst,
-                     int sfmt,
-                     int dfmt,
-                     int mode = IM_COLOR_SPACE_DEFAULT,
-                     int sync = 1)
+```c++
+IM_API IM_STATUS imosd(const rga_buffer_t osd,
+                       const rga_buffer_t bg_image,
+                       const im_rect osd_rect,
+                       im_osd_t *osd_config,
+                       int sync = 1,
+                       int *release_fence_fd = NULL);
 ```
 
-> Image format conversion，specific format support varies according to soc, please refer to the **Image Format Supported** section.
->
-> The format can be set by rga_buffer_t, or configure the input image and output image formats respectively by sfmt/dfmt.
+> OSD (On-Screen-Display), can superimpose text information on video pictures, and perform brightness statistics and automatic color inversion functions for fonts.
 
 | parameter        | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
-| src              | **[required]** input image                                   |
-| dst              | **[required]** output image                                  |
-| sfmt             | **[optional]** source image format                           |
-| dfmt             | **[optional]** destination image format                      |
-| Mode             | **[optional]** color space mode:<br/>IM_YUV_TO_RGB_BT601_LIMIT<br/>IM_YUV_TO_RGB_BT601_FULL<br/>IM_YUV_TO_RGB_BT709_LIMIT<br/>IM_RGB_TO_YUV_BT601_LIMIT<br/>IM_RGB_TO_YUV_BT601_FULL<br/>IM_RGB_TO_YUV_BT709_LIMIT |
+| OSD              | **[required]** osd block image                               |
+| bg_image         | **[required]** output image                                  |
+| osd_rect         | **[required]** image region to OSD                           |
+| osd_config       | **[required]** OSD function config                           |
 | sync             | **[optional]** wait until operation complete                 |
 | release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS  on success or else negative error code.
+
+
+
+#### imosdTask
+
+```c++
+IM_API IM_STATUS imosdTask(im_job_handle_t job_handle,
+                           const rga_buffer_t osd,
+                           const rga_buffer_t bg_image,
+                           const im_rect osd_rect,
+                           im_osd_t *osd_config);
+```
+
+> Add an OSD operation to the specified job through job_handle. The configuration parameters are the same as imosd.
+
+| parameter  | Description                        |
+| ---------- | ---------------------------------- |
+| job_handle | **[required]** job handle          |
+| OSD        | **[required]** osd block image     |
+| dst        | **[required]** output image        |
+| osd_rect   | **[required]** image region to OSD |
+| osd_config | **[required]** OSD function config |
 
 **Return** IM_STATUS_SUCCESS  on success or else negative error code.
 
@@ -1098,7 +1640,8 @@ IM_STATUS imcvtcolor(rga_buffer_t src,
 IM_STATUS imquantize(const rga_buffer_t src,
                      rga_buffer_t dst,
                      rga_nn_t nn_info,
-                     int sync = 1)
+                     int sync = 1,
+                     int *release_fence_fd = NULL);
 ```
 
 > Currently supported only on RV1126 / RV1109. NN operation point pre-processing, three channels of RGB of image can be separately configured with offset and scale.
@@ -1124,7 +1667,29 @@ Parameters range:
 | sync             | **[optional]** wait until operation complete                 |
 | release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
 
-**Return** IM_STATUS_SUCCESS on success or else negative error code
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imquantizeTask
+
+```c++
+IM_API IM_STATUS imquantizeTask(im_job_handle_t job_handle,
+                                const rga_buffer_t src,
+                                rga_buffer_t dst,
+                                im_nn_t nn_info);
+```
+
+> Add an image quantization conversion operation to the specified job through job_handle. The configuration parameters are the same as imquantize.
+
+| parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| nn_info    | **[required]** rga_nn_t结构体对RGB三个通道offset及scale进行单独配置<br />typedef struct rga_nn { <br/>  int nn_flag;<br/>  int scale_r;<br/>  int scale_g;<br/>  int scale_b;<br/>  int offset_r;<br/>  int offset_g;<br/>  int offset_b;<br/>} rga_nn_t; |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
 
 
 
@@ -1136,9 +1701,10 @@ Parameters range:
 
 ```C++
 IM_STATUS imrop(const rga_buffer_t src,
-                     rga_buffer_t dst,
-                     int rop_code,
-                     int sync = 1)
+                rga_buffer_t dst,
+                int rop_code,
+                int sync = 1,
+                int *release_fence_fd = NULL);
 ```
 
 > Perform ROP, and, or, not operations on two images
@@ -1155,6 +1721,394 @@ IM_STATUS imrop(const rga_buffer_t src,
 
 
 
+#### imropTask
+
+```C++
+IM_API IM_STATUS imropTask(im_job_handle_t job_handle,
+                           const rga_buffer_t src,
+                           rga_buffer_t dst,
+                           int rop_code);
+```
+
+> Add an image ROP conversion operation to the specified job through job_handle. The configuration parameters are the same as imrop.
+
+| parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| src        | **[required]** input image                                   |
+| dst        | **[required]** output image                                  |
+| rop_code   | **[required]** rop code mode <br /><br/> IM_ROP_AND : dst = dst **AND** src;<br/> IM_ROP_OR : dst = dst **OR** src <br/> IM_ROP_NOT_DST : dst = **NOT** dst<br/> IM_ROP_NOT_SRC : dst = **NOT** src<br/> IM_ROP_XOR : dst = dst **XOR** src<br/> IM_ROP_NOT_XOR : dst = **NOT** (dst **XOR** src) |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+### Image Color Filling
+
+------
+
+#### imfill
+
+```C++
+IM_STATUS imfill(rga_buffer_t buf,
+                 im_rect rect,
+                 int color = 0x00000000,
+                 int sync = 1);
+```
+
+> Color fills the specified area rect of the image.
+>
+> Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| src              | **[required]** input image                                   |
+| dst              | **[required]** output image                                  |
+| rect             | **[required]** image region to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| color            | **[required]** fill with color, default=0x00000000           |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imfillArray
+
+```C++
+IM_API IM_STATUS imfillArray(rga_buffer_t dst,
+                             im_rect *rect_array,
+                             int array_size,
+                             uint32_t color,
+                             int sync = 1,
+                             int *release_fence_fd = NULL);
+```
+
+> Color fills multiple areas of the image one by one.
+>
+> Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| dst              | **[required]** target image                                  |
+| rect_array       | **[required]** image region array_ptr to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| array_size       | **[required]** size of region arrays.                        |
+| color            | **[required]** fill with color                               |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imfillTask
+
+```C++
+IM_API IM_STATUS imfillTask(im_job_handle_t job_handle,
+                            rga_buffer_t dst,
+                            im_rect rect,
+                            uint32_t color);
+```
+
+> Add an image color fill operation to the specified job through job_handle. The configuration parameters are the same as imfill.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| dst        | **[required]** target image                                  |
+| rect       | **[required]** image region to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| color      | **[required]** fill with color                               |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imfillTaskArray
+
+```C++
+IM_API IM_STATUS imfillTaskArray(im_job_handle_t job_handle,
+                                 rga_buffer_t dst,
+                                 im_rect *rect_array,
+                                 int array_size,
+                                 uint32_t color);
+```
+
+> Add an image color fill multiple areas operation to the specified job through job_handle. The configuration parameters are the same as imfillArray.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| dst        | **[required]** target image                                  |
+| rect_array | **[required]** image region array_ptr to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| array_size | **[required]** size of region arrays.                        |
+| color      | **[required]** fill with color                               |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imrectangle
+
+```C++
+IM_API IM_STATUS imrectangle(rga_buffer_t dst,
+                             im_rect rect,
+                             uint32_t color,
+                             int thickness,
+                             int sync = 1,
+                             int *release_fence_fd = NULL);
+```
+
+> Draw a border with a thickness of "thickness" to the specified area rect of the image (described as the outer diameter of the border) according to the specified color by "color", and fill a solid rectangle when the thickness is negative.
+>
+> Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| dst              | **[required]** target image                                  |
+| rect             | **[required]** image region to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| color            | **[required]** fill with color                               |
+| thickness        | **[required]** Thickness of lines that make up the rectangle.<br/>Negative values, like -1, mean that the function has to draw a filled rectangle. |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imrectangleArray
+
+```C++
+IM_API IM_STATUS imrectangleArray(rga_buffer_t dst,
+                                  im_rect *rect_array,
+                                  int array_size,
+                                  uint32_t color,
+                                  int thickness,
+                                  int sync = 1,
+                                  int *release_fence_fd = NULL);
+```
+
+> Draw multiple border with a thickness of "thickness" to the specified area rect of the image (described as the outer diameter of the border) according to the specified color by "color", and fill a solid rectangle when the thickness is negative.
+>
+> Color parameters from high to low are respectively R，G，B，A. For example, red: color = 0xff000000.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| dst              | **[required]** target image                                  |
+| rect_array       | **[required]** image region array_ptr to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| array_size       | **[required]** size of region arrays.                        |
+| color            | **[required]** fill with color                               |
+| thickness        | **[required]** Thickness of lines that make up the rectangle.<br/>Negative values, like -1, mean that the function has to draw a filled rectangle. |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imrectangleTask
+
+```C++
+IM_API IM_STATUS imrectangleTask(im_job_handle_t job_handle,
+                                 rga_buffer_t dst,
+                                 im_rect rect,
+                                 uint32_t color,
+                                 int thickness);
+```
+
+> Add an Draw border operation to the specified job through job_handle. The configuration parameters are the same as imrectangle.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| dst        | **[required]** target image                                  |
+| rect       | **[required]** image region to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| color      | **[required]** fill with color                               |
+| thickness  | **[required]** Thickness of lines that make up the rectangle.<br/>Negative values, like -1, mean that the function has to draw a filled rectangle. |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### imrectangleTaskArray
+
+```C++
+IM_API IM_STATUS imrectangleTaskArray(im_job_handle_t job_handle,
+                                      rga_buffer_t dst,
+                                      im_rect *rect_array,
+                                      int array_size,
+                                      uint32_t color,
+                                      int thickness);
+```
+
+> Add an Draw multiple border operation to the specified job through job_handle. The configuration parameters are the same as imrectangleArray.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| job_handle | **[required]** job handle                                    |
+| dst        | **[required]** target image                                  |
+| rect_array | **[required]** image region array_ptr to fill specified color<br/>width and height of rect must be greater than or equal to 2 |
+| array_size | **[required]** size of region arrays.                        |
+| color      | **[required]** fill with color                               |
+| thickness  | **[required]** Thickness of lines that make up the rectangle.<br/>Negative values, like -1, mean that the function has to draw a filled rectangle. |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### immakeBorder
+
+```C++
+IM_API IM_STATUS immakeBorder(rga_buffer_t src,
+                              rga_buffer_t dst,
+                              int top,
+                              int bottom,
+                              int left,
+                              int right,
+                              int border_type,
+                              int value = 0,
+                              int sync = 1,
+                              int acquir_fence_fd = -1,
+                              int *release_fence_fd = NULL);
+```
+
+> According to the configured top/bottom/left/right pixels, draw a border to the input image and output it to the output target image buffer.
+
+【 Note 】 The width and height of the rect must be greater than or equal to 2
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| src              | **[required]** input source image                            |
+| dst              | **[required]** output target image                           |
+| top              | **[required]** number of top pixels                          |
+| bottom           | **[required]** number of bottom pixels                       |
+| left             | **[required]** number of left pixels                         |
+| right            | **[required] **number of right pixels                        |
+| border_type      | **[required]** Border type<br/>IM_BORDER_CONSTANT // iiiiii abcdefgh iiiiiii with some specified value 'i' <br/>IM_BORDER_REFLECT     //fedcba abcdefgh hgfedcb<br/>IM_BORDER_WRAP         //cdefgh abcdefgh abcdefg |
+| value            | **[optional]** the pixel value at which the border is filled |
+| sync             | **[optional]** wait until operation complete                 |
+| acquire_fence_fd | **[required]** used in async mode, run the job after waiting foracquire_fence signal |
+| release_fence_fd | **[required]** used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+### Image Mosaic
+
+----
+
+#### immosaic
+
+```c++
+IM_API IM_STATUS immosaic(const rga_buffer_t image,
+                          im_rect rect,
+                          int mosaic_mode,
+                          int sync = 1,
+                          int *release_fence_fd = NULL);
+```
+
+> Mosaic masking the specified area of the image.
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| image            | **[required]** souce image                                   |
+| rect             | **[required]** image region to mosaic                        |
+| mosaic_mode      | **[required]** set mosaic mode<br />    IM_MOSAIC_8<br/>    IM_MOSAIC_16<br/>    IM_MOSAIC_32<br/>    IM_MOSAIC_64<br/>    IM_MOSAIC_128 |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### immosaicArray
+
+```c++
+IM_API IM_STATUS immosaicArray(const rga_buffer_t image,
+                               im_rect *rect_array,
+                               int array_size,
+                               int mosaic_mode,
+                               int sync = 1,
+                               int *release_fence_fd = NULL);
+```
+
+> Mosaic masking the specified multiple area of the image.
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| image            | **[required]** target image                                  |
+| rect_array       | **[required]** image region array_ptr to mosaic              |
+| array_size       | **[required]** size of region arrays.                        |
+| mosaic_mode      | **[required]** set mosaic mode<br />    IM_MOSAIC_8<br/>    IM_MOSAIC_16<br/>    IM_MOSAIC_32<br/>    IM_MOSAIC_64<br/>    IM_MOSAIC_128 |
+| sync             | **[optional]** wait until operation complete                 |
+| release_fence_fd | **[optional]**Used in async mode, as a parameter of imsync() |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### immosaicTask
+
+```c++
+IM_API IM_STATUS immosaicTask(im_job_handle_t job_handle,
+                              const rga_buffer_t image,
+                              im_rect rect,
+                              int mosaic_mode);
+```
+
+> Add an image mosaic masking operation to the specified job through job_handle. The configuration parameters are the same as immosaic.
+
+| Parameter   | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| job_handle  | **[required]** job handle                                    |
+| image       | **[required]** target image                                  |
+| rect        | **[required]** image region to mosaic                        |
+| mosaic_mode | **[required]** set mosaic mode<br />    IM_MOSAIC_8<br/>    IM_MOSAIC_16<br/>    IM_MOSAIC_32<br/>    IM_MOSAIC_64<br/>    IM_MOSAIC_128 |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### immosaicTaskArray
+
+```c++
+IM_API IM_STATUS immosaicTaskArray(im_job_handle_t job_handle,
+                                   const rga_buffer_t image,
+                                   im_rect *rect_array,
+                                   int array_size,
+                                   int mosaic_mode);
+```
+
+> Add multiple image mosaic masking operation to the specified job through job_handle. The configuration parameters are the same as immosaicArray.
+
+| Parameter   | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| job_handle  | **[required]** job handle                                    |
+| image       | **[required]** target image                                  |
+| rect_array  | **[required]** image region array_ptr to mosaic              |
+| array_size  | **[required]** size of region arrays.                        |
+| mosaic_mode | **[required]** set mosaic mode<br />    IM_MOSAIC_8<br/>    IM_MOSAIC_16<br/>    IM_MOSAIC_32<br/>    IM_MOSAIC_64<br/>    IM_MOSAIC_128 |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
 ### Image Process
 
 ------
@@ -1168,22 +2122,15 @@ IM_STATUS improcess(rga_buffer_t src,
                     im_rect srect,
                     im_rect drect,
                     im_rect prect,
-                    int usage)
+                    int acquire_fence_fd,
+                    int *release_fence_fd,
+                    im_opt_t *opt,
+                    int usage);
 ```
 
 > RGA image compound operation. Other APIs are developed based on this API, improcess can achieve more complex compound operations.
 >
 > Image processes are configured by usage.
-
-| Parameter | Description                          |
-| --------- | ------------------------------------ |
-| src       | **[required]** input imageA          |
-| dst       | **[required]** output image          |
-| pat       | **[required]** input imageB          |
-| srect     | **[required]** src crop region       |
-| drect     | **[required]** dst crop region       |
-| prect     | **[required]** pat crop region       |
-| usage     | **[required]** image operation usage |
 
 usage definitions：
 
@@ -1231,25 +2178,6 @@ typedef enum {
 } IM_USAGE;
 ```
 
-
-
-```C++
-IM_STATUS improcess(rga_buffer_t src,
-                    rga_buffer_t dst,
-                    rga_buffer_t pat,
-                    im_rect srect,
-                    im_rect drect,
-                    im_rect prect,
-                    int acquire_fence_fd,
-                    int *release_fence_fd,
-                    im_opt_t *opt,
-                    int usage)
-```
-
-> RGA image compound operation. Other APIs are developed based on this API, improcess can achieve more complex compound operations.
->
-> Image processes are configured by usage.
-
 | Parameter        | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
 | src              | **[required]** input imageA                                  |
@@ -1262,6 +2190,42 @@ IM_STATUS improcess(rga_buffer_t src,
 | release_fence_fd | **[required]** Used in async mode, as a parameter of imsync() |
 | opt              | **[required]** operation options<br/>typedef struct im_opt {<br/>    int color;<br/>    im_colorkey_range colorkey_range; <br/>    im_nn_t nn;<br/>    int rop_code;<br/>     <br/>    int priority;<br/>    int core;<br/>} im_opt_t; |
 | usage            | **[required]** image operation usage                         |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
+
+
+
+#### improcessTask
+
+```C++
+IM_API IM_STATUS improcessTask(im_job_handle_t job_handle,
+                               rga_buffer_t src,
+                               rga_buffer_t dst,
+                               rga_buffer_t pat,
+                               im_rect srect,
+                               im_rect drect,
+                               im_rect prect,
+                               im_opt_t *opt_ptr,
+                               int usage);
+```
+
+> Add an image compound operation to the specified job through job_handle. The configuration parameters are the same as improcess.
+
+| Parameter        | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| job_handle       | **[required]** job handle                                    |
+| src              | **[required]** input imageA                                  |
+| dst              | **[required]** output image                                  |
+| pat              | **[required]** input imageB                                  |
+| srect            | **[required]** src crop region                               |
+| drect            | **[required]** dst crop region                               |
+| prect            | **[required]** pat crop region                               |
+| acquire_fence_fd | **[required]** Used in async mode, run the job after waiting foracquire_fence signal |
+| release_fence_fd | **[required]** Used in async mode, as a parameter of imsync() |
+| opt              | **[required]** operation options<br/>typedef struct im_opt {<br/>    int color;<br/>    im_colorkey_range colorkey_range; <br/>    im_nn_t nn;<br/>    int rop_code;<br/>     <br/>    int priority;<br/>    int core;<br/>} im_opt_t; |
+| usage            | **[required]** image operation usage                         |
+
+**Return** IM_STATUS_SUCCESS on success or else negative error code.
 
 
 
@@ -1337,7 +2301,7 @@ IM_STATUS  imconfig(IM_CONFIG_NAME name, uint64_t value);
 | Parameter | Description                                                  |
 | --------- | ------------------------------------------------------------ |
 | name      | **[required]** context config name：<br/>IM_CONFIG_SCHEDULER_CORE —— Specify the task processing core<br/>IM_CONFIG_PRIORITY                  —— Specify the task priority<br/>IM_CHECK_CONFIG                      —— Check enable |
-| value     | **[required]** config value<br/>IM_CONFIG_SCHEDULER_CORE :<br/>    IM_SCHEDULER_RGA3_CORE0<br/>    IM_SCHEDULER_RGA3_CORE1<br/>    IM_SCHEDULER_RGA2_CORE0<br/>    IM_SCHEDULER_RGA3_DEFAULT<br/>    IM_SCHEDULER_RGA2_DEFAULT<br/>IM_CONFIG_PRIORITY:<br/>    0 ~ 6<br/>IM_CHECK_CONFIG:<br/>    TRUE<br/>    FALSE |
+| value     | **[required]** config value<br/>    IM_CONFIG_SCHEDULER_CORE :<br/>    IM_SCHEDULER_RGA3_CORE0<br/>    IM_SCHEDULER_RGA3_CORE1<br/>    IM_SCHEDULER_RGA2_CORE0<br/>    IM_SCHEDULER_RGA3_DEFAULT<br/>    IM_SCHEDULER_RGA2_DEFAULT<br/>IM_CONFIG_PRIORITY:<br/>    0 ~ 6<br/>IM_CHECK_CONFIG:<br/>    TRUE<br/>    FALSE |
 
 > Note：Permissions of priority and core are very high. Improper operations may cause system crash or deadlock. Therefore, users are advised to configure them only during development and debugging. Users are not advised to perform this configuration in actual product
 
@@ -1356,11 +2320,12 @@ This section describes the data structures involved in API in detail.
 | rga_buffer_t        | image buffer information       |
 | im_rect             | the actual operating area of the image     |
 | im_opt_t            | image manipulation options         |
-| rga_buffer_handle_t | RGA driver image buffer handle    |
+| im_job_handle_t     | RGA job handle                            |
+| rga_buffer_handle_t | RGA driver image buffer handle            |
 | im_handle_param_t   | buffer parameters of image to be imported |
-| im_context_t        | default context for the current thread       |
-| im_nn_t             | operation point preprocessing parameters     |
-| im_colorkey_range   | Colorkey range       |
+| im_context_t        | default context for the current thread    |
+| im_nn_t             | operation point preprocessing parameters  |
+| im_colorkey_range | Colorkey range |
 
 
 
@@ -1374,7 +2339,7 @@ Buffer information of image with single channel.
 
 - **path**
 
-im2d_api/im2d.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1426,7 +2391,7 @@ Describes the actual operation area of image with single channel.
 
 - **path**
 
-im2d_api/im2d.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1460,7 +2425,7 @@ Describes operation options of current image.
 
 - **path**
 
-im2d_api/im2d.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1491,6 +2456,28 @@ Permissions of priority and core are very high. Improper operations may cause sy
 
 
 
+#### im_job_handle_t
+
+- **说明**
+
+RGA jobhandle, used to identify the currently configured RGA job.
+
+- **路径**
+
+im2d_api/im2d_type.h
+
+- **定义**
+
+```c++
+typedef uint32_t im_job_handle_t;
+```
+
+- **注意事项**
+
+After the configuration fails, imcancelJob must be used to release the current task handle to avoid memory leaks.
+
+
+
 #### rga_buffer_handle_t
 
 - **description**
@@ -1499,7 +2486,7 @@ RGA driver image buffer handle.
 
 - **path**
 
-include/rga.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1509,7 +2496,7 @@ typedef int rga_buffer_handle_t;
 
 - **Note**
 
-null
+When the buffer is used up, releasebuffer_handle must be used to release the memory to avoid memory leaks.
 
 
 
@@ -1521,9 +2508,7 @@ Describe parameters of the image buffer to be imported.
 
 - **path**
 
-im2d_api/im2d.h
-
-include/rga.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1557,7 +2542,7 @@ Parameter of operation point preprocessing (quantization).
 
 - **path**
 
-im2d_api/im2d.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
@@ -1595,7 +2580,7 @@ Colorkey range.
 
 - **path**
 
-im2d_api/im2d.h
+im2d_api/im2d_type.h
 
 - **definitions**
 
