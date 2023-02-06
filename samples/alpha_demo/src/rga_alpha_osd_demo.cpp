@@ -35,6 +35,8 @@
 #include "dma_alloc.h"
 #include "utils.h"
 
+#define LOCAL_FILE_PATH "/data"
+
 int main() {
     int ret = 0;
     int block_witdh, block_height;
@@ -88,14 +90,14 @@ int main() {
 
     /* fill image data */
     for (int i = 0; (i < block_count) && ((block_height * i) < fg_height); i++) {
-        if (0 != get_buf_from_file(fg_buf + i * block_size, fg_format, block_witdh, block_height, 0)) {
+        if (0 != read_image_from_file(fg_buf + i * block_size, LOCAL_FILE_PATH, block_witdh, block_height, fg_format, 0)) {
             printf("block image read err\n");
             memset(fg_buf, 0xaa, fg_buf_size);
         }
     }
     output_buf_data_to_file(fg_buf, fg_format, fg_width, fg_height, 0);
 
-    if (0 != get_buf_from_file(bg_buf, bg_format, bg_width, bg_height, 0)) {
+    if (0 != read_image_from_file(bg_buf, LOCAL_FILE_PATH, bg_width, bg_height, bg_format, 0)) {
         printf("background image read err\n");
         memset(bg_buf, 0x66, bg_buf_size);
     }
@@ -157,7 +159,7 @@ int main() {
     if (ret != IM_STATUS_SUCCESS)
         goto release_buffer;
 
-    output_buf_data_to_file(bg_buf, bg_format, bg_width, bg_height, 0);
+    write_image_to_file(bg_buf, LOCAL_FILE_PATH, bg_width, bg_height, bg_format, 0);
 
 release_buffer:
     if (fg_handle)

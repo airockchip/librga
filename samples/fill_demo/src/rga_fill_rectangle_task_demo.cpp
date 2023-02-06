@@ -36,6 +36,8 @@
 #include "utils.h"
 #include "dma_alloc.h"
 
+#define LOCAL_FILE_PATH "/data"
+
 int main(void) {
     int ret = 0;
     int64_t ts;
@@ -143,7 +145,7 @@ int main(void) {
     }
 
     printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
-    output_buf_data_to_file(dst_buf, dst_format, dst_width, dst_height, 0);
+    write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
 cancel_job:
     imcancelJob(job_handle);

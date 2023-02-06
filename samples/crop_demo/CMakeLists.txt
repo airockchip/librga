@@ -32,5 +32,7 @@ if (NOT DEFINED RGA_SAMPLES_UTILS_COMPILED)
     include(${CMAKE_CURRENT_SOURCE_DIR}/../utils/CMakeLists.txt)
 endif()
 
+string(REPLACE "-DANDROID" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
 add_subdirectory(src)
 

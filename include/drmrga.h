@@ -39,6 +39,9 @@
 
 #endif
 
+#define RGA_BLIT_SYNC   0x5017
+#define RGA_BLIT_ASYNC  0x5018
+
 #ifndef ANDROID /* LINUX */
 /* flip source image horizontally (around the vertical axis) */
 #define HAL_TRANSFORM_FLIP_H     0x01
@@ -81,7 +84,7 @@ enum {
 };
 /*****************************************************************************/
 
-#ifndef ANDROID
+#ifndef ANDROID /* LINUX */
 /* memory type definitions. */
 enum drm_rockchip_gem_mem_type {
     /* Physically Continuous memory and used as default. */

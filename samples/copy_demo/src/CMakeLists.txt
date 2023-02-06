@@ -1,29 +1,54 @@
 # rga_copy_demo
-add_executable(rga_copy_demo
-    rga_copy_demo.cpp
+SET(DEMO_NAME rga_copy_demo)
+add_executable(${DEMO_NAME}
+${DEMO_NAME}.cpp
 )
-target_link_libraries(rga_copy_demo
+target_link_libraries(${DEMO_NAME}
     utils_obj
     ${RGA_LIB}
 )
-install(TARGETS rga_copy_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# rga_copy_fbc_demo
+SET(DEMO_NAME rga_copy_fbc_demo)
+add_executable(${DEMO_NAME}
+${DEMO_NAME}.cpp
+)
+target_link_libraries(${DEMO_NAME}
+    utils_obj
+    ${RGA_LIB}
+)
+install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# rga_copy_tile8x8_demo
+SET(DEMO_NAME rga_copy_tile8x8_demo)
+add_executable(${DEMO_NAME}
+${DEMO_NAME}.cpp
+)
+target_link_libraries(${DEMO_NAME}
+    utils_obj
+    ${RGA_LIB}
+)
+install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # rga_copy_splice_demo
-add_executable(rga_copy_splice_demo
-    rga_copy_splice_demo.cpp
+SET(DEMO_NAME rga_copy_splice_demo)
+add_executable(${DEMO_NAME}
+${DEMO_NAME}.cpp
 )
-target_link_libraries(rga_copy_splice_demo
+target_link_libraries(${DEMO_NAME}
     utils_obj
     ${RGA_LIB}
 )
-install(TARGETS rga_copy_splice_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # rga_copy_splice_task_demo
-add_executable(rga_copy_splice_task_demo
-    rga_copy_splice_task_demo.cpp
+SET(DEMO_NAME rga_copy_splice_task_demo)
+add_executable(${DEMO_NAME}
+${DEMO_NAME}.cpp
 )
-target_link_libraries(rga_copy_splice_task_demo
+target_link_libraries(${DEMO_NAME}
     utils_obj
     ${RGA_LIB}
 )
-install(TARGETS rga_copy_splice_task_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})

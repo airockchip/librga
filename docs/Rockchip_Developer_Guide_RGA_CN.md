@@ -471,8 +471,8 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
         <td>width stride须16对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
 	<tr>
-		<td rowspan="7">RGA3</td>
-        <td rowspan="7">16</td>
+		<td rowspan="8">RGA3</td>
+        <td rowspan="8">16</td>
         <td>
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
         </td>
@@ -512,7 +512,12 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
         <td>FBC mode</td>
         <td>除上述格式对齐要求外，width、height须16对齐</td>
     </tr>
+    <tr>
+        <td>TILE8*8 mode</td>
+        <td>除上述格式对齐要求外，width、height须8对齐，输入通道width stride、height stride须16对齐。</td>
+    </tr>
 </table>
+
 > 注：
 >
 > 1). 对齐要求计算公式：lcm(bpp，byte_stride * 8) / pixel_stride。

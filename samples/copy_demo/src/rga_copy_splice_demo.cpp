@@ -39,6 +39,8 @@
 #include "im2d.hpp"
 #include "utils.h"
 
+#define LOCAL_FILE_PATH "/data"
+
 int main() {
     int ret = 0;
     int left_width, left_height, left_format;
@@ -78,12 +80,12 @@ int main() {
     dst_buf = (char *)malloc(dst_buf_size);
 
     /* fill image data */
-    if (0 != get_buf_from_file(left_buf, left_format, left_width, left_height, 0)) {
-        printf("left image write err\n");
+    if (0 != read_image_from_file(left_buf, LOCAL_FILE_PATH, left_width, left_height, left_format, 0)) {
+        printf("left image read err\n");
         memset(left_buf, 0xaa, left_buf_size);
     }
-    if (0 != get_buf_from_file(right_buf, right_format, right_width, right_height, 0)) {
-        printf("right image write err\n");
+    if (0 != read_image_from_file(right_buf, LOCAL_FILE_PATH, right_width, right_height, right_format, 0)) {
+        printf("right image read err\n");
         memset(left_buf, 0xbb, left_buf_size);
     }
     memset(dst_buf, 0x80, dst_buf_size);
@@ -166,7 +168,7 @@ int main() {
     }
 
 	printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
-    output_buf_data_to_file(dst_buf, dst_format, dst_width, dst_height, 0);
+    write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
 release_buffer:
     if (left_handle)

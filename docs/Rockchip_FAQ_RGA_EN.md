@@ -766,7 +766,7 @@ This section introduces common questions about RGA in the form of Q&A. If the pr
 
 ​			When the system is in no load, the actual time consuming of physical address is about 1.1-1.2 times of the theoretical time consuming, the actual time consuming of dma_fd is about 1.3-1.5 times of the theoretical time consuming, and the actual time consuming of virtual address is about 1.8-2.1 times of the theoretical time consuming, and is greatly affected by CPU. In general, we recommend developers to use dma_fd as the memory type passed in, which achieves great balance between accessibility and efficiency. Virtual addresses are only used as a simple and easy-to-use memory type when learning about RGA. The following table shows the actual test data of different RGA frequencies when the system is in no load on RK3566.
 
-​			**Test Environment：**
+​			**Test Environment**：
 
 | Chip Platform | RK3566     |
 | -------- | ---------- |
@@ -776,7 +776,7 @@ This section introduces common questions about RGA in the form of Q&A. If the pr
 | GPU Frequency  | 800 M      |
 | DDR Frequency  | 1056 M     |
 
-​			**Test Data：**
+​			**Test Data**：
 
 | Resolution      | Memory type                  | Theoretical Time（us） | Actual Time（us） |
 | ----------- | ------------------------- | -------------- | -------------- |
@@ -795,21 +795,21 @@ This section introduces common questions about RGA in the form of Q&A. If the pr
 
 
 
-**Q1.2：**The theoretical formula only provides the evaluation method of copying, so how to evaluate other modes?
+**Q1.2**：The theoretical formula only provides the evaluation method of copying, so how to evaluate other modes?
 
-**A1.2：**Currently only the formula of copying is available for evaluating use. Other modes, such as scaling and cropping, can be evaluated by taking two images of larger resolution into the copy formula to calculate the time consumption, which usually fluctuates up and down according to the size of scaling and cropping. The time consumption of the mode with no change in resolution such as blending is about 1.1-1.2 times that of the copy mode. Because of the DDR bandwidth effect in actual scenarios, it is recommended that the actual test data in the target scenario prevail in the actual evaluation.
-
-
-
-**Q1.3：**Why does RGA perform poorly in certain scenarios, taking up to twice as long as running a demo?
-
-**A1.3：**The bus priority of RGA in the current RK platform is the lowest. When bandwidth resources are tight, for example, in the ISP running multiplex scenario, RGA cannot read and write data in DDR timely due to bandwidth resource shortage, resulting in a large delay and performance deterioration of RGA.
+**A1.2**：Currently only the formula of copying is available for evaluating use. Other modes, such as scaling and cropping, can be evaluated by taking two images of larger resolution into the copy formula to calculate the time consumption, which usually fluctuates up and down according to the size of scaling and cropping. The time consumption of the mode with no change in resolution such as blending is about 1.1-1.2 times that of the copy mode. Because of the DDR bandwidth effect in actual scenarios, it is recommended that the actual test data in the target scenario prevail in the actual evaluation.
 
 
 
-**Q1.4：**The efficiency of RGA cannot meet the needs of our products. Is there any way to improve it?
+**Q1.3**：Why does RGA perform poorly in certain scenarios, taking up to twice as long as running a demo?
 
-**A1.4：**The RGA frequency of the factory firmware of some chips is not the highest frequency. For example, the RGA frequency of chips such as 3399 and 1126 can be up to 400M. The RGA frequency can be improved in the following two ways:
+**A1.3**：The bus priority of RGA in the current RK platform is the lowest. When bandwidth resources are tight, for example, in the ISP running multiplex scenario, RGA cannot read and write data in DDR timely due to bandwidth resource shortage, resulting in a large delay and performance deterioration of RGA.
+
+
+
+**Q1.4**：The efficiency of RGA cannot meet the needs of our products. Is there any way to improve it?
+
+**A1.4**：The RGA frequency of the factory firmware of some chips is not the highest frequency. For example, the RGA frequency of chips such as 3399 and 1126 can be up to 400M. The RGA frequency can be improved in the following two ways:
 
 - Set by command (temporarily modified, frequency restored upon device restart)
 
@@ -846,27 +846,27 @@ index 02938b0..10a1dc4 100644
 
 
 
-**Q1.5：**Does the RGA support querying the current RGA hardware utilization (load) through commands or interfaces?
+**Q1.5**：Does the RGA support querying the current RGA hardware utilization (load) through commands or interfaces?
 
-**A1.5：**RGA multicore Device Driver supports viewing hardware load, for details, please refer to **Debugging Instructions——Driver Debugging Node——Debugging Node Function——Load Query**
-
-
-
-**Q1.6：**Why are RGA calls in asynchronous mode slower than those in synchronous mode in some scenarios?
-
-**A1.6：**RGA Device Driver, RGA2 Device Driver Since the identifier of the asynchronous mode of librga is an open device node, and a process of librga in singleton mode will only open one fd, so imsync() waits for all asynchronous modes of the process to run Will not return until finished. The RGA multicore Device Driver introduces a fence mechanism, so it is for real-time processing of a single request, and there will be no such problem.
+**A1.5**：RGA multicore Device Driver supports viewing hardware load, for details, please refer to **Debugging Instructions——Driver Debugging Node——Debugging Node Function——Load Query**
 
 
 
-**Q1.7：**The time cousuming when using virtual address to call RGA for copying is higher than memcpy, is there a way to optimize?
+**Q1.6**：Why are RGA calls in asynchronous mode slower than those in synchronous mode in some scenarios?
 
-**A1.7：**In general, we do not recommend using virtual addresses to call RGA, because the efficiency of using a virtual address to call RGA in a scenario with a high CPU load will be greatly reduced. This is because the part of the virtual address to physical address page table in the RGA driver is calculated by the CPU, and the virtual address itself is converted to a physical address. The process of address page table itself is very time-consuming; in addition, the virtual address usually does not have a user-mode interface synchronization cache, so the driver will force the virtual address to synchronize the cache every frame. Therefore, it is generally recommended to call librga using a physical address or dma_fd.
+**A1.6**：RGA Device Driver, RGA2 Device Driver Since the identifier of the asynchronous mode of librga is an open device node, and a process of librga in singleton mode will only open one fd, so imsync() waits for all asynchronous modes of the process to run Will not return until finished. The RGA multicore Device Driver introduces a fence mechanism, so it is for real-time processing of a single request, and there will be no such problem.
 
 
 
-**Q1.8：** When carrying 8G DDR, why is RGA efficiency worse than 4G?
+**Q1.7**：The time cousuming when using virtual address to call RGA for copying is higher than memcpy, is there a way to optimize?
 
-**A1.8：**Since the current RGA1/RGA2 MMU only supports a maximum of 32 bits of physical address, therefore, with devices equipped with DDR of 4G or more, when a buffer with memory greater than 4G is passed to RGA, the RGA driver copies the data from the memory with the highest address to the memory reserved by swiotlb through the DMA interface and returns the corresponding address for RGA to read and write. After the work is finished, the result is copied to the previous high target address through dma, so the CPU involvement was increased, leading to a serious increase in the working time of the librga. If only RGA2/RGA1 is configured and the DDR of the device is greater than 4 GB, you are advised to use less than 4 GB memory when calling RGA to ensure RGA efficiency.
+**A1.7**：In general, we do not recommend using virtual addresses to call RGA, because the efficiency of using a virtual address to call RGA in a scenario with a high CPU load will be greatly reduced. This is because the part of the virtual address to physical address page table in the RGA driver is calculated by the CPU, and the virtual address itself is converted to a physical address. The process of address page table itself is very time-consuming; in addition, the virtual address usually does not have a user-mode interface synchronization cache, so the driver will force the virtual address to synchronize the cache every frame. Therefore, it is generally recommended to call librga using a physical address or dma_fd.
+
+
+
+**Q1.8**： When carrying 8G DDR, why is RGA efficiency worse than 4G?
+
+**A1.8**：Since the current RGA1/RGA2 MMU only supports a maximum of 32 bits of physical address, therefore, with devices equipped with DDR of 4G or more, when a buffer with memory greater than 4G is passed to RGA, the RGA driver copies the data from the memory with the highest address to the memory reserved by swiotlb through the DMA interface and returns the corresponding address for RGA to read and write. After the work is finished, the result is copied to the previous high target address through dma, so the CPU involvement was increased, leading to a serious increase in the working time of the librga. If only RGA2/RGA1 is configured and the DDR of the device is greater than 4 GB, you are advised to use less than 4 GB memory when calling RGA to ensure RGA efficiency.
 
 In the RGA Multicore Device Driver, the swiotlb mechanism will be disabled for access-restricted memory, and the caller will be notified directly to apply for a reasonable memory re-call by displaying the failure of the call to ensure the efficiency of RGA. Usually accompanied by the following logs:
 
@@ -911,9 +911,9 @@ Therefore, for this scenario, it is recommended to apply for memory within 4G to
 
 ### Functions Consulting
 
-**Q2.1：**How do I know what version of RGA is available on my current chip platform and what functions are available?
+**Q2.1**：How do I know what version of RGA is available on my current chip platform and what functions are available?
 
-**A2.1：**See [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - Overview for RGA version and support information.
+**A2.1**：See [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - Overview for RGA version and support information.
 
 ​			Different systems have different source code paths. librga source code directory paths in different SDKS are as follows:
 
@@ -931,9 +931,9 @@ Therefore, for this scenario, it is recommended to apply for memory within 4G to
 
 
 
-**Q2.2：**How to call RGA for hardware acceleration? Can there be a demo for reference?
+**Q2.2**：How to call RGA for hardware acceleration? Can there be a demo for reference?
 
-**A2.2：**1). For API call interface, see [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - API.
+**A2.2**：1). For API call interface, see [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - API.
 
 ​			2). Demo is located in sample/rga_im2d_demo. The demo internally implements most RGA API and implements corresponding RGA functions through command. It can also be used as a tool to test whether RGA works properly in some scenarios. It is recommended that developers who are learning about RGA for the first time run the demo and get the results to understand the actual functions of RGA, modify parameters in the demo to implement corresponding functions according to their own needs, and finally try to call RGA API in their own projects.
 
@@ -955,27 +955,27 @@ Therefore, for this scenario, it is recommended to apply for memory within 4G to
 
 
 
-**Q2.3：**Support information of RGA？
+**Q2.3**：Support information of RGA？
 
-​			**Q2.3.1：**What format is supported by RGA？
+​			**Q2.3.1**：What format is supported by RGA？
 
-​			**A2.3.1：**For detailed support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - Overview -  Image Format Supported to check the format support information of RGA for the corresponding chip version.  Users can also call **querystring(RGA_INPUT_FORMAT | RGA_OUTPUT_FORMAT);** to query the supported input and output formats of current hardware.
+​			**A2.3.1**：For detailed support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) - Overview -  Image Format Supported to check the format support information of RGA for the corresponding chip version.  Users can also call **querystring(RGA_INPUT_FORMAT | RGA_OUTPUT_FORMAT);** to query the supported input and output formats of current hardware.
 
-​			**Q2.3.2：**What scaling ratio is supported by the RGA？
+​			**Q2.3.2**：What scaling ratio is supported by the RGA？
 
-​			**A2.3.2：**For detailed support information, see   [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - Overview - Design Index to query scaling ratio supported by RGA for the corresponding chip version. Users can also call **querystring(RGA_SCALE_LIMIT);** to query the scaling ratio supported by current hardware.
+​			**A2.3.2**：For detailed support information, see   [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - Overview - Design Index to query scaling ratio supported by RGA for the corresponding chip version. Users can also call **querystring(RGA_SCALE_LIMIT);** to query the scaling ratio supported by current hardware.
 
-​			**Q2.3.3：**What is the max resolution supported by RGA?
+​			**Q2.3.3**：What is the max resolution supported by RGA?
 
-​			**A2.3.3：**For detailed support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - Overview - Design Index to query the max input and output resolution supported by RGA for the corresponding chip version. Users can also call **querystring(RGA_MAX_INPUT | RGA_MAX_OUTPUT);** to query the max input/output resolution supported by current hardware.
+​			**A2.3.3**：For detailed support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - Overview - Design Index to query the max input and output resolution supported by RGA for the corresponding chip version. Users can also call **querystring(RGA_MAX_INPUT | RGA_MAX_OUTPUT);** to query the max input/output resolution supported by current hardware.
 
-**A2.3：**In general, if you have any questions about RGA support, please refer to [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md), which provides detailed instructions on RGA support information.
+**A2.3**：In general, if you have any questions about RGA support, please refer to [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md), which provides detailed instructions on RGA support information.
 
 
 
-**Q2.4：**How does the new version of librga differ from the old one and how to tell?
+**Q2.4**：How does the new version of librga differ from the old one and how to tell?
 
-**A2.4：**Among all the released SDKs of the current RK platform, the old version of librga that cannot obtain the version number is mainly distributed, and the new version of librga that supports querying the version number.
+**A2.4**：Among all the released SDKs of the current RK platform, the old version of librga that cannot obtain the version number is mainly distributed, and the new version of librga that supports querying the version number.
 
 ​			The support and maintenance of the no version librga has been stopped. The main feature is that the SDK released before November 2020 is loaded with the old version librga. Some chip platforms, such as RK3399 Linux SDK released before June 2021 (V2.5 and below), are also with the old version librga. This version of librga cannot perfectly fit newer drivers and may have color deviation, abnormal format and other problems, so it is not recommended to use it together. When using a newer kernel, users are recommended to update the new version librga, and when using a newer version librga , kernel should be updated to match.
 
@@ -985,21 +985,21 @@ Therefore, for this scenario, it is recommended to apply for memory within 4G to
 
 
 
-**Q2.5：**Does the RGA have alignment requirements?
+**Q2.5**：Does the RGA have alignment requirements?
 
-**A2.5：**Different formats have different alignment requirements，the RGA hardware itself fetches the data of each line of the image in a word aligned manner，that is 4 bytes/32 bits. For example, the RGBA format itself has a single pixel storage size of 32 bit (4 × 8bit), so there is no alignment requirement. RGB565 format storage size is 16 bit (5bit + 6bit + 5bit), so it needs 2 alignment; RGB888 format storage size is 24 bit (3 × 8bit), so the format needs 4 alignment to meet the 32bit fetching requirement of RGA hardware; YUV format storage is relatively special, its own alignment requirement needs 2 alignment, Y channel single pixel storage size is 8bit, so YUV format needs 4 alignment to meet the 32bit fetching requirement of RGA hardware. UV channel according to 420/422 to determine the storage size of each four pixels, so the YUV format Y channel needs 4 alignment to meet the RGA hardware fetching requirements, then the YUV format needs 4 alignment; other unmentioned format alignment requirements are similar in principle. Note that the alignment in the question refers to the alignment requirements of width stride, the actual width and height of YUV format itself, offset due to the characteristics of the format itself is also required 2 alignment. See the [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) , "Overview" - "Image Format Alignment Instructions" for specific alignment restrictions.
+**A2.5**：Different formats have different alignment requirements，the RGA hardware itself fetches the data of each line of the image in a word aligned manner，that is 4 bytes/32 bits. For example, the RGBA format itself has a single pixel storage size of 32 bit (4 × 8bit), so there is no alignment requirement. RGB565 format storage size is 16 bit (5bit + 6bit + 5bit), so it needs 2 alignment; RGB888 format storage size is 24 bit (3 × 8bit), so the format needs 4 alignment to meet the 32bit fetching requirement of RGA hardware; YUV format storage is relatively special, its own alignment requirement needs 2 alignment, Y channel single pixel storage size is 8bit, so YUV format needs 4 alignment to meet the 32bit fetching requirement of RGA hardware. UV channel according to 420/422 to determine the storage size of each four pixels, so the YUV format Y channel needs 4 alignment to meet the RGA hardware fetching requirements, then the YUV format needs 4 alignment; other unmentioned format alignment requirements are similar in principle. Note that the alignment in the question refers to the alignment requirements of width stride, the actual width and height of YUV format itself, offset due to the characteristics of the format itself is also required 2 alignment. See the [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md) , "Overview" - "Image Format Alignment Instructions" for specific alignment restrictions.
 
 
 
-**Q2.6：**Can RGA support drawing more than one rectangular at a time, or performing multiple operations? How does RGA work?
+**Q2.6**：Can RGA support drawing more than one rectangular at a time, or performing multiple operations? How does RGA work?
 
-**A2.6：**RGA can only work sequentially on hardware, that is, one configured task ends and the next configured begins. Therefore, instead of drawing multiple rectangular at a time, async mode can be used to configure the work of RGA to the underlying driver. RGA will store the work in a work queue managed by driver and complete them in sequence. When the upper layer needs to process the buffer, it calls **imsync()** to determine if the RGA hardware has completed its work.
+**A2.6**：RGA can only work sequentially on hardware, that is, one configured task ends and the next configured begins. Therefore, instead of drawing multiple rectangular at a time, async mode can be used to configure the work of RGA to the underlying driver. RGA will store the work in a work queue managed by driver and complete them in sequence. When the upper layer needs to process the buffer, it calls **imsync()** to determine if the RGA hardware has completed its work.
 
 
 
 **Q2.7：*Does the fill function of RGA support YUV format?
 
-**A2.7：**Older versions librga do not support YUV format. Only newer versions librga with the following submission support this format. If there is no such submission please try to update the SDK to the latest version.
+**A2.7**：Older versions librga do not support YUV format. Only newer versions librga with the following submission support this format. If there is no such submission please try to update the SDK to the latest version.
 
 ```
 commit 8c526a6bb9d0e43b293b885245bb53a3fa8ed7f9
@@ -1016,9 +1016,9 @@ Date:   Wed Dec 23 10:57:28 2020 +0800
 
 
 
-**Q2.8：**Does RGA support YUYV format?
+**Q2.8**：Does RGA support YUYV format?
 
-**A2.8：**Older version librga (librga in the SDK released before October 2020) do not support YUYV format, only newer versions librga (with ** im2d_API ** in the source directory) with the following submission support this format. If there is no such submission, please try to update the SDK to the latest version.
+**A2.8**：Older version librga (librga in the SDK released before October 2020) do not support YUYV format, only newer versions librga (with ** im2d_API ** in the source directory) with the following submission support this format. If there is no such submission, please try to update the SDK to the latest version.
 
 ```
 commit db278db815d147c0ff7a80faae0ea795ceffd341
@@ -1033,21 +1033,21 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.9：**Does RGA support scaling of grayscale input and output?
+**Q2.9**：Does RGA support scaling of grayscale input and output?
 
-**A2.9：**Older version librga (librga in the SDK released before October 2020) do not support this format, only newer version 1.2.2 of librga (with ** im2d_API ** in the source directory) supports grayscale input. If the librga version is lower than this, please try to update SDK to the latest version. Since the RGA hardware itself does not support grayscale format, the grayscale format used here is **RK_FORMAT_Y400**, which is represented as YUV format without UV channel. YUV with only Y channel is 256-order grayscale.
+**A2.9**：Older version librga (librga in the SDK released before October 2020) do not support this format, only newer version 1.2.2 of librga (with ** im2d_API ** in the source directory) supports grayscale input. If the librga version is lower than this, please try to update SDK to the latest version. Since the RGA hardware itself does not support grayscale format, the grayscale format used here is **RK_FORMAT_Y400**, which is represented as YUV format without UV channel. YUV with only Y channel is 256-order grayscale.
 
 ​			Since it is in the YUV format, we need to pay attention to the problem of the color gamut here. When converting CSC to YUV format in librga, the default is BT.601 limit range, and the Y channel of the limit range is not 0~255, which involves CSC conversion (RGB to YUV) When the output is in Y400 format, you need to pay attention to configuring the full range flag when converting the color gamut space.
 
 
 
-**Q2.10：**Why does ROP code of RK3399 run on RV1126 without corresponding results?
+**Q2.10**：Why does ROP code of RK3399 run on RV1126 without corresponding results?
 
-**A2.10：**Although RGA on both RK3399 and RV1126 is RGA2-ENHANCE, their sub versions are different, and ROP function has been cut out of RV1126. For detailed function support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  or call **querystring(RGA_FEATURE);** to query support  functions.
+**A2.10**：Although RGA on both RK3399 and RV1126 is RGA2-ENHANCE, their sub versions are different, and ROP function has been cut out of RV1126. For detailed function support information, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  or call **querystring(RGA_FEATURE);** to query support  functions.
 
 
 
-**Q2.11：**What is the reason for serious color difference (too pink or too green) in RGB and YUV format conversion, while other functions of RGA are normal.
+**Q2.11**：What is the reason for serious color difference (too pink or too green) in RGB and YUV format conversion, while other functions of RGA are normal.
 
 ​			Expectations：
 
@@ -1057,7 +1057,7 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708171608076](RGA_FAQ.assets/image-color-abnormal.png)
 
-**A2.11：**This is usually caused by a mismatch between librga and kernel. For detailed version description, see **A2.4**. The problem usually occurs after librga available on Github is used in SDK released before November 2020. Librga on Github is of new version, which does not match the older version RGA driver. Here, some configurations about color space have been changed, which causes the obvious color deviation.
+**A2.11**：This is usually caused by a mismatch between librga and kernel. For detailed version description, see **A2.4**. The problem usually occurs after librga available on Github is used in SDK released before November 2020. Librga on Github is of new version, which does not match the older version RGA driver. Here, some configurations about color space have been changed, which causes the obvious color deviation.
 
 ​			There are two solutions to this problem: one is to update the SDK or RGA driver and keep librga matching with the driver; the other is to use the librga provided with SDK if the functions only available in the new version librga are not needed.
 
@@ -1065,13 +1065,13 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.12：**How does RGA implement OSD overlay subtitle?
+**Q2.12**：How does RGA implement OSD overlay subtitle?
 
 ​			Expectations：
 
 ​			![image-20210708171450243](RGA_FAQ.assets/image-blend.png)
 
-**A2.12：**If the output is in RGB format, **imblend()** can be used to implement this, usually select src over mode, and the src channel image is overlaid on the dst channel image. If the output is in YUV format, ** imcomposite ()** can be used to implement this, usually select dst over mode, the src1 channel image is overlaid on the src channel image, and then output to the dst channel.
+**A2.12**：If the output is in RGB format, **imblend()** can be used to implement this, usually select src over mode, and the src channel image is overlaid on the dst channel image. If the output is in YUV format, ** imcomposite ()** can be used to implement this, usually select dst over mode, the src1 channel image is overlaid on the src channel image, and then output to the dst channel.
 
 ​			The blending principle of this function is **Porter-Duff blending model**. For details, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image Blending.
 
@@ -1079,9 +1079,9 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.13：**Why brightness or numerical difference exists when RGA is called to implement YUV and RGB format conversion?
+**Q2.13**：Why brightness or numerical difference exists when RGA is called to implement YUV and RGB format conversion?
 
-**A2.13：**The reasons can be roughly divided into two kinds:
+**A2.13**：The reasons can be roughly divided into two kinds:
 
 ​			1). When YUV and RGB interconversion configuration are the same, some pixel values will be slightly different (usually 1), which is caused by the formula accuracy difference when RGA hardware implements CSC function. The decimal accuracy of CSC formula of RGA1 and RGA2 is 8bit, and that of RGA3 is 10bit. In this case, the accuracy of some calculations will have ±1 error  when the results are rounded.
 
@@ -1089,9 +1089,9 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.14：**How to configure the color space for format conversion in librga?
+**Q2.14**：How to configure the color space for format conversion in librga?
 
-**A2.14：**Both versions of librga support configuring the color space for format conversion.
+**A2.14**：Both versions of librga support configuring the color space for format conversion.
 
 ​			1). In the new version librga, see to the  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image Format Conversion, and focus on configuring the mode parameter.
 
@@ -1108,13 +1108,13 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.15：**Why does calling RGA to perform alpha overlay have no effect?
+**Q2.15**：Why does calling RGA to perform alpha overlay have no effect?
 
-**A2.15：**Check whether the alpha value of the two input images is both 0xFF. When the alpha value of the foreground image in the overlay is 0xFF, the result is that the foreground image directly overwrites the background image. The result looks like there is no effect, but in fact it is a correct result.
+**A2.15**：Check whether the alpha value of the two input images is both 0xFF. When the alpha value of the foreground image in the overlay is 0xFF, the result is that the foreground image directly overwrites the background image. The result looks like there is no effect, but in fact it is a correct result.
 
 
 
-**Q2.16：**Call RGA to perform alpha overlay. The alpha value of the foreground image is 0x0. Why is the result not completely transparent?
+**Q2.16**：Call RGA to perform alpha overlay. The alpha value of the foreground image is 0x0. Why is the result not completely transparent?
 
 ​			Foreground Image：（Black and white and rockchip alpha is 0x00）
 
@@ -1130,17 +1130,17 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**A2.16：**In normal configuration mode, default color value has been pre-multiplied by the corresponding alpha value, while the color value of the original image read directly has not been pre-multiplied by alpha value, so we need to add an extra flag bit when calling imblend to indicate that the color value of the image processed does not need to be pre-multiplied by alpha value. For details of calling method, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image Blending.
+**A2.16**：In normal configuration mode, default color value has been pre-multiplied by the corresponding alpha value, while the color value of the original image read directly has not been pre-multiplied by alpha value, so we need to add an extra flag bit when calling imblend to indicate that the color value of the image processed does not need to be pre-multiplied by alpha value. For details of calling method, see  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image Blending.
 
 
 
-**Q2.17：**Can the IM2D API implement multiple functions in one RGA call?
+**Q2.17**：Can the IM2D API implement multiple functions in one RGA call?
 
-**A2.17：**Yes, please refer to  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image process, and refer to the implementation of other IM2D API to understand the use of **improcess()**.
+**A2.17**：Yes, please refer to  [《Rockchip_Developer_Guide_RGA_EN》](./Rockchip_Developer_Guide_RGA_EN.md)  - API - Image process, and refer to the implementation of other IM2D API to understand the use of **improcess()**.
 
 
 
-**Q2.18：**When RGA is called to perform image rotation, the output image is stretched?
+**Q2.18**：When RGA is called to perform image rotation, the output image is stretched?
 
 ​			Expectations：
 
@@ -1150,11 +1150,11 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708174113366](RGA_FAQ.assets/image-rotate-90-abnormal.png)
 
-**A2.18：**When rotating 90° or 270°, if users do not want RGA to perform scaling, users should exchange the width and height of the image. Otherwise, the RGA driver defaults to the behavior of rotation + scaling, and the result is the effect of stretching.
+**A2.18**：When rotating 90° or 270°, if users do not want RGA to perform scaling, users should exchange the width and height of the image. Otherwise, the RGA driver defaults to the behavior of rotation + scaling, and the result is the effect of stretching.
 
 
 
-**Q2.19：**RGB888 output scaling results show that the image is slanted and has black lines?
+**Q2.19**：RGB888 output scaling results show that the image is slanted and has black lines?
 
 ​			Input（1920 × 1080）：
 
@@ -1164,21 +1164,21 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708174334975](RGA_FAQ.assets/image-resize-abnormal.png)
 
-**A2.19：**This problem is caused by alignment requirement, virtual width of RGB888 format needs 4 alignment, please check the configured image parameters. For alignment requirement, see **Q2.5**.
+**A2.19**：This problem is caused by alignment requirement, virtual width of RGB888 format needs 4 alignment, please check the configured image parameters. For alignment requirement, see **Q2.5**.
 
 
 
-**Q2.20：**What cause the error that in some system processes, the output of RGA is fuzzy?
+**Q2.20**：What cause the error that in some system processes, the output of RGA is fuzzy?
 
-**A2.20：**Usually RGA exception does not cause the phenomenon of fuzzy screen, when this problem occurs, users need to figure out whether the problem is RGA problem. In some system processes, users need to confirm whether the RGA input data is abnormal, you can call **fwrite()** to write  memory data to file. before calling RGA, and check whether the source data is normal. If you're not familiar with how to write files, see the implementation of the **output_buf_data_to_file()** function in the **core/ rgautils.cpp ** directory.
+**A2.20**：Usually RGA exception does not cause the phenomenon of fuzzy screen, when this problem occurs, users need to figure out whether the problem is RGA problem. In some system processes, users need to confirm whether the RGA input data is abnormal, you can call **fwrite()** to write  memory data to file. before calling RGA, and check whether the source data is normal. If you're not familiar with how to write files, see the implementation of the **output_buf_data_to_file()** function in the **core/ rgautils.cpp ** directory.
 
 
 
-**A2.21：**Small black or green stripes appear after calling RGA to process the image. What is the reason?
+**A2.21**：Small black or green stripes appear after calling RGA to process the image. What is the reason?
 
 ​			![image-cache-abnormal](RGA_FAQ.assets/image-cache-abnormal.png)
 
-**Q2.21：**This is caused by the buffer enabling the cache when using a call that is not a virtual address, and the cache is not synchronized before and after the CPU operation. If you don't know how to synchronize the cache, you can refer to the usage in samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp.
+**Q2.21**：This is caused by the buffer enabling the cache when using a call that is not a virtual address, and the cache is not synchronized before and after the CPU operation. If you don't know how to synchronize the cache, you can refer to the usage in samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp.
 
 
 
@@ -1186,59 +1186,59 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 #### IM2D_API Error
 
-**Q3.1.1：** How to deal with the error of imcheck()?
+**Q3.1.1**： How to deal with the error of imcheck()?
 
 ```
 check error! Invalid parameters: dst, Error yuv not align to 2, rect[x,y,w,h] = [0, 0, 1281, 720], wstride = 1281, hstride = 720, format = 0xa00(nv12)
 output support format : RGBA_8888 RGB_888 RGB_565 RGBA_4444 RGBA_5551 YUV420/YUV422 YUV420_10bit/YUV422_10bit YUYV420 YUYV422 YUV400/Y4
 ```
 
-**A3.1.1：**The imcheck() API serves as the verification API to call librga, which determines whether the parameters of the data structure to be passed to librga are correct, whether the function is supported, whether the hardware restrictions are triggered, etc. You can pass the error value of imcheck() as an argument to **IMStrError()** and the string returned is a detailed error message. which can be used to confirm which conditions were triggered or which parameters were wrong.
+**A3.1.1**：The imcheck() API serves as the verification API to call librga, which determines whether the parameters of the data structure to be passed to librga are correct, whether the function is supported, whether the hardware restrictions are triggered, etc. You can pass the error value of imcheck() as an argument to **IMStrError()** and the string returned is a detailed error message. which can be used to confirm which conditions were triggered or which parameters were wrong.
 
 ​			The error in this problem is caused by the alignment limitation of YUV format. Here, the width 1281 of the image is not 2 aligned, so the verification fails.
 
 
 
-**Q3.1.2：**What is the error with the imstrError() error prompt that there are no specific parameters to print instructions?
+**Q3.1.2**：What is the error with the imstrError() error prompt that there are no specific parameters to print instructions?
 
 ```
 Fatal error: Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
 ```
 
-**A3.1.2：**It means that the configuration has passed the im2d api verification and has been configured on the back-level driver. You can check the error report of the driver through dmesg.
+**A3.1.2**：It means that the configuration has passed the im2d api verification and has been configured on the back-level driver. You can check the error report of the driver through dmesg.
 
 
 
 
 #### RockchipRga API Error
 
-**Q3.2.1：**How to deal with the error “Try to use uninit rgaCtx=(nil)”?
+**Q3.2.1**：How to deal with the error “Try to use uninit rgaCtx=(nil)”?
 
-**A3.2.1：**1). The error is caused by the fact that called API finds that librga module has not been initialized and returns an error. In the current version, the error is usually caused by some older code still uses  RgaInit/RgaDeInit/c_RkRgaInit/c_RkRgaDeInit interface to manage the initialization of RGA module, and when the singleton mode used by the current version of API is abnormal DeInit, the error will occur. Users just need to remove the Init/DeInit related calls in the code.
+**A3.2.1**：1). The error is caused by the fact that called API finds that librga module has not been initialized and returns an error. In the current version, the error is usually caused by some older code still uses  RgaInit/RgaDeInit/c_RkRgaInit/c_RkRgaDeInit interface to manage the initialization of RGA module, and when the singleton mode used by the current version of API is abnormal DeInit, the error will occur. Users just need to remove the Init/DeInit related calls in the code.
 
 ​				2). This error will also be reported when the driver fails to probe successfully, or the access to the driver device node (/dev/rga) is restricted.
 
 
 
-**Q3.2.2：**What causes the error “RgaBlit(1027) RGA_BLIT fail: Not a typewriter”?
+**Q3.2.2**：What causes the error “RgaBlit(1027) RGA_BLIT fail: Not a typewriter”?
 
-**A3.2.2：**This error is usually caused by parameter errors. You are advised to check the scaling factor, whether virtual width is smaller than the sum of actual width and the offset in the corresponding direction, and whether the alignment meets requirements. It is recommended that new developed projects use IM2D API, which has a more comprehensive error detection mechanism, and is convenient for developers.
-
-
-**Q3.2.3：**What causes the error “RgaBlit(1349) RGA_BLIT fail: Bad file descriptor”?
-
-**A3.2.3：**This error is an ioctl error, indicating that the current fd passed to device node is invalid. Please try to update librga or confirm whether the RGA initialization process has been modified.
+**A3.2.2**：This error is usually caused by parameter errors. You are advised to check the scaling factor, whether virtual width is smaller than the sum of actual width and the offset in the corresponding direction, and whether the alignment meets requirements. It is recommended that new developed projects use IM2D API, which has a more comprehensive error detection mechanism, and is convenient for developers.
 
 
-**Q3.2.4：**What causes the error “RgaBlit(1360) RGA_BLIT fail: Bad address”?
+**Q3.2.3**：What causes the error “RgaBlit(1349) RGA_BLIT fail: Bad file descriptor”?
 
-**A3.2.4：**The error is usually caused by a problem with the memory address of the src/src1/dst channel passed into the kernel (commonly out-of-bouns).See "Log Obtaining and Description" - "Driver Debug Node" in this document to open driver logging and locate the faulty memory.
+**A3.2.3**：This error is an ioctl error, indicating that the current fd passed to device node is invalid. Please try to update librga or confirm whether the RGA initialization process has been modified.
+
+
+**Q3.2.4**：What causes the error “RgaBlit(1360) RGA_BLIT fail: Bad address”?
+
+**A3.2.4**：The error is usually caused by a problem with the memory address of the src/src1/dst channel passed into the kernel (commonly out-of-bouns).See "Log Obtaining and Description" - "Driver Debug Node" in this document to open driver logging and locate the faulty memory.
 
 
 
-**Q3.2.5：**What cause the log error “err ws[100,1280,1280]”、”Error srcRect“?
+**Q3.2.5**：What cause the log error “err ws[100,1280,1280]”、”Error srcRect“?
 
-**A3.2.5：**The error is an obvious parameter error. “err ws” represents width stride parameter error. The parameters in the following "[]" are [X_offeset, width, width_stride] respectively.Here, because the sum of offset in X direction and width of the actual operation area is larger than the width stride, librga thinks there is a problem with the width stride and returns an error. Change the width stride to 1380 or  width to 1180.
+**A3.2.5**：The error is an obvious parameter error. “err ws” represents width stride parameter error. The parameters in the following "[]" are [X_offeset, width, width_stride] respectively.Here, because the sum of offset in X direction and width of the actual operation area is larger than the width stride, librga thinks there is a problem with the width stride and returns an error. Change the width stride to 1380 or  width to 1180.
 
 ​			After this error occurs, the following parameters are printed in logcat:
 
@@ -1258,29 +1258,29 @@ E rockchiprga: This output the user patamaters when rga call blit fail		//Error 
 
 ### Kernel Errors
 
-**Q4.1：**What causes the error “RGA2 failed to get vma, result = 32769, pageCount = 65537”?
+**Q4.1**：What causes the error “RGA2 failed to get vma, result = 32769, pageCount = 65537”?
 
-**A4.1：**This error is usually caused by the fact that the actual memory size of virtual address is smaller than the memory size needed (that is, the memory needed for the image of current channel calculated according to parameters of image) when the RGA is called using the virtual address. Just check the size of the buffer. In some scenarios where the application and the call are not performed together, users can memset the size of image  before calling RGA, to confirm whether the problem is caused by insufficient memory size.
+**A4.1**：This error is usually caused by the fact that the actual memory size of virtual address is smaller than the memory size needed (that is, the memory needed for the image of current channel calculated according to parameters of image) when the RGA is called using the virtual address. Just check the size of the buffer. In some scenarios where the application and the call are not performed together, users can memset the size of image  before calling RGA, to confirm whether the problem is caused by insufficient memory size.
 
 ​			Usually by “rga2 map src0 memory failed”, the channel with memory problems can be confirmed, as shown in this case, the src channel triggered this error due to the actual application of buffer size only half the size of required for the image.
 
 
 
-**Q4.2：**What causes the error ”rga2_reg_init, [868] set mmu info error“？
+**Q4.2**：What causes the error ”rga2_reg_init, [868] set mmu info error“？
 
-**A4.2：**This error represents a fd or virtual address conversion to physical address page table error, usually due to the size of the applied memory, the same as Q4.1.
-
-
-
-**Q4.3：**Error “rga：dma_buf_get fail fd[328]“ usually refers to what exception occurs in the buffer？
-
-**Q4.3：**This error is reported when the kernel passes through the interface of dma. It is recommended to check the process of applying for fd and verify that fd is available outside librga before using it to call RGA.
+**A4.2**：This error represents a fd or virtual address conversion to physical address page table error, usually due to the size of the applied memory, the same as Q4.1.
 
 
 
-**Q4.4：**What cause the error “RGA2 failed to get pte, result = -14, pageCount = 112”、”rga2_reg_init, [868] set mmu info error“? After checking accroding to **Q4.1** 、**Q4.2**, the error remains the same. In this case, the physical address allocated by DRM is used. The memset passed to RGA through virtual address mapped by MMAP is correct.
+**Q4.3**：Error “rga：dma_buf_get fail fd[328]“ usually refers to what exception occurs in the buffer？
 
-**A4.4：**This problem is caused by the allocator DRM itself. The DRM itself judges that the user mode obtains the physical address, the kernel mode usually does not need the virtual address, so the corresponding kmap will be released when allocating buffer. Releasing kmap will not affect the virtual address mapping and use in the user mode. However, when the virtual address in user mode of this buffer was passed into the RGA driver and the driver perform conversion query of the physical address page table, the kernel crashes because kmap of the buffer has been released, or the corresponding page table entry can not be queried, or the wrong address is accessed.
+**Q4.3**：This error is reported when the kernel passes through the interface of dma. It is recommended to check the process of applying for fd and verify that fd is available outside librga before using it to call RGA.
+
+
+
+**Q4.4**：What cause the error “RGA2 failed to get pte, result = -14, pageCount = 112”、”rga2_reg_init, [868] set mmu info error“? After checking accroding to **Q4.1** 、**Q4.2**, the error remains the same. In this case, the physical address allocated by DRM is used. The memset passed to RGA through virtual address mapped by MMAP is correct.
+
+**A4.4**：This problem is caused by the allocator DRM itself. The DRM itself judges that the user mode obtains the physical address, the kernel mode usually does not need the virtual address, so the corresponding kmap will be released when allocating buffer. Releasing kmap will not affect the virtual address mapping and use in the user mode. However, when the virtual address in user mode of this buffer was passed into the RGA driver and the driver perform conversion query of the physical address page table, the kernel crashes because kmap of the buffer has been released, or the corresponding page table entry can not be queried, or the wrong address is accessed.
 
 ​			For this scenario, DRM provides an interface flag bit for users to figure out whether the user mode wants DRM to release kmap, that is, whether to pass the mapped virtual address to kernel:
 
@@ -1314,16 +1314,16 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.5：**What causes the error “rga：Rga err irq! INT[701],STATS[1]”?
+**Q4.5**：What causes the error “rga：Rga err irq! INT[701],STATS[1]”?
 
-**A4.5：**This problem usually occurs when an exception occurs during RGA hardware execution. There are many reasons for the exception, such as memory out-of-bounds and abnormal configuration. If this problem occurs, you are advised to check whether the memory passed in is out of bounds.
-
-
+**A4.5**：This problem usually occurs when an exception occurs during RGA hardware execution. There are many reasons for the exception, such as memory out-of-bounds and abnormal configuration. If this problem occurs, you are advised to check whether the memory passed in is out of bounds.
 
 
-**Q4.6：**What causes the error “rga: Rga sync pid 1001 wait 1 task done timeout”？
 
-**A4.6：**There are many reasons for the hardware timeout error. You can rectify the fault as follows:
+
+**Q4.6**：What causes the error “rga: Rga sync pid 1001 wait 1 task done timeout”？
+
+**A4.6**：There are many reasons for the hardware timeout error. You can rectify the fault as follows:
 
 ​			1). Check the overall process and ensure that no other modules or applications are locking or abnormally occupying the buffer. If the same buffer is abnormally occupied by other modules, RGA cannot read and write data properly. If the work cannot be completed within 2000ms, the driver returns with exception and report the error message.
 
@@ -1339,9 +1339,9 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.7：**What are the errors "rga_policy: invalid function policy" and "rga_job: job assign failed"?
+**Q4.7**：What are the errors "rga_policy: invalid function policy" and "rga_job: job assign failed"?
 
-**A4.7：**You can open the driver operation log to view error messages.
+**A4.7**：You can open the driver operation log to view error messages.
 
 ```
 rga_policy: start policy on core = 4

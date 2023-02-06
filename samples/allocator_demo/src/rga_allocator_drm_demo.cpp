@@ -36,6 +36,8 @@
 #include "drm_alloc.h"
 #include "utils.h"
 
+#define LOCAL_FILE_PATH "/data"
+
 class DrmObject {
 public:
     int drm_buffer_fd;
@@ -85,7 +87,7 @@ int main(void) {
         return -1;
     }
 
-    ret = get_buf_from_file(drm_src.drm_buf, src_format, src_width, src_height, 0);
+    ret = read_image_from_file(drm_src.drm_buf, LOCAL_FILE_PATH, src_width, src_height, src_format, 0);
     if (ret < 0) {
         printf ("open file %s so memset!\n", "fault");
         draw_rgba((char *)drm_src.drm_buf, src_width, src_height);
@@ -125,7 +127,7 @@ int main(void) {
     }
 
     printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", drm_dst.drm_buf[0], drm_dst.drm_buf[1], drm_dst.drm_buf[2], drm_dst.drm_buf[3]);
-    output_buf_data_to_file(drm_dst.drm_buf, dst_format, dst_width, dst_height, 0);
+    write_image_to_file(drm_dst.drm_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
 release_buffer:
     if (src_handle > 0)

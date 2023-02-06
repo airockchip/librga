@@ -35,6 +35,8 @@
 
 #include "utils.h"
 
+#define LOCAL_FILE_PATH "/data"
+
 int main(void) {
     int ret = 0;
     int64_t ts;
@@ -54,7 +56,7 @@ int main(void) {
     dst_buf = (char *)malloc(dst_buf_size);
 
     /* fill image data */
-    if (0 != get_buf_from_file(dst_buf, dst_format, dst_width, dst_height, 0)) {
+    if (0 != read_image_from_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0)) {
         printf("dst image write err\n");
         draw_rgba(dst_buf, dst_width, dst_height);
     }
@@ -98,7 +100,7 @@ int main(void) {
     }
 
     printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
-    output_buf_data_to_file(dst_buf, dst_format, dst_width, dst_height, 0);
+    write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
 release_buffer:
     if (dst_handle > 0)

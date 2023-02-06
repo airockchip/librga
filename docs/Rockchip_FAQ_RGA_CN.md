@@ -763,7 +763,7 @@ rga_debugger: dump image to: /data/rga_image/1_core1_dst_plane0_virt_addr_w1280_
 
 ​			下表为在RK3566上系统空载时不同的RGA频率的实际测试数据。
 
-​			**测试环境：**
+​			**测试环境**：
 
 | 芯片平台    | RK3566      |
 | ----------- | ----------- |
@@ -774,7 +774,7 @@ rga_debugger: dump image to: /data/rga_image/1_core1_dst_plane0_virt_addr_w1280_
 | GPU频率     | 800 M       |
 | DDR频率     | 1056 M      |
 
-​			**测试数据：**
+​			**测试数据**：
 
 | 分辨率      | 内存类型                  | 理论耗时（us） | 实际耗时（us） |
 | ----------- | ------------------------- | -------------- | -------------- |
@@ -793,21 +793,21 @@ rga_debugger: dump image to: /data/rga_image/1_core1_dst_plane0_virt_addr_w1280_
 
 
 
-**Q1.2：**理论公式仅提供拷贝的评估方法，那么其他模式如何评估？
+**Q1.2**：理论公式仅提供拷贝的评估方法，那么其他模式如何评估？
 
-**A1.2：**目前仅有拷贝的公式可供评估使用，其他模式比如缩放、裁剪，可以使用两张图像较大的分辨率带入拷贝公式进行计算得到的耗时进行评估，通常会根据缩放、裁剪的大小有一定的上下浮动，混合等分辨率没有变化的模式耗时约为拷贝模式耗时的1.1-1.2倍。具体实际场景中由于受到DDR带宽影响，建议实际评估时以在目标场景中的实际测试数据为准。
-
-
-
-**Q1.3：**为什么RGA在一些场景中性能表现很差，与跑demo时耗时最大能到2倍？
-
-**A1.3：**因为RGA在目前RK平台中的总线优先级为最低档，当带宽资源较为紧张时，例如ISP运行多路的场景中，RGA由于带宽资源紧张，没有办法及时的读写DDR内的数据，产生了较大的延迟，从而表现为RGA的性能下降。
+**A1.2**：目前仅有拷贝的公式可供评估使用，其他模式比如缩放、裁剪，可以使用两张图像较大的分辨率带入拷贝公式进行计算得到的耗时进行评估，通常会根据缩放、裁剪的大小有一定的上下浮动，混合等分辨率没有变化的模式耗时约为拷贝模式耗时的1.1-1.2倍。具体实际场景中由于受到DDR带宽影响，建议实际评估时以在目标场景中的实际测试数据为准。
 
 
 
-**Q1.4：**RGA的效率不能满足我们产品的需求，有什么办法可以提升么？
+**Q1.3**：为什么RGA在一些场景中性能表现很差，与跑demo时耗时最大能到2倍？
 
-**A1.4：**部分芯片的出厂固件的RGA频率并不是最高频率，例如3399、1126等芯片RGA的频率最高可以到400M，可以通过以下两种方式实现RGA提频：
+**A1.3**：因为RGA在目前RK平台中的总线优先级为最低档，当带宽资源较为紧张时，例如ISP运行多路的场景中，RGA由于带宽资源紧张，没有办法及时的读写DDR内的数据，产生了较大的延迟，从而表现为RGA的性能下降。
+
+
+
+**Q1.4**：RGA的效率不能满足我们产品的需求，有什么办法可以提升么？
+
+**A1.4**：部分芯片的出厂固件的RGA频率并不是最高频率，例如3399、1126等芯片RGA的频率最高可以到400M，可以通过以下两种方式实现RGA提频：
 
 - 通过命令设置（临时修改，设备重启则恢复频率）
 
@@ -844,27 +844,27 @@ index 02938b0..10a1dc4 100644
 
 
 
-**Q1.5：**RGA是否支持通过命令或接口查询当前的RGA硬件利用率（负载）？
+**Q1.5**：RGA是否支持通过命令或接口查询当前的RGA硬件利用率（负载）？
 
-**A1.5：**RGA multicore Device Driver支持查看硬件负载，详情可以参考 **调试说明——驱动调试节点——调试节点功能——负载查询**。
-
-
-
-**Q1.6：**为什么一些场景使用异步模式调用RGA耗时比同步模式还要慢？
-
-**A1.6：**RGA Device Driver、RGA2 Device Driver 由于目前librga的异步模式的标识符为打开的设备节点，而单例模式的librga一个进程只会打开一个fd，所以imsync()是等待该进程所有的异步模式均运行结束后才会返回。而RGA multicore Device Driver引入了fence机制，所以是针对单次请求的实时处理，不会存在这种问题。
+**A1.5**：RGA multicore Device Driver支持查看硬件负载，详情可以参考 **调试说明——驱动调试节点——调试节点功能——负载查询**。
 
 
 
-**Q1.7：**有些场景使用虚拟地址调用RGA做拷贝耗时比memcpy还要高，可有办法优化？
+**Q1.6**：为什么一些场景使用异步模式调用RGA耗时比同步模式还要慢？
 
-**A1.7：**通常我们不建议使用虚拟地址调用RGA，因为在CPU负载较高的场景下使用虚拟地址调用RGA的效率会大大下降，这是因为RGA驱动中虚拟地址转换为物理地址页表这一部分是由CPU来计算的，并且本身虚拟地址转换为物理地址页表这个过程本身就很耗时；加之虚拟地址通常没有用户态的接口同步cache，因此驱动内部针对虚拟地址是每一帧都会强制同步cache的。所以通常我们建议使用物理地址或dma_fd来调用librga。
+**A1.6**：RGA Device Driver、RGA2 Device Driver 由于目前librga的异步模式的标识符为打开的设备节点，而单例模式的librga一个进程只会打开一个fd，所以imsync()是等待该进程所有的异步模式均运行结束后才会返回。而RGA multicore Device Driver引入了fence机制，所以是针对单次请求的实时处理，不会存在这种问题。
 
 
 
-**Q1.8：**为什么当搭载8G DDR时，RGA效率较于4G时性能下降严重？
+**Q1.7**：有些场景使用虚拟地址调用RGA做拷贝耗时比memcpy还要高，可有办法优化？
 
-**A1.8：**由于部分RGA1/RGA2的IOMMU仅支持最大32为的物理地址，而RGA Device Driver、RGA2 Device Driver中对于不满足硬件内存要求的调用申请，默认是通过swiotlb机制进行访问访问受限制的内存（原理上相当于通过CPU将高位内存拷贝至复合硬件要求的低位内存中，再交由硬件进行处理，处理完毕后再通过CPU将低位内存搬运回目标的高位内存上。）因此效率十分低下，通常在正常耗时的3-4倍之间浮动，并且引入受CPU负载影响。
+**A1.7**：通常我们不建议使用虚拟地址调用RGA，因为在CPU负载较高的场景下使用虚拟地址调用RGA的效率会大大下降，这是因为RGA驱动中虚拟地址转换为物理地址页表这一部分是由CPU来计算的，并且本身虚拟地址转换为物理地址页表这个过程本身就很耗时；加之虚拟地址通常没有用户态的接口同步cache，因此驱动内部针对虚拟地址是每一帧都会强制同步cache的。所以通常我们建议使用物理地址或dma_fd来调用librga。
+
+
+
+**Q1.8**：为什么当搭载8G DDR时，RGA效率较于4G时性能下降严重？
+
+**A1.8**：由于部分RGA1/RGA2的IOMMU仅支持最大32为的物理地址，而RGA Device Driver、RGA2 Device Driver中对于不满足硬件内存要求的调用申请，默认是通过swiotlb机制进行访问访问受限制的内存（原理上相当于通过CPU将高位内存拷贝至复合硬件要求的低位内存中，再交由硬件进行处理，处理完毕后再通过CPU将低位内存搬运回目标的高位内存上。）因此效率十分低下，通常在正常耗时的3-4倍之间浮动，并且引入受CPU负载影响。
 
 RGA Multicore Device Driver中针对访问受限制的内存会禁用swiotlb机制，直接通过调用失败的方式显示的通知调用者申请合理的内存再调用，来保证RGA的高效。通常伴随着以下日志：
 
@@ -909,9 +909,9 @@ rga_policy: start policy on core = 4
 
 ### 功能咨询
 
-**Q2.1：**如何知道我当前的芯片平台搭载的RGA版本以及可以实现的功能？
+**Q2.1**：如何知道我当前的芯片平台搭载的RGA版本以及可以实现的功能？
 
-**A2.1：**可以查看源码目录下docs文件夹内的[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述” 章节了解RGA的版本以及支持信息。
+**A2.1**：可以查看源码目录下docs文件夹内的[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述” 章节了解RGA的版本以及支持信息。
 
 ​			不同系统的源码路径会有所差异，librga源码目录路径在不同SDK的路径如下：
 
@@ -929,9 +929,9 @@ rga_policy: start policy on core = 4
 
 
 
-**Q2.2：**如何调用RGA实现硬件加速？可有demo可供参考？
+**Q2.2**：如何调用RGA实现硬件加速？可有demo可供参考？
 
-**A2.2：**1). API调用接口可以查询docs目录下[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” 章节。
+**A2.2**：1). API调用接口可以查询docs目录下[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” 章节。
 
 ​			2). 演示demo位于samples目录下rga_im2d_demo，该演示demo内部实现了RGA大部分的接口，通过命令配置实现对应的RGA功能，亦可作为一些场景下测试RGA是否正常的工具。建议初次了解RGA的开发者初期可以直接运行demo并查看结果，从而了解RGA的实际功能，再根据自己的需求在demo中修改参数实现对应功能，最终再尝试单独在自己的工程中调用RGA API。
 
@@ -952,31 +952,31 @@ rga_policy: start policy on core = 4
 
 
 
-**Q2.3：**RGA的支持信息？
+**Q2.3**：RGA的支持信息？
 
-​			**Q2.3.1：**RGA支持哪些格式？
+​			**Q2.3.1**：RGA支持哪些格式？
 
-​			**A2.3.1：**具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“图像格式支持”小节中查询对应的芯片版本搭载的RGA的格式支持情况，也可以在代码中调用**querystring(RGA_INPUT_FORMAT | RGA_OUTPUT_FORMAT);** 接口查询当前硬件的输入输出格式支持情况。
+​			**A2.3.1**：具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“图像格式支持”小节中查询对应的芯片版本搭载的RGA的格式支持情况，也可以在代码中调用**querystring(RGA_INPUT_FORMAT | RGA_OUTPUT_FORMAT);** 接口查询当前硬件的输入输出格式支持情况。
 
-​			**Q2.3.2：**RGA支持的缩放倍率是多少？
+​			**Q2.3.2**：RGA支持的缩放倍率是多少？
 
-​			**A2.3.2：**具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“设计指标”小节中查询对应的芯片版本搭载的RGA支持的缩放倍率，也可以在代码中调用**querystring(RGA_SCALE_LIMIT);** 接口查询当前硬件的支持的缩放倍率。
+​			**A2.3.2**：具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“设计指标”小节中查询对应的芯片版本搭载的RGA支持的缩放倍率，也可以在代码中调用**querystring(RGA_SCALE_LIMIT);** 接口查询当前硬件的支持的缩放倍率。
 
-​			**Q2.3.3：**RGA支持的最大分辨率是多少？
+​			**Q2.3.3**：RGA支持的最大分辨率是多少？
 
-​			**A2.3.3：**具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“设计指标”小节中查询对应的芯片版本搭载的RGA支持的最大输入输出分辨率，也可以在代码中调用**querystring(RGA_MAX_INPUT | RGA_MAX_OUTPUT);** 接口查询当前硬件的支持的最大输入输出分辨率。
+​			**A2.3.3**：具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“设计指标”小节中查询对应的芯片版本搭载的RGA支持的最大输入输出分辨率，也可以在代码中调用**querystring(RGA_MAX_INPUT | RGA_MAX_OUTPUT);** 接口查询当前硬件的支持的最大输入输出分辨率。
 
-​			**Q2.3.4：**RGA对不同的格式对齐要求是什么？
+​			**Q2.3.4**：RGA对不同的格式对齐要求是什么？
 
-​			**A2.3.4：**具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“图像格式对齐说明”小节中查询对应的芯片版本搭载的RGA对不同格式的对齐要求。
+​			**A2.3.4**：具体支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述”——“图像格式对齐说明”小节中查询对应的芯片版本搭载的RGA对不同格式的对齐要求。
 
-**A2.3：**总体来说，对于RGA的支持有疑问可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)，其中对于RGA的支持信息会有较详细的介绍。
+**A2.3**：总体来说，对于RGA的支持有疑问可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)，其中对于RGA的支持信息会有较详细的介绍。
 
 
 
-**Q2.4：**多个版本的librga有何差异？又该如何分辨？
+**Q2.4**：多个版本的librga有何差异？又该如何分辨？
 
-**A2.4：**目前的RK平台所有发布SDK中，主要分配无法获取版本号的旧版本librga，支持查询版本号的新版本librga。
+**A2.4**：目前的RK平台所有发布SDK中，主要分配无法获取版本号的旧版本librga，支持查询版本号的新版本librga。
 
 ​			无法获取版本的旧版本librga目前已经停止支持与维护，主要的表征点为2020年11月前发布的SDK中，搭载的均为旧版本librga，部分芯片平台例如RK3399 Linux SDK 2021年6月前发布的SDK（V2.5即以下）亦为旧版本librga，该版本librga无法完美契合较新的驱动，可能会出现颜色偏差、格式异常等问题，不建议混合使用，如果有需要使用到较新内核时建议更新新版本librga，反之使用到新版本librga亦然，需要更新内核至匹配。
 
@@ -986,23 +986,23 @@ rga_policy: start policy on core = 4
 
 
 
-**Q2.5：**RGA是否有对齐限制？
+**Q2.5**：RGA是否有对齐限制？
 
-**A2.5：**不同的格式对齐要求不同，RGA硬件本身是对图像每行的数据是按照字（world）对齐的方式进行取数的，即4个字节32个bit。例如RGBA格式本身单个像素存储大小为32（4 × 8）bit，所以没有对齐要求；RGB565格式存储大小为16（5 + 6 +5）bit，所以需要2对齐；RGB888格式存储大小为24（8 × 3）bit，所以该格式需要4对齐才能满足RGA硬件的32bit取数要求；YUV格式存储相对较为特殊，本身排列要求需要2对齐，Y通道单像素存储大小为8bit，UV通道根据420/422决定每四个像素的存储大小，所以YUV格式Y通道需要4对齐才能满足RGA的硬件取数要求，则YUV格式需要4对齐；其他的未提及的格式对齐要求原理相通。注意，该题中对齐均指width stride的对齐要求，YUV格式本身实际宽高、偏移量由于格式本身特性也是要求2对齐的。具体对齐限制可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述” —— “图像格式对齐说明”小节。
+**A2.5**：不同的格式对齐要求不同，RGA硬件本身是对图像每行的数据是按照字（world）对齐的方式进行取数的，即4个字节32个bit。例如RGBA格式本身单个像素存储大小为32（4 × 8）bit，所以没有对齐要求；RGB565格式存储大小为16（5 + 6 +5）bit，所以需要2对齐；RGB888格式存储大小为24（8 × 3）bit，所以该格式需要4对齐才能满足RGA硬件的32bit取数要求；YUV格式存储相对较为特殊，本身排列要求需要2对齐，Y通道单像素存储大小为8bit，UV通道根据420/422决定每四个像素的存储大小，所以YUV格式Y通道需要4对齐才能满足RGA的硬件取数要求，则YUV格式需要4对齐；其他的未提及的格式对齐要求原理相通。注意，该题中对齐均指width stride的对齐要求，YUV格式本身实际宽高、偏移量由于格式本身特性也是要求2对齐的。具体对齐限制可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “概述” —— “图像格式对齐说明”小节。
 
 
 
-**Q2.6：**RGA能否支持一次绘制多个矩形区域，或执行多次操作？RGA的工作原理？
+**Q2.6**：RGA能否支持一次绘制多个矩形区域，或执行多次操作？RGA的工作原理？
 
-**A2.6：**RGA 在硬件上只能顺序工作即配置的一个任务工作结束和进行下一个配置的工作。因此不能一次绘制多个矩形区域，可以通过 async 模式把需要 RGA 做的工作往底层驱动配置，RGA 会将工作存储在驱动自己管理的一个工作队列中按顺序完成。当上层需要处理这块 buffer 时再调用 **imsync()** 来确定 RGA 硬件是否已经完成工作。
+**A2.6**：RGA 在硬件上只能顺序工作即配置的一个任务工作结束和进行下一个配置的工作。因此不能一次绘制多个矩形区域，可以通过 async 模式把需要 RGA 做的工作往底层驱动配置，RGA 会将工作存储在驱动自己管理的一个工作队列中按顺序完成。当上层需要处理这块 buffer 时再调用 **imsync()** 来确定 RGA 硬件是否已经完成工作。
 
 ​			在librga 1.9.0版本后，增加尾缀为array的接口，支持配置多个矩形区域进行划线、画框、填充矩形等操作，例如imfillArray、imrectangleArray，详细可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口” —— “图像颜色填充、边框绘制”小节。
 
 
 
-**Q2.7：**RGA的fill功能可否支持YUV格式？
+**Q2.7**：RGA的fill功能可否支持YUV格式？
 
-**A2.7：**旧版本的librga是不支持的，只有新版本的librga在包含以下提交以后的librga版本是支持的。如若没有该提交请尝试更新SDK至最新版。
+**A2.7**：旧版本的librga是不支持的，只有新版本的librga在包含以下提交以后的librga版本是支持的。如若没有该提交请尝试更新SDK至最新版。
 
 ```
 commit 8c526a6bb9d0e43b293b885245bb53a3fa8ed7f9
@@ -1019,9 +1019,9 @@ Date:   Wed Dec 23 10:57:28 2020 +0800
 
 
 
-**Q2.8：**RGA支持YUYV格式么？
+**Q2.8**：RGA支持YUYV格式么？
 
-**A2.8：**旧版本的librga（此处指2020年10月份前发布的SDK中的librga）是不支持的，只有新版本的librga（源码目录下有 **im2d_api** 目录的版本）在包含以下提交以后的librga版本是支持的。如若没有该提交请尝试更新SDK至最新版。
+**A2.8**：旧版本的librga（此处指2020年10月份前发布的SDK中的librga）是不支持的，只有新版本的librga（源码目录下有 **im2d_api** 目录的版本）在包含以下提交以后的librga版本是支持的。如若没有该提交请尝试更新SDK至最新版。
 
 ```
 commit db278db815d147c0ff7a80faae0ea795ceffd341
@@ -1036,21 +1036,21 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.9：**RGA支持灰度图输入输出做缩放么？
+**Q2.9**：RGA支持灰度图输入输出做缩放么？
 
-**A2.9：**旧版本的librga（此处指2020年10月份前发布的SDK中的librga）是不支持的，只有新版本的librga（源码目录下有 **im2d_api** 目录的版本）1.2.2版本才支持灰度图输入。如若librga版本低于该版本请尝试更新SDK至最新版。由于RGA硬件本身不支持灰度图格式，这里灰度图使用的格式是 **RK_FORMAT_Y400** ，表征为没有UV通道的YUV格式，仅有Y通道的YUV便是256阶的灰度图。
+**A2.9**：旧版本的librga（此处指2020年10月份前发布的SDK中的librga）是不支持的，只有新版本的librga（源码目录下有 **im2d_api** 目录的版本）1.2.2版本才支持灰度图输入。如若librga版本低于该版本请尝试更新SDK至最新版。由于RGA硬件本身不支持灰度图格式，这里灰度图使用的格式是 **RK_FORMAT_Y400** ，表征为没有UV通道的YUV格式，仅有Y通道的YUV便是256阶的灰度图。
 
 ​			由于是YUV格式，这里需要注意色域空间的问题，librga中CSC 转YUV格式时默认为BT.601 limit range，而limit range的Y通道并不是0~255，涉及到CSC转换（RGB转YUV）输出为Y400格式时，需要注意色域空间的转换时配置full range的标识。
 
 
 
-**Q2.10：**为什么RK3399上ROP的代码放到RV1126上执行却没有对应的效果？
+**Q2.10**：为什么RK3399上ROP的代码放到RV1126上执行却没有对应的效果？
 
-**A2.10：**虽然RK3399和RV1126上搭载的RGA均为RGA2-ENHANCE，但是他们的小版本是不同的，ROP功能在RV1126上被裁剪掉了，具体功能支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)或者在代码中调用 **querystring(RGA_FEATURE)** 接口实现查询支持功能。
+**A2.10**：虽然RK3399和RV1126上搭载的RGA均为RGA2-ENHANCE，但是他们的小版本是不同的，ROP功能在RV1126上被裁剪掉了，具体功能支持情况可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)或者在代码中调用 **querystring(RGA_FEATURE)** 接口实现查询支持功能。
 
 
 
-**Q2.11：**使用RGA其他功能正常，仅在RGB与YUV格式转换时出现严重色差（偏粉偏绿）是什么原因？
+**Q2.11**：使用RGA其他功能正常，仅在RGB与YUV格式转换时出现严重色差（偏粉偏绿）是什么原因？
 
 ​			预期：
 
@@ -1060,7 +1060,7 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708171608076](RGA_FAQ.assets/image-color-abnormal.png)
 
-**A2.11：**该现象通常是由于librga与内核不匹配导致，详细版本说明可以查看 **A2.4** 。该问题通常是在一些2020年11月前发布的SDK中使用了github上获取的librga之后出现该现象。github上更新librga为新版本librga，与较旧版本的RGA驱动是不匹配的，这里一些关于色域空间的配置有发生改变，所以会出现较明显的色偏现象。
+**A2.11**：该现象通常是由于librga与内核不匹配导致，详细版本说明可以查看 **A2.4** 。该问题通常是在一些2020年11月前发布的SDK中使用了github上获取的librga之后出现该现象。github上更新librga为新版本librga，与较旧版本的RGA驱动是不匹配的，这里一些关于色域空间的配置有发生改变，所以会出现较明显的色偏现象。
 
 ​			该问题的解决方案有两种，一为更新SDK或RGA驱动，保持librga与驱动是匹配的即可，第二种则是如若无需新版本librga才有的功能，可以使用SDK自带的librga即可。
 
@@ -1068,13 +1068,13 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.12：**RGA如何实现OSD叠加字幕？
+**Q2.12**：RGA如何实现OSD叠加字幕？
 
 ​			预期：
 
 ​			![image-20210708171450243](RGA_FAQ.assets/image-blend.png)
 
-**A2.12：**如果输出结果为RGB格式，可以通过 **imblend()** 接口实现，通常选择src over模式，将src通道的图像叠加在dst通道的图像上；如果输出结果为YUV格式，可以通过 **imcomposite()** 接口实现，通常选择dst over‘模式，将src1通道的图像叠加在src通道的图像上，再输出到dst通道。
+**A2.12**：如果输出结果为RGB格式，可以通过 **imblend()** 接口实现，通常选择src over模式，将src通道的图像叠加在dst通道的图像上；如果输出结果为YUV格式，可以通过 **imcomposite()** 接口实现，通常选择dst over‘模式，将src1通道的图像叠加在src通道的图像上，再输出到dst通道。
 
 ​			该功能的叠加原理为 **Porter-Duff混合模型** ，详细可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像合成” 小节。
 
@@ -1082,9 +1082,9 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.13：**为什么调用RGA实现YUV格式与RGB格式相互转换输出有亮度或者数值差异？
+**Q2.13**：为什么调用RGA实现YUV格式与RGB格式相互转换输出有亮度或者数值差异？
 
-**A2.13：**该现象原因大致可分为两种：
+**A2.13**：该现象原因大致可分为两种：
 
 ​			1). YUV与RGB互转配置相同时，部分像素数值会有轻微差异（通常相差为1），这是由于RGA硬件实现CSC功能时公式的精度问题导致，RGA1和RGA2的CSC公式的小数位精度均为8bit，RGA3的CSC公式的小数位精度为10bit。这里由于精度会导致一些运算结果四舍五入后会有±1的误差。
 
@@ -1092,9 +1092,9 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.14：**librga中如何配置格式转换时的色域空间呢？
+**Q2.14**：librga中如何配置格式转换时的色域空间呢？
 
-**A2.14：**两个版本的librga都是支持配置格式转换时的色域空间的。
+**A2.14**：两个版本的librga都是支持配置格式转换时的色域空间的。
 
 ​			1). 新版本librga中，可以参考[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像格式转换” 小节中介绍，重点配置mode参数即可。
 
@@ -1111,13 +1111,13 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**Q2.15：**调用RGA执行alpha叠加，为什么没有效果？
+**Q2.15**：调用RGA执行alpha叠加，为什么没有效果？
 
-**A2.15：**检查输入的两张图像的alpha值是否皆为0xFF，当叠加中的前景图像的alpha值为0xFF时，其结果便是前景图像直接覆盖在背景图像上，看起来的结果看着像是没有效果一般，实际上是正常的结果。
+**A2.15**：检查输入的两张图像的alpha值是否皆为0xFF，当叠加中的前景图像的alpha值为0xFF时，其结果便是前景图像直接覆盖在背景图像上，看起来的结果看着像是没有效果一般，实际上是正常的结果。
 
 
 
-**Q2.16：**调用RGA执行alpha叠加，前景图像的alpha值为0x0，为什么结果不是全透？
+**Q2.16**：调用RGA执行alpha叠加，前景图像的alpha值为0x0，为什么结果不是全透？
 
 ​			前景图：（黑白和rockchip alpha为0x00）
 
@@ -1133,17 +1133,17 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**A2.16：**我们正常配置的模式是默认颜色值已经预乘过对应的alpha值的结果，而直接读取的原始图片的颜色值并没有预乘过alpha值，所以需要在调用imblend时额外的增加标志位来标识本次处理中的图像颜色值没有需要预乘alpha值。具体调用方式可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像合成“ 小节。
+**A2.16**：我们正常配置的模式是默认颜色值已经预乘过对应的alpha值的结果，而直接读取的原始图片的颜色值并没有预乘过alpha值，所以需要在调用imblend时额外的增加标志位来标识本次处理中的图像颜色值没有需要预乘alpha值。具体调用方式可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像合成“ 小节。
 
 
 
-**Q2.17：**IM2D API可以一次RGA调用实现多种功能么？
+**Q2.17**：IM2D API可以一次RGA调用实现多种功能么？
 
-**A2.17：**可以的，详细可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像处理” 小节，并参考IM2D API其他接口的实现，了解 **improcess()** 的用法。
+**A2.17**：可以的，详细可以查看[《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md)中 “应用接口说明” —— “图像处理” 小节，并参考IM2D API其他接口的实现，了解 **improcess()** 的用法。
 
 
 
-**Q2.18：**调用RGA执行图像旋转时，结果图像被拉伸？
+**Q2.18**：调用RGA执行图像旋转时，结果图像被拉伸？
 
 ​			预期：
 
@@ -1153,11 +1153,11 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708174113366](RGA_FAQ.assets/image-rotate-90-abnormal.png)
 
-**A2.18：**在旋转90°、270°时，如果不希望RGA执行缩放，应将图像的宽、高交换，否则RGA驱动默认该行为为旋转 + 缩放的行为去执行工作，结果表现便是拉伸的效果了。
+**A2.18**：在旋转90°、270°时，如果不希望RGA执行缩放，应将图像的宽、高交换，否则RGA驱动默认该行为为旋转 + 缩放的行为去执行工作，结果表现便是拉伸的效果了。
 
 
 
-**Q2.19：**RGB888输出缩放后结果显示图像是斜的，并且有黑线？
+**Q2.19**：RGB888输出缩放后结果显示图像是斜的，并且有黑线？
 
 ​			原图（1920 × 1080）：
 
@@ -1167,21 +1167,21 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			![image-20210708174334975](RGA_FAQ.assets/image-resize-abnormal.png)
 
-**A2.19：**该问题是对齐限制导致的，RGB888格式的虚宽需要4对齐，请检查配置的图像参数，对齐限制可以参考 **Q2.5** 的回答。
+**A2.19**：该问题是对齐限制导致的，RGB888格式的虚宽需要4对齐，请检查配置的图像参数，对齐限制可以参考 **Q2.5** 的回答。
 
 
 
-**Q2.20：**在一些系统流程中调用RGA输出的结果是花的，这是什么原因导致的？
+**Q2.20**：在一些系统流程中调用RGA输出的结果是花的，这是什么原因导致的？
 
-**A2.20：**通常RGA的异常不会出现图像花掉的现象，一般遇到这种问题需要先定位问题是否是RGA出现的问题，在一些系统流程中需要先确认输入RGA的源数据是否已经是异常的，可以通过在调用RGA前将内存里的数据调用 **fwrite()** 写文件出来，查看源数据是否正常。写文件的方法如果不太熟悉，可以参考源码目录下 **core/RgaUtils.cpp** 中的 **output_buf_data_to_file()** 函数的实现部分。
+**A2.20**：通常RGA的异常不会出现图像花掉的现象，一般遇到这种问题需要先定位问题是否是RGA出现的问题，在一些系统流程中需要先确认输入RGA的源数据是否已经是异常的，可以通过在调用RGA前将内存里的数据调用 **fwrite()** 写文件出来，查看源数据是否正常。写文件的方法如果不太熟悉，可以参考源码目录下 **core/RgaUtils.cpp** 中的 **output_buf_data_to_file()** 函数的实现部分。
 
 
 
-**A2.21：**调用RGA处理图像后出现黑色或绿色的小条纹，这是什么原因？
+**A2.21**：调用RGA处理图像后出现黑色或绿色的小条纹，这是什么原因？
 
 ​			![image-cache-abnormal](RGA_FAQ.assets/image-cache-abnormal.png)
 
-**Q2.21：**这是使用非虚拟地址调用时，buffer使能了cache，并且在CPU操作前后没有同步cache导致的。如果不了解如何同步cache可以参考samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp中的用法。
+**Q2.21**：这是使用非虚拟地址调用时，buffer使能了cache，并且在CPU操作前后没有同步cache导致的。如果不了解如何同步cache可以参考samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp中的用法。
 
 
 
@@ -1189,60 +1189,60 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 #### IM2D_API报错
 
-**Q3.1.1：**imcheck()返回报错，该如何处理？
+**Q3.1.1**：imcheck()返回报错，该如何处理？
 
 ```
 check error! Invalid parameters: dst, Error yuv not align to 2, rect[x,y,w,h] = [0, 0, 1281, 720], wstride = 1281, hstride = 720, format = 0xa00(nv12)
 output support format : RGBA_8888 RGB_888 RGB_565 RGBA_4444 RGBA_5551 YUV420/YUV422 YUV420_10bit/YUV422_10bit YUYV420 YUYV422 YUV400/Y4
 ```
 
-**A3.1.1：**imcheck()接口作为调用librga的校验接口，它将判断即将传递到librga内部的数据结构的参数是否正确、功能是否支持、是否触发硬件限制等，可以将imcheck()的返回报错值作为传参传入 **IMStrError()** 返回的字符串则为详细的报错信息，可以根据错误提示确认哪些条件限制被触发，或是参数错误。
+**A3.1.1**：imcheck()接口作为调用librga的校验接口，它将判断即将传递到librga内部的数据结构的参数是否正确、功能是否支持、是否触发硬件限制等，可以将imcheck()的返回报错值作为传参传入 **IMStrError()** 返回的字符串则为详细的报错信息，可以根据错误提示确认哪些条件限制被触发，或是参数错误。
 
 ​			如问题中报错，则为YUV格式对齐的限制问题，这里图像的宽1281不是2对齐的，所以校验失败。
 
 
 
-**Q3.1.2：**imstrError()错误提示没有具体参数打印说明是什么问题？
+**Q3.1.2**：imstrError()错误提示没有具体参数打印说明是什么问题？
 
 ```
 Fatal error: Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
 ```
 
-**A3.1.2：**说明配置在im2d api校验已经通过并配置到后级驱动上，可以通过dmesg的方式查看驱动的报错。
+**A3.1.2**：说明配置在im2d api校验已经通过并配置到后级驱动上，可以通过dmesg的方式查看驱动的报错。
 
 
 
 #### RockchipRga接口报错
 
-**Q3.2.1：**“Try to use uninit rgaCtx=(nil)”报错如何处理？
+**Q3.2.1**：“Try to use uninit rgaCtx=(nil)”报错如何处理？
 
-**A3.2.1：**1). 该报错为调用到的接口发现librga模块并没有得到初始化，所返回报错。目前版本中该报错通常是由于一些较旧的调用RGA的代码中依旧使用RgaInit/RgaDeInit/c_RkRgaInit/c_RkRgaDeInit接口自行管理RGA模块的初始化，而目前的版本接口使用的单例模式，当被异常DeInit后，便会出现该报错，只需要移除调用代码中的Init/DeInit相关的调用即可。
+**A3.2.1**：1). 该报错为调用到的接口发现librga模块并没有得到初始化，所返回报错。目前版本中该报错通常是由于一些较旧的调用RGA的代码中依旧使用RgaInit/RgaDeInit/c_RkRgaInit/c_RkRgaDeInit接口自行管理RGA模块的初始化，而目前的版本接口使用的单例模式，当被异常DeInit后，便会出现该报错，只需要移除调用代码中的Init/DeInit相关的调用即可。
 
 ​				2). 当驱动没有probe成功，或者驱动设备节点（/dev/rga）访问受限制时也会产生这样的报错。
 
 
 
-**Q3.2.2：**“RgaBlit(1027) RGA_BLIT fail: Not a typewriter” 报错是什么原因？
+**Q3.2.2**：“RgaBlit(1027) RGA_BLIT fail: Not a typewriter” 报错是什么原因？
 
-**A3.2.2：**该报错通常为参数错误导致，建议检查一下缩放倍数、虚宽是否小于实宽与对应方向的偏移的和、对齐是否符合要求。建议新开发项目使用IM2D API，拥有更全面的检测报错机制，方便开发者节省大量的调试时间。
-
-
-
-**Q3.2.3：**“RgaBlit(1349) RGA_BLIT fail: Bad file descriptor” 异常报错返回时为什么？
-
-**A3.2.3：**该报错为ioctl报错，标识当前传入的设备节点的fd无效，请尝试更新librga或确认RGA的初始化流程是否有被修改。
+**A3.2.2**：该报错通常为参数错误导致，建议检查一下缩放倍数、虚宽是否小于实宽与对应方向的偏移的和、对齐是否符合要求。建议新开发项目使用IM2D API，拥有更全面的检测报错机制，方便开发者节省大量的调试时间。
 
 
 
-**Q3.2.4：**“RgaBlit(1360) RGA_BLIT fail: Bad address” 报错原因是什么？
+**Q3.2.3**：“RgaBlit(1349) RGA_BLIT fail: Bad file descriptor” 异常报错返回时为什么？
 
-**A3.2.4：**该报错通常为传入内核的src/src1/dst通道的内存地址存在问题导致（常见为越界），可以参照本文档 “日志获取与说明” —— “驱动调试节点” 小节，开启驱动日志，并定位出错的内存。
+**A3.2.3**：该报错为ioctl报错，标识当前传入的设备节点的fd无效，请尝试更新librga或确认RGA的初始化流程是否有被修改。
 
 
 
-**Q3.2.5：**日志报错“err ws[100,1280,1280]”、”Error srcRect“ 是什么错误？
+**Q3.2.4**：“RgaBlit(1360) RGA_BLIT fail: Bad address” 报错原因是什么？
 
-**A3.2.5：**该报错为明显的参数报错，“err ws” 即虚宽（width stride）参数异常，其后“[]”内的参数分别为 [x_offeset, width, width_stride]，这里由于X方向的偏移与实际操作区域的宽的和大于了虚宽，所以librga认为虚宽存在问题而返回的报错。这里只要将虚宽改为1380或将实宽（width）改为1180，即可。
+**A3.2.4**：该报错通常为传入内核的src/src1/dst通道的内存地址存在问题导致（常见为越界），可以参照本文档 “日志获取与说明” —— “驱动调试节点” 小节，开启驱动日志，并定位出错的内存。
+
+
+
+**Q3.2.5**：日志报错“err ws[100,1280,1280]”、”Error srcRect“ 是什么错误？
+
+**A3.2.5**：该报错为明显的参数报错，“err ws” 即虚宽（width stride）参数异常，其后“[]”内的参数分别为 [x_offeset, width, width_stride]，这里由于X方向的偏移与实际操作区域的宽的和大于了虚宽，所以librga认为虚宽存在问题而返回的报错。这里只要将虚宽改为1380或将实宽（width）改为1180，即可。
 
 ​			通常该类型报错后logcat中会打印对应的一些参数：
 
@@ -1262,29 +1262,29 @@ E rockchiprga: This output the user patamaters when rga call blit fail		//报错
 
 ### kernel层报错
 
-**Q4.1：**“RGA2 failed to get vma, result = 32769, pageCount = 65537”报错是什么导致的？
+**Q4.1**：“RGA2 failed to get vma, result = 32769, pageCount = 65537”报错是什么导致的？
 
-**A4.1：**该报错通常为使用虚拟地址调用RGA时，虚拟地址的实际内存小于实际需要的内存大小（即根据图像参数计算出当前通道的图像需要多大的内存），只需检查buffer的大小即可，在一些申请和调用不是在同一处的场景下，可以在调用RGA前执行一遍memset对应图像的大小，确认是否为内存大小不足导致的问题。
+**A4.1**：该报错通常为使用虚拟地址调用RGA时，虚拟地址的实际内存小于实际需要的内存大小（即根据图像参数计算出当前通道的图像需要多大的内存），只需检查buffer的大小即可，在一些申请和调用不是在同一处的场景下，可以在调用RGA前执行一遍memset对应图像的大小，确认是否为内存大小不足导致的问题。
 
 ​			改报错后，通常便随着 “rga2 map src0 memory failed” 可以确认是哪一个通道的内存出现问题，如该例中所示，src通道由于实际申请的buffer大小仅为图像所需大小的一半，所以触发了这个报错。
 
 
 
-**Q4.2：**”rga2_reg_init, [868] set mmu info error“ MMU报错是什么原因？
+**Q4.2**：”rga2_reg_init, [868] set mmu info error“ MMU报错是什么原因？
 
-**A4.2：**该报错表征为fd/虚拟地址转换为物理地址页表出错，通常是申请的内存大小的问题，与Q4.1相同。
-
-
-
-**Q4.3：**“rga：dma_buf_get fail fd[328]” 报这种错误，一般是指buffer出现了什么异常？
-
-**Q4.3：**该报错为fd在内核经过dma的接口时的报错，建议检查一下申请fd的流程，并在librga外部验证fd可用后再用于调用RGA。
+**A4.2**：该报错表征为fd/虚拟地址转换为物理地址页表出错，通常是申请的内存大小的问题，与Q4.1相同。
 
 
 
-**Q4.4：**“RGA2 failed to get pte, result = -14, pageCount = 112”、”rga2_reg_init, [868] set mmu info error“ 按照 **Q4.1** 、**Q4.2** 方式检查后，还是一样的报错，这里使用的是DRM分配的物理地址，通过mmap映射的虚拟地址传入RGA的，memset均正常，这是什么原因导致的？
+**Q4.3**：“rga：dma_buf_get fail fd[328]” 报这种错误，一般是指buffer出现了什么异常？
 
-**A4.4：**该问题为分配器DRM本身的问题，DRM本身认为当用户态获取到物理地址后，正常来讲内核态是不需要虚拟地址的了，所以在分配buffer时就会将对应的kmap释放，仅释放kmap也不会影响到用户态中映射虚拟地址和使用，但是当这块buffer用户态的虚拟地址传入RGA驱动，驱动进行物理地址页表的转换查询时，由于该buffer的kmap已经被释放，或是无法查询到对应的页表项，或是直接访问到错误的地址导致内核crash。
+**Q4.3**：该报错为fd在内核经过dma的接口时的报错，建议检查一下申请fd的流程，并在librga外部验证fd可用后再用于调用RGA。
+
+
+
+**Q4.4**：“RGA2 failed to get pte, result = -14, pageCount = 112”、”rga2_reg_init, [868] set mmu info error“ 按照 **Q4.1** 、**Q4.2** 方式检查后，还是一样的报错，这里使用的是DRM分配的物理地址，通过mmap映射的虚拟地址传入RGA的，memset均正常，这是什么原因导致的？
+
+**A4.4**：该问题为分配器DRM本身的问题，DRM本身认为当用户态获取到物理地址后，正常来讲内核态是不需要虚拟地址的了，所以在分配buffer时就会将对应的kmap释放，仅释放kmap也不会影响到用户态中映射虚拟地址和使用，但是当这块buffer用户态的虚拟地址传入RGA驱动，驱动进行物理地址页表的转换查询时，由于该buffer的kmap已经被释放，或是无法查询到对应的页表项，或是直接访问到错误的地址导致内核crash。
 
 ​			针对这种场景，DRM提供了一个接口标志位，用户判断用户态是否希望DRM释放kmap，即是否考虑讲映射的虚拟地址传入内核使用：
 
@@ -1318,15 +1318,15 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.5：**“rga：Rga err irq! INT[701],STATS[1]” 调用RGA出现中断报错是什么导致的？
+**Q4.5**：“rga：Rga err irq! INT[701],STATS[1]” 调用RGA出现中断报错是什么导致的？
 
-**A4.5：**该问题通常发生在RGA硬件执行过程中遇到问题异常返回，异常原因很多，常见的有内存越界、异常配置。建议遇到该问题优先检查传入的内存是否会发生越界。
+**A4.5**：该问题通常发生在RGA硬件执行过程中遇到问题异常返回，异常原因很多，常见的有内存越界、异常配置。建议遇到该问题优先检查传入的内存是否会发生越界。
 
 
 
-**Q4.6：**“rga: Rga sync pid 1001 wait 1 task done timeout” 硬件超时报错一般是什么导致的？
+**Q4.6**：“rga: Rga sync pid 1001 wait 1 task done timeout” 硬件超时报错一般是什么导致的？
 
-**A4.6：**硬件超时报错原因有很多种，可以按照以下情形依次排查：
+**A4.6**：硬件超时报错原因有很多种，可以按照以下情形依次排查：
 
 ​			1). 检查整体流程，确认没有其他模块或应用对该块buffer持锁或异常占用中，当同一块buffer被其他模块异常占用时，RGA无法正常读写数据，超过了驱动设计的2000ms的阈值后，便会异常返回并打印报错。
 
@@ -1342,9 +1342,9 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.7：**“rga_policy: invalid function policy”、“rga_job: job assign failed”字样报错是什么导致的？
+**Q4.7**：“rga_policy: invalid function policy”、“rga_job: job assign failed”字样报错是什么导致的？
 
-**A4.7：**可以开启驱动运行日志查看，具体错误原因
+**A4.7**：可以开启驱动运行日志查看，具体错误原因
 
 例如：
 

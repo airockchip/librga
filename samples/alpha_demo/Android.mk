@@ -14,14 +14,23 @@ LOCAL_C_INCLUDES += \
     hardware/rockchip/librga/include \
     hardware/rockchip/librga/im2d_api
 
+LOCAL_C_INCLUDES += \
+    hardware/rockchip/librga/samples/utils \
+    hardware/rockchip/librga/samples/3rdparty \
+    hardware/rockchip/librga/samples/3rdparty/libdrm/include \
+    hardware/rockchip/librga/samples/3rdparty/libdrm/include/libdrm
+
 LOCAL_SHARED_LIBRARIES := \
-    librga \
-    libui
+    libui \
+    libutils \
+    librga
 
 LOCAL_HEADER_LIBRARIES += \
-    libgui_headers
+    libhardware_headers \
+    libgui_headers \
 
 LOCAL_SRC_FILES:= \
+    ../utils/utils.cpp \
     src/rga_alpha_demo.cpp
 
 LOCAL_MODULE:= \

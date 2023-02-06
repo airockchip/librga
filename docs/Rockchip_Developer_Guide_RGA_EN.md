@@ -408,25 +408,25 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMA
         <td>
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
         </td>
-        <td>width stride无对齐要求</td>
+        <td>width stride does not require alignment</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
         </td>
-        <td>width stride须2对齐</td>
+        <td>width stride must be 2-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
         </td>
-        <td>width stride须4对齐</td>
+        <td>width stride must be 4-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P
         </td>
-        <td>width stride须4对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 4-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
         <td rowspan="6">RGA2<br/>RGA2_Lite0<br/>RGA2_Lite1<br/>RGA2_Enhance</td>
@@ -434,81 +434,86 @@ RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br
         <td>
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
         </td>
-        <td>width stride无对齐要求</td>
+        <td>width stride does not require alignment</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
         </td>
-        <td>width stride须2对齐</td>
+        <td>width stride must be 2-aligned</td>
     </tr>
     <tr>
     	<td>
 RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420
         </td>
-        <td>width stride须2对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 2-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
         </td>
-        <td>width stride须4对齐</td>
+        <td>width stride must be 4-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4
         </td>
-        <td>width stride须4对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 4-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
         </td>
-        <td>width stride须16对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 16-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
 	<tr>
-		<td rowspan="7">RGA3</td>
-        <td rowspan="7">16</td>
+		<td rowspan="8">RGA3</td>
+        <td rowspan="8">16</td>
         <td>
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
         </td>
-        <td>width stride须4对齐</td>
+        <td>width stride must be 4-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565
         </td>
-        <td>width stride须8对齐</td>
+        <td>width stride must be 8-aligned</td>
     </tr>
     <tr>
     	<td>
 RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422
         </td>
-        <td>width stride须8对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 8-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
         <td>
 RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888
         </td>
-        <td>width stride须16对齐</td>
+        <td>width stride must be 16-aligned</td>
     </tr>
 	<tr>
         <td>
 RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP
         </td>
-        <td>width stride须16对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 16-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
 	</tr>
     <tr>
         <td>
 RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
         </td>
-        <td>width stride须64对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
+        <td>width stride must be 64-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
         <td>FBC mode</td>
-        <td>除上述格式对齐要求外，width、height须16对齐</td>
+        <td>In addition to the format alignment requirements above，width、height must be 16-aligned</td>
+    </tr>
+    <tr>
+        <td>TILE8*8 mode</td>
+        <td>In addition to the format alignment requirements above，width、height must be 8-aligned，输入通道width stride、height stride must be 16-aligned。</td>
     </tr>
 </table>
+
 
 > Note:
 >
