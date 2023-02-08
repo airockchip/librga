@@ -510,10 +510,9 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
     </tr>
     <tr>
         <td>TILE8*8 mode</td>
-        <td>In addition to the format alignment requirements above，width、height must be 8-aligned，输入通道width stride、height stride must be 16-aligned。</td>
+        <td>In addition to the format alignment requirements above，width、height must be 8-aligned，input channel width stride、height stride must be 16-aligned。</td>
     </tr>
 </table>
-
 
 > Note:
 >
