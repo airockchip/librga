@@ -1,50 +1,42 @@
 # RGA FAQ
 
-File No.：RK-PC-YF-0003
+File No.：RK-PC-YF-404
 
-Current Version：V1.1.0
+Release Version: V1.1.2
 
-Finish Date：2022-12-21
+Release Date: 2023-06-28
 
-Security Class：□Top-Secret   □Secret   □Internal   ■Public
+Security Level: □Top-Secret   □Secret   □Internal   ■Public
 
----
+**DISCLAIMER**
 
-**Disclaimer**
+THIS DOCUMENT IS PROVIDED “AS IS”. ROCKCHIP ELECTRONICS CO., LTD.(“ROCKCHIP”)DOES NOT PROVIDE ANY WARRANTY OF ANY KIND, EXPRESSED, IMPLIED OR OTHERWISE, WITH RESPECT TO THE ACCURACY, RELIABILITY, COMPLETENESS,MERCHANTABILITY, FITNESS FOR ANY PARTICULAR PURPOSE OR NON-INFRINGEMENT OF ANY REPRESENTATION, INFORMATION AND CONTENT IN THIS DOCUMENT. THIS DOCUMENT IS FOR REFERENCE ONLY. THIS DOCUMENT MAY BE UPDATED OR CHANGED WITHOUT ANY NOTICE AT ANY TIME DUE TO THE UPGRADES OF THE PRODUCT OR ANY OTHER REASONS.
 
-This document is provided “as is” and Fuzhou Rockchip Electronics Co. Ltd (“the company”) makes no express or implied statement or warranty as to the accuracy, reliability, completeness, merchantability, specific purpose and non-infringement of any statement, information and contents of the document. This document is for reference only.
+**Trademark Statement**
 
-This document may be updated without any notification due to product version upgrades or other reasons.
+"Rockchip", "瑞芯微", "瑞芯" shall be Rockchip’s registered trademarks and owned by Rockchip. All the other trademarks or registered trademarks mentioned in this document shall be owned by their respective owners.
 
-**Brand Statement**
+**All rights reserved. ©2022. Rockchip Electronics Co., Ltd.**
 
-Rockchip, RockchipTM icon, Rockchip and other Rockchip trademarks are trademarks of Fuzhou Rockchip Electronics Co., Ltd., and are owned by Fuzhou Rockchip Electronics Co., Ltd.
+Beyond the scope of fair use, neither any entity nor individual shall extract, copy, or distribute this document in any form in whole or in part without the written approval of Rockchip.
 
-All other trademarks or registered trademarks mentioned in this document are owned by their respective owners.
+Rockchip Electronics Co., Ltd.
 
-**Copyright © 2021 Fuzhou Rockchip Electronics Co., Ltd.**
+No.18 Building, A District, No.89, software Boulevard Fuzhou, Fujian,PRC
 
-Beyond reasonable use, without the written permission, any unit or individual shall not extract or copy part or all of the content of this document, and shall not spread in any form.
+Website:     [www.rock-chips.com](http://www.rock-chips.com)
 
+Customer service Tel:  +86-4007-700-590
 
+Customer service Fax:  +86-591-83951833
 
-Fuzhou Rockchip Electronics Co., Ltd.
-
-Address: No. 18 Building, A District, No.89,software Boulevard Fuzhou,Fujian,PRC
-
-Website: [www.rock-chips.com](http://www.rock-chips.com)
-
-Customer service tel.: +86-4007-700-590
-
-Customer service fax: +86-591-83951833
-
-Customer service e-mail: [fae@rock-chips.com](mailto:fae@rock-chips.com)
+Customer service e-Mail:  [fae@rock-chips.com](mailto:fae@rock-chips.com)
 
 ---
 
-**Readership**
+**Intended Audience**
 
-This document is intended for:
+This document (this guide) is mainly intended for:
 
 - Technical support engineers
 - Software development engineers
@@ -55,21 +47,24 @@ This document is intended for:
 | ---------- | -------- | -------- | ------------ |
 | 2021/06/28 | 1.0.0    | Yu Qiaowei | Initial version.     |
 | 2022/12/21 | 1.1.0 | Yu Qiaowei | Add multi_rga driver related cases. |
-| | | | |
+| 2023/02/09 | 1.1.1 | Yu Qiaowei | Format document. |
+| 2023/06/28 | 1.1.2 | Yu Qiaowei | Supplementary Q&A |
 
-
+---
 
 **Contents**
 
 [TOC]
 
-
+---
 
 ## Overview
 
 For RGA driver and user-mode API librga, this document summarizes some common problems occurred when RGA hardware is called on RK platform to realize graph drawing acceleration with OSD (On Screen Display) and GUI (Graphics User Interface).
 
 
+
+---
 
 ## Version Description
 
@@ -167,6 +162,8 @@ https://eyun.baidu.com/s/3i6sbsDR
 
 
 
+---
+
 ## Debugging instructions
 
 ### HAL Logs
@@ -187,12 +184,12 @@ https://eyun.baidu.com/s/3i6sbsDR
   - set log level：
 
     The log level is divided into full print (0), DEFAULT (1), DEBUG (3), INFO (4), WRANING (5), ERROR (6).
-  
+
   ```
   setprop vendor.rga.log_level 6
   ```
-  
-  
+
+
 
 - Linux
 
@@ -203,16 +200,16 @@ https://eyun.baidu.com/s/3i6sbsDR
   ```
   export ROCKCHIP_RGA_LOG=1
   ```
-  
+
   - set log level：
-  
+
     The log level is divided into full print (0), DEFAULT (1), DEBUG (3), INFO (4), WRANING (5), ERROR (6).
-  
+
   ```
   export ROCKCHIP_RGA_LOG_LEVEL=6
   ```
-  
-   
+
+
 
 #### Log Description
 
@@ -398,7 +395,6 @@ help:
  'echo check > debug' to enable/disable check mode.
  'echo stop > debug' to enable/disable stop using hardware
 /# echo msg > debug
-/# echo ref > debug
 /# cat debug
 REG [DIS]
 MSG [EN]
@@ -458,9 +454,9 @@ For RGA problem debugging, logs are needed to confirm work of RGA hardware. When
   rga2: cmd is RGA2_GET_VERSION							//Get version number, which queries hardware version the first time each process calls librga.
   rga2: cmd is RGA_BLIT_SYNC								//Current working mode.
   rga2: render_mode:bitblt,bitblit_mode=0,rotate_mode:0	//Render_mode: display calling interface, bitblit_mode: current blending mode（0：two-channel mode A+B->B, 1: three-channel mode A+B->C, rotate_mode: rotation angle.
-  rga2: src : y=0 uv=b4000072cc8bc040 v=b4000072cc99d040 aw=1280 ah=720 vw=1280 vh=720 xoff=0 yoff=0 format=RGBA8888	
+  rga2: src : y=0 uv=b4000072cc8bc040 v=b4000072cc99d040 aw=1280 ah=720 vw=1280 vh=720 xoff=0 yoff=0 format=RGBA8888
   														//Parameters of src channel of image data y:fd, uv:virtual address, v：vw * vh + uv, aw and ah：actual width and height, the actual area of image. operation, vw、vh:virtual width and height, the size of image itself, xoff、yoff: offset in the x and y directions, format：image format.
-  rga2: dst : y=0 uv=b4000072cc535040 v=b4000072cc616040 aw=1280 ah=720 vw=1280 vh=720 xoff=0 yoff=0 format=RGBA8888	
+  rga2: dst : y=0 uv=b4000072cc535040 v=b4000072cc616040 aw=1280 ah=720 vw=1280 vh=720 xoff=0 yoff=0 format=RGBA8888
   														//Parameters of dst channel of image data.
   rga2: mmu : src=01 src1=00 dst=01 els=00				//MMU enabled flag，0 for close，1 for open.
   rga2: alpha : flag 0 mode0=0 mode1=0					//Configuration of blending.
@@ -740,6 +736,8 @@ rga_debugger: dump image to: /data/rga_image/1_core1_dst_plane0_virt_addr_w1280_
 
 
 
+---
+
 ## Q & A
 
 This section introduces common questions about RGA in the form of Q&A. If the problem is not in this section, please sort out the relevant log and preliminary analysis information and submit it to the redmine platform for the engineer who maintains the RGA module to handle it.
@@ -762,7 +760,7 @@ This section introduces common questions about RGA in the form of Q&A. If the pr
 
 ​						RGA3 ： 1920 × 1080 / （4 × 300000000） = 0.001728s
 
-​			The actual consuming time depends on the type of memory used. The efficiency of different memory types from high to low is physical address > dma_fd > virtual address.			
+​			The actual consuming time depends on the type of memory used. The efficiency of different memory types from high to low is physical address > dma_fd > virtual address.
 
 ​			When the system is in no load, the actual time consuming of physical address is about 1.1-1.2 times of the theoretical time consuming, the actual time consuming of dma_fd is about 1.3-1.5 times of the theoretical time consuming, and the actual time consuming of virtual address is about 1.8-2.1 times of the theoretical time consuming, and is greatly affected by CPU. In general, we recommend developers to use dma_fd as the memory type passed in, which achieves great balance between accessibility and efficiency. Virtual addresses are only used as a simple and easy-to-use memory type when learning about RGA. The following table shows the actual test data of different RGA frequencies when the system is in no load on RK3566.
 
@@ -864,9 +862,21 @@ index 02938b0..10a1dc4 100644
 
 
 
-**Q1.8**： When carrying 8G DDR, why is RGA efficiency worse than 4G?
+**Q1.8:** Why is there a high CPU load when calling RGA?
 
-**A1.8**：Since the current RGA1/RGA2 MMU only supports a maximum of 32 bits of physical address, therefore, with devices equipped with DDR of 4G or more, when a buffer with memory greater than 4G is passed to RGA, the RGA driver copies the data from the memory with the highest address to the memory reserved by swiotlb through the DMA interface and returns the corresponding address for RGA to read and write. After the work is finished, the result is copied to the previous high target address through dma, so the CPU involvement was increased, leading to a serious increase in the working time of the librga. If only RGA2/RGA1 is configured and the DDR of the device is greater than 4 GB, you are advised to use less than 4 GB memory when calling RGA to ensure RGA efficiency.
+**A1.8:** In addition to the basic necessary CPU load when calling RGA, the following situations can cause additional high CPU load:
+
+​			1). When calling RGA using virtual addresses, the virtual address itself is the CPU's access address, which needs to be converted into a hardware-recognizable discrete physical address table through the current process's mapping table by CPU querying and calculation. Therefore, additional CPU load will be introduced. It is generally not recommended to call RGA using virtual addresses in actual product scenarios, and it is recommended to use dma-buf fd to call RGA, unless the business logic only exists in virtual addresses and does not care about this part of CPU load.
+
+​			2). When the virtual address used is cacheable, the RGA driver will force synchronization of cache data before and after hardware memory access due to the enabled cache, which will increase the CPU load of synchronizing cache and memory. Since common virtual address allocators are not designed for other hardware access and there is an interface for synchronizing cache, it is necessary for the driver to force synchronization of cache for virtual addresses.
+
+​			3). When calling RGA using a dma-buf fd, some allocators by default allocate cacheable buffers, and the kernel's dma-buf handling enforces cache synchronization, which can result in significant CPU load every time RGA is called. This is due to the CPU load introduced by cache and memory synchronization. In this case, it is recommended to allocate a dma-buf with cache disabled.
+
+
+
+**Q1.9**： When carrying 8G DDR, why is RGA efficiency worse than 4G?
+
+**A1.9**：Since the current RGA1/RGA2 MMU only supports a maximum of 32 bits of physical address, therefore, with devices equipped with DDR of 4G or more, when a buffer with memory greater than 4G is passed to RGA, the RGA driver copies the data from the memory with the highest address to the memory reserved by swiotlb through the DMA interface and returns the corresponding address for RGA to read and write. After the work is finished, the result is copied to the previous high target address through dma, so the CPU involvement was increased, leading to a serious increase in the working time of the librga. If only RGA2/RGA1 is configured and the DDR of the device is greater than 4 GB, you are advised to use less than 4 GB memory when calling RGA to ensure RGA efficiency.
 
 In the RGA Multicore Device Driver, the swiotlb mechanism will be disabled for access-restricted memory, and the caller will be notified directly to apply for a reasonable memory re-call by displaying the failure of the call to ensure the efficiency of RGA. Usually accompanied by the following logs:
 
@@ -1077,6 +1087,12 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			The reason RGA requires different configurations for different output formats is that RGA2 has three image channels: src, src1/pat, and dst, in which src channel supports YUV2RGB conversion, src1/pat and dst channel only supports RGB2YUV conversion. The blending inside RGA needs to be performed in RGB format. Therefore, in order to ensure that RGB images are overlaid on YUV images, src must be used as the overlaid background image YUV. Src1 is used as the overlaid RGB foreground image, and the blended RGB image is finally converted into YUV format output by dst channel.
 
+​			Can view sample code：
+
+**<librga_souce_path>/samples/alpha_demo/src/rga_alpha_osd_demo.cpp\****
+
+**<librga_souce_path>/samples/alpha_demo/src/rga_alpha_yuv_demo.cpp\****
+
 
 
 **Q2.13**：Why brightness or numerical difference exists when RGA is called to implement YUV and RGB format conversion?
@@ -1099,11 +1115,11 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 | Format Conversion | Color Space           | Parameters                     |
 | -------- | ------------------ | ------------------------ |
-| YUV2RGB  | BT.601-full_range  | yuvToRgbMode = 0x1 << 0; |
-| YUV2RGB  | BT.601-limit_range | yuvToRgbMode = 0x2 << 0; |
+| YUV2RGB  | BT.601-limit_range | yuvToRgbMode = 0x1 << 0; |
+| YUV2RGB  | BT.601-full_range  | yuvToRgbMode = 0x2 << 0; |
 | YUV2RGB  | BT.709-limit_range | yuvToRgbMode = 0x3 << 0; |
-| RGB2YUV  | BT.601-full_range  | yuvToRgbMode = 0x2 << 4; |
-| RGB2YUV  | BT.601-limit_range | yuvToRgbMode = 0x1 << 4; |
+| RGB2YUV  | BT.601-limit_range | yuvToRgbMode = 0x2 << 4; |
+| RGB2YUV  | BT.601-full_range  | yuvToRgbMode = 0x1 << 4; |
 | RGB2YUV  | BT.709-limit_range | yuvToRgbMode = 0x3 << 4; |
 
 
@@ -1174,11 +1190,23 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 
 
-**A2.21**：Small black or green stripes appear after calling RGA to process the image. What is the reason?
+**Q2.21**：Small black or green stripes appear after calling RGA to process the image. What is the reason?
 
 ​			![image-cache-abnormal](RGA_FAQ.assets/image-cache-abnormal.png)
 
-**Q2.21**：This is caused by the buffer enabling the cache when using a call that is not a virtual address, and the cache is not synchronized before and after the CPU operation. If you don't know how to synchronize the cache, you can refer to the usage in samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp.
+**A2.21**：This is caused by the buffer enabling the cache when using a call that is not a virtual address, and the cache is not synchronized before and after the CPU operation. If you don't know how to synchronize the cache, you can refer to the usage in samples/allocator_demo/src/rga_allocator_dma_cache_demo.cpp.
+
+
+
+**Q2.22**: What causes screen jitter when using RGA scaling on the same display area on RK3588?
+
+**A2.22**: Due to the special design of RK3588, which is equipped with two types of RGA cores (one RGA2 and two RGA3), there are differences in the sampling behavior of their scaling algorithms, resulting in an overall shift of the image to the upper left or lower right. In scenarios where display quality is important, it is recommended to specify the core to avoid jitter caused by algorithmic differences.
+
+​			You can refer to the following sample code for specifying the core:
+
+​			**<librga_souce_path>/samples/config_demo/src/rga_config_single_core_demo.cpp**
+
+​			**<librga_souce_path>/samples/config_demo/src/rga_config_thread_core_demo.cpp**
 
 
 
@@ -1220,25 +1248,33 @@ Fatal error: Failed to call RockChipRga interface, please use 'dmesg' command to
 
 
 
-**Q3.2.2**：What causes the error “RgaBlit(1027) RGA_BLIT fail: Not a typewriter”?
+**Q3.2.2**：What causes the error“RgaBlit(1027) RGA_BLIT fail: ”、“RGA_COLORFILL(1027) RGA_BLIT fail: ”？
 
-**A3.2.2**：This error is usually caused by parameter errors. You are advised to check the scaling factor, whether virtual width is smaller than the sum of actual width and the offset in the corresponding direction, and whether the alignment meets requirements. It is recommended that new developed projects use IM2D API, which has a more comprehensive error detection mechanism, and is convenient for developers.
+**A3.2.2**：If the header error occurs, it means that the current RGA task returns after the driver fails to run. For the specific reason, you need to check the driver log through dmesg.
 
+​				**Q3.2.2.1**：“RgaBlit(1027) RGA_BLIT fail: Not a typewriter”?
 
-**Q3.2.3**：What causes the error “RgaBlit(1349) RGA_BLIT fail: Bad file descriptor”?
-
-**A3.2.3**：This error is an ioctl error, indicating that the current fd passed to device node is invalid. Please try to update librga or confirm whether the RGA initialization process has been modified.
-
-
-**Q3.2.4**：What causes the error “RgaBlit(1360) RGA_BLIT fail: Bad address”?
-
-**A3.2.4**：The error is usually caused by a problem with the memory address of the src/src1/dst channel passed into the kernel (commonly out-of-bouns).See "Log Obtaining and Description" - "Driver Debug Node" in this document to open driver logging and locate the faulty memory.
+​				**A3.2.2.1**：This error is usually caused by parameter errors. You are advised to check the scaling factor, whether virtual width is smaller than the sum of actual width and the offset in the corresponding direction, and whether the alignment meets requirements. It is recommended that new developed projects use IM2D API, which has a more comprehensive error detection mechanism, and is convenient for developers.
 
 
+​				**Q3.2.2.2**：“RgaBlit(1349) RGA_BLIT fail: Bad file descriptor”?
 
-**Q3.2.5**：What cause the log error “err ws[100,1280,1280]”、”Error srcRect“?
+​				**A3.2.2.2**：This error is an ioctl error, indicating that the current fd passed to device node is invalid. Please try to update librga or confirm whether the RGA initialization process has been modified.
 
-**A3.2.5**：The error is an obvious parameter error. “err ws” represents width stride parameter error. The parameters in the following "[]" are [X_offeset, width, width_stride] respectively.Here, because the sum of offset in X direction and width of the actual operation area is larger than the width stride, librga thinks there is a problem with the width stride and returns an error. Change the width stride to 1380 or  width to 1180.
+
+​				**Q3.2.2.3**：“RgaBlit(1360) RGA_BLIT fail: Bad address”?
+
+​				**A3.2.2.3**：The error is usually caused by a problem with the memory address of the src/src1/dst channel passed into the kernel (commonly out-of-bouns).See "Log Obtaining and Description" - "Driver Debug Node" in this document to open driver logging and locate the faulty memory.
+
+​				**Q3.2.2.4**：“RgaBlit(1466) RGA BIIT fail: Invalid argument”
+
+​				**A3.2.2.4**：This error is an invalid parameter error reported when the incoming parameters do not meet the core function and restriction requirements of the current chip. It is recommended to check whether the currently configured task parameters meet the requirements of the current chip equipped with the RGA core.
+
+
+
+**Q3.2.3**：What cause the log error “err ws[100,1280,1280]”、”Error srcRect“?
+
+**A3.2.3**：The error is an obvious parameter error. “err ws” represents width stride parameter error. The parameters in the following "[]" are [X_offeset, width, width_stride] respectively.Here, because the sum of offset in X direction and width of the actual operation area is larger than the width stride, librga thinks there is a problem with the width stride and returns an error. Change the width stride to 1380 or  width to 1180.
 
 ​			After this error occurs, the following parameters are printed in logcat:
 
@@ -1251,7 +1287,7 @@ E rockchiprga: f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]		//Represe
 E rockchiprga: fd-vir-phy-hnd-format[0, 0xb400006eb2ea6040, 0x0, 0x0, 0]	//Parameters of corresponding dst channel.
 E rockchiprga: rect[0, 0, 1920, 1080, 1920, 1080, 1, 0]
 E rockchiprga: f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
-E rockchiprga: This output the user patamaters when rga call blit fail		//Error information.
+E rockchiprga: This output the user parameters when rga call blit fail		//Error information.
 ```
 
 
@@ -1314,24 +1350,94 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.5**：What causes the error “rga：Rga err irq! INT[701],STATS[1]”?
+**Q4.5**: How to solve the "RGA_MMU unsupported Memory larger than 4G!" error?
 
-**A4.5**：This problem usually occurs when an exception occurs during RGA hardware execution. There are many reasons for the exception, such as memory out-of-bounds and abnormal configuration. If this problem occurs, you are advised to check whether the memory passed in is out of bounds.
+**A4.5**: This error usually corresponds to the HAL layer error:
+
+```
+RgaBlit(1483) RGA_BLIT fail: Invalid argument
+Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+```
+
+This error indicates that the memory configured for the currently configured image task cannot meet the memory requirements of the currently matched hardware core. Since the IOMMU of different hardware versions of RGA has different requirements for the number of memory bits, when the allocated memory exceeds the limit of the corresponding hardware , this error will appear. For details on the restrictions of different hardware versions of RGA, please refer to the overview in [《Rockchip_Developer_Guide_RGA_CN》](./Rockchip_Developer_Guide_RGA_CN.md) - Design Indicators section.
+
+When this error occurs, there are usually the following scenarios and corresponding solutions:
+
+1. On a chip platform equipped with multiple RGAs (for example, RK3588 is equipped with 2 RGA3 cores and 1 RGA2 core), when the importbuffer_xx interface is not used to obtain the handle, but the wrapbuffer_xx interface is used to call the im2d api directly:
+
+    Since importbuffer_xx is not used to map the external memory to the RGA driver memory in advance, it is impossible to know in advance whether the memory does not meet the limit of the corresponding core in the actual task matching. Therefore, this error may occur in high-load scenarios. It is recommended to use importbuffer_xx to advance the external The memory is imported into the RGA driver to avoid this problem.
+
+2. On a chip platform equipped with multiple RGAs (for example, RK3588 is equipped with 2 RGA3 cores and 1 RGA2 core), the importbuffer_xx interface is used to obtain the handle, but the problem still exists:
+
+    You can check the parameters of the configured image task to confirm whether the function or format supported only by the RGA2 core (the core with restricted memory access) is configured. Taking RK3588 as an example, the color fill function and the YUV422/420 planar format are both RGA2 cores Unique functions and formats, so in this scenario, memory within 4G must be allocated to call RGA.
+
+    Common ways to allocate 4G memory can be viewed in the following sample code:
+
+     **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_dma32_demo.cpp**
+
+     **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_graphicbuffer_demo.cpp**
+
+    If you use other allocators, such as mpp_buffer, v4l2_buffer, drm_buffer, etc., please check whether the corresponding allocator supports the limited allocation of memory space within 4G, and apply for the memory required by the composite RGA hardware according to the corresponding method.
+
+3. On chip platforms that only carry one RGA (such as RK3399, RK3568, and Rk3566 that only carry RGA2):
+
+    When the chip platform is only equipped with a core with limited memory access, you must apply for memory that meets the memory requirements of the core when calling RGA. The solution is the same as scenario 2 above.
+
+4. When using DRM, malloc, new and other memory allocators that do not support the allocation of memory within 4G, it can also be solved by modifying the memory mapping range of uboot.
+
+    For uboot-related modifications, please refer to **uboot开发文档->Chapter-8 调试手段->修改DDR容量** in the SDK documentation, and limit the memory mapping range globally to within 0~4G memory space.
 
 
 
+**Q4.6**: What is the cause of the "rga_policy: invalid function policy" and "rga_job: job assign failed" errors?
 
-**Q4.6**：What causes the error “rga: Rga sync pid 1001 wait 1 task done timeout”？
+**A4.6**: You can open the driver operation log to view the specific error reasons
 
-**A4.6**：There are many reasons for the hardware timeout error. You can rectify the fault as follows:
+For example:
 
-​			1). Check the overall process and ensure that no other modules or applications are locking or abnormally occupying the buffer. If the same buffer is abnormally occupied by other modules, RGA cannot read and write data properly. If the work cannot be completed within 2000ms, the driver returns with exception and report the error message.
+```
+rga_policy: start policy on core = 4
+rga_policy: RGA2 only support under 4G memory! //Indicates that the current RGA2 core only supports memory within 4G.
+rga_policy: optional_cores = 0
+rga_policy: invalid function policy
+rga_policy: assign core: -1
+rga_job: job assign failed
+```
 
-​			2). Check the DDR bandwidth and utilization of current system. Because the bus priority of RGA is low, when the DDR load is full, if RGA is not completed within 2000ms, the driver returns with exception and report the error message.
+```
+rga_policy: start policy on core = 1
+rga_policy: core = 1, break on rga_check_dst //Corresponding to the core unsupported reason log, here is the image parameter of the dst channel does not meet the current core requirements (you can check the document to confirm the core support, here core 0x1, 0x2 are RGA3 core, 0x4 is RGA2 core)
+rga_policy: start policy on core = 2
+rga_policy: core = 2, break on rga_check_dst //Corresponding to the log of reasons not supported by the core, same as above.
+rga_policy: start policy on core = 4
+rga_policy: RGA2 only support under 4G memory! //Corresponding to the reason log that the core does not support, it indicates that the reason for the current mismatch is that the core does not support memory other than 4G memory space.
+  rga_policy: optional_cores = 0
+rga_policy: invalid function policy
+rga_policy: assign core: -1 // After traversing all cores, if there is no matching core, a matching failure error will be reported.
+rga_job: job assign failed
+```
 
-​			3). Check whether other IP modules, such as ISP and vpu, have reported an error before the RGA timeout error occurs. If the hardware on the same bus is faulty, the RGA may fail to work properly. If the work cannot be completed within 2000ms, the driver returns with exception and report the error message.
+In the above two cases, you can confirm the configured parameter information according to the corresponding logs, and make targeted modifications.
 
-​			4). Check current RGA frequency (see RGA frequency related operations in **Q1.4**). In some scenarios, the module on the same bus may lower the frequency thus affect RGA frequency. RGA frequency decrease will lead to the overall performance decline, if the work cannot be completed within 2000ms, the driver returns with exception and report the error message.
+
+
+**Q4.7**：What causes the error “rga：Rga err irq! INT[701],STATS[1]”?
+
+**A4.7**：This problem usually occurs when an exception occurs during RGA hardware execution. There are many reasons for the exception, such as memory out-of-bounds and abnormal configuration. If this problem occurs, you are advised to check whether the memory passed in is out of bounds.
+
+
+
+**Q4.8**：What causes the error “rga: Rga sync pid 1001 wait 1 task done timeout”？
+
+**A4.8**：There are many reasons for the hardware timeout error. You can rectify the fault as follows:
+
+​			1). Check the overall process and ensure that no other modules or applications are locking or abnormally occupying the buffer. If the same buffer is abnormally occupied by other modules, RGA cannot read and write data properly. If the work cannot be completed within 200ms, the driver returns with exception and report the error message.
+
+​			2). Check the DDR bandwidth and utilization of current system. Because the bus priority of RGA is low, when the DDR load is full, if RGA is not completed within 200ms, the driver returns with exception and report the error message.
+
+​			3). Check whether other IP modules, such as ISP and vpu, have reported an error before the RGA timeout error occurs. If the hardware on the same bus is faulty, the RGA may fail to work properly. If the work cannot be completed within 200ms, the driver returns with exception and report the error message.
+
+​			4). Check current RGA frequency (see RGA frequency related operations in **Q1.4**). In some scenarios, the module on the same bus may lower the frequency thus affect RGA frequency. RGA frequency decrease will lead to the overall performance decline, if the work cannot be completed within 200ms, the driver returns with exception and report the error message.
 
 ​			5). RGA of some chips is overclocked to a higher frequency, at which case RGA frequency rises but the voltage does not, leading to the overall performance of RGA decreases significantly and the work cannot be completed within the specified threshold. As a result,the driver returns with exception and report the error message. In this scenario, developers are advised to change the RGA frequency to proper frequency.  Overclocking will affect the stability and service life of the overall chip, so this behavior is strongly not recommended.
 
@@ -1339,16 +1445,8 @@ Date:   Mon May 10 16:52:04 2021 +0800
 
 
 
-**Q4.7**：What are the errors "rga_policy: invalid function policy" and "rga_job: job assign failed"?
+**Q4.9**：When a timeout error occurs, it is accompanied by the "rga_job: hardware has finished, but the software has timeout!" log. What is the reason?
 
-**A4.7**：You can open the driver operation log to view error messages.
+**A4.9**：When this log appears, it means that the CPU core responsible for interrupts in the current system environment has been preempted, causing the RGA driver to wait for the soft interrupt in the lower half after the hardware interrupt in the upper half ends. After the timeout threshold set by the driver is exceeded, the driver reports timeout error.
 
-```
-rga_policy: start policy on core = 4
-[82116.782252] rga_policy: RGA2 only support under 4G memory!
-															//标识当前搭载的RGA2核心仅支持4G以内的内存。
-[82116.782256] rga_policy: optional_cores = 0
-[82116.782258] rga_policy: invalid function policy
-[82116.782260] rga_policy: assign core: -1
-[82116.782262] rga_job: job assign failed
-```
+​			This kind of situation is common when there is a real-time process in the application layer that preempts the CPU, causing the drive device to fail to work normally. It is not recommended to use real-time processes to forcibly preempt CPU resources. If this problem occurs, it can only be optimized from the CPU side to avoid the interruption of the CPU core. Preemption cannot execute softirqs of other device drivers.

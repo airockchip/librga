@@ -33,7 +33,7 @@
 #include <system/graphics.h>
 #include <cutils/native_handle.h>
 
-#ifdef ANDROID_12
+#if defined(ANDROID_12) || defined(USE_HARDWARE_ROCKCHIP)
 #include <hardware/hardware_rockchip.h>
 #endif
 

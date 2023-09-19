@@ -59,18 +59,9 @@ struct dma_heap_allocation_data {
 	__u64 heap_flags;
 };
 
-struct dma_heap_import_data {
-	__u64 len;
-	__u32 fd;
-	__u32 fd_flags;
-	__u64 heap_flags;
-};
-
 #define DMA_HEAP_IOC_MAGIC		'H'
 #define DMA_HEAP_IOCTL_ALLOC	_IOWR(DMA_HEAP_IOC_MAGIC, 0x0,\
 				      struct dma_heap_allocation_data)
-#define DMA_HEAP_IOCTL_IMPORT	_IOWR(DMA_HEAP_IOC_MAGIC, 0x1,\
-				      struct dma_heap_import_data)
 
 #define DMA_BUF_SYNC_READ      (1 << 0)
 #define DMA_BUF_SYNC_WRITE     (2 << 0)
@@ -109,12 +100,10 @@ int dma_buf_alloc(const char *path, size_t size, int *fd, void **va) {
     struct dma_heap_allocation_data buf_data;
 
     /* open dma_heap fd */
+    dma_heap_fd = open(path, O_RDWR);
     if (dma_heap_fd < 0) {
-        dma_heap_fd = open(path, O_RDWR);
-        if (dma_heap_fd < 0) {
-            printf("open %s fail!\n", path);
-            return dma_heap_fd;
-        }
+        printf("open %s fail!\n", path);
+        return dma_heap_fd;
     }
 
     /* alloc buffer */

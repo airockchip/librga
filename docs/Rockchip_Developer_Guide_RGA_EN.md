@@ -1,48 +1,42 @@
 # RGA IM2D API Instruction
 
-Current Version：V2.2.0
+ID: RK-KF-YF-403
 
-Finish Date：2022-09-15
+Release Version: V2.2.2
 
-Security Class：□Top-Secret   □Secret   □Internal   ■Public
+Release Date: 2023-06-28
 
----
+Security Level: □Top-Secret   □Secret   □Internal   ■Public
 
-**Disclaimer**
+**DISCLAIMER**
 
-This document is provided “as is” and Fuzhou Rockchip Electronics Co. Ltd (“the company”) makes no express or implied statement or warranty as to the accuracy, reliability, completeness, merchantability, specific purpose and non-infringement of any statement, information and contents of the document. This document is for reference only.
+THIS DOCUMENT IS PROVIDED “AS IS”. ROCKCHIP ELECTRONICS CO., LTD.(“ROCKCHIP”)DOES NOT PROVIDE ANY WARRANTY OF ANY KIND, EXPRESSED, IMPLIED OR OTHERWISE, WITH RESPECT TO THE ACCURACY, RELIABILITY, COMPLETENESS,MERCHANTABILITY, FITNESS FOR ANY PARTICULAR PURPOSE OR NON-INFRINGEMENT OF ANY REPRESENTATION, INFORMATION AND CONTENT IN THIS DOCUMENT. THIS DOCUMENT IS FOR REFERENCE ONLY. THIS DOCUMENT MAY BE UPDATED OR CHANGED WITHOUT ANY NOTICE AT ANY TIME DUE TO THE UPGRADES OF THE PRODUCT OR ANY OTHER REASONS.
 
-This document may be updated without any notification due to product version upgrades or other reasons.
+**Trademark Statement**
 
-**Brand Statement**
+"Rockchip", "瑞芯微", "瑞芯" shall be Rockchip’s registered trademarks and owned by Rockchip. All the other trademarks or registered trademarks mentioned in this document shall be owned by their respective owners.
 
-Rockchip, RockchipTM icon, Rockchip and other Rockchip trademarks are trademarks of Fuzhou Rockchip Electronics Co., Ltd., and are owned by Fuzhou Rockchip Electronics Co., Ltd.
+**All rights reserved. ©2022. Rockchip Electronics Co., Ltd.**
 
-All other trademarks or registered trademarks mentioned in this document are owned by their respective owners.
+Beyond the scope of fair use, neither any entity nor individual shall extract, copy, or distribute this document in any form in whole or in part without the written approval of Rockchip.
 
-**Copyright © 2022 Fuzhou Rockchip Electronics Co., Ltd.**
+Rockchip Electronics Co., Ltd.
 
-Beyond reasonable use, without the written permission, any unit or individual shall not extract or copy part or all of the content of this document, and shall not spread in any form.
+No.18 Building, A District, No.89, software Boulevard Fuzhou, Fujian,PRC
 
+Website:     [www.rock-chips.com](http://www.rock-chips.com)
 
+Customer service Tel:  +86-4007-700-590
 
-Fuzhou Rockchip Electronics Co., Ltd.
+Customer service Fax:  +86-591-83951833
 
-Address: No. 18 Building, A District, No.89,software Boulevard Fuzhou,Fujian,PRC
-
-Website: [www.rock-chips.com](http://www.rock-chips.com)
-
-Customer service tel.: +86-4007-700-590
-
-Customer service fax: +86-591-83951833
-
-Customer service e-mail: [fae@rock-chips.com](mailto:fae@rock-chips.com)
+Customer service e-Mail:  [fae@rock-chips.com](mailto:fae@rock-chips.com)
 
 ---
 
-**Readership**
+**Intended Audience**
 
-This document is intended for:
+This document (this guide) is mainly intended for:
 
 - Technical support engineers
 - Software development engineers
@@ -57,14 +51,16 @@ This document is intended for:
 | 2022/01/20 | 2.1.0    | Chen Cheng, Li Huang, Yu Qiaowei | - Update im2d api description.<br/>- Updated hardware index description and alignment restrictions.<br/>- Add data structure description. |
 | 2022/01/20 | 2.1.1 | Chen Cheng, Li Huang, Yu Qiaowei | Supplemental formatting support/alignment instructions. |
 | 2022/09/15 | 2.2.0 | Chen Cheng, Li Huang, Yu Qiaowei | - Supplementary default value description<br/>- New array api<br/>- New task api<br/>- New rectangle border drawing api |
+| 2023/02/09 | 2.2.1 | Yu Qiaowei | Format document. |
+| 2022/06/28 | 2.2.2 | Yu Qiaowei | - Add chip RK3562 introduction<br/>- Improve the precautions for grayscale images |
 
-
+---
 
 **Contents**
 
 [TOC]
 
-
+---
 
 ## Introductions
 
@@ -73,8 +69,6 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
 
 
 ### Design Index
-
-------
 
 <table>
    <tr>
@@ -184,15 +178,15 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td>RK1808</td>
    </tr>
    <tr>
-      <td rowspan="6">RGA2-Enhance</td>
+      <td rowspan="8">RGA2-Enhance</td>
       <td>Mclaren</td>
       <td>RK3399</td>
-      <td rowspan="6">2x2</td>
-      <td rowspan="6">8192x8192</td>
-      <td rowspan="6">2x2</td>
-      <td rowspan="6">4096x4096</td>
-      <td rowspan="6">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP(NA for 1108/1109)<br/>NN quantize(NA for 3399/1108)<br/>osd(only 1106/1103)<br/>IOMMU(32bit, RK3528为40bit，NA for RV1106/1103)</td>
-      <td rowspan="6">2</td>
+      <td rowspan="8">2x2</td>
+      <td rowspan="8">8192x8192</td>
+      <td rowspan="8">2x2</td>
+      <td rowspan="8">4096x4096</td>
+      <td rowspan="8">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>ROP(NA for RV1108/RV1109/RK3566)<br/>NN quantize(NA for RK3399/RV1108)<br/>osd (only RV1106/RV1103/RK3562/RK3528)<br/>mosaic(only RV1106/RV1103/RK3562/RK3528)<br/>IOMMU(32bit, RK3528/RK3562为40bit，NA for RV1106/1103)</td>
+      <td rowspan="8">2</td>
    </tr>
    <tr>
       <td>Mercury</td>
@@ -215,6 +209,14 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td>RV1106/1103</td>
    </tr>
    <tr>
+      <td>Bull</td>
+      <td>RK3528</td>
+   </tr>
+   <tr>
+      <td>Snipe</td>
+      <td>RK3562</td>
+   </tr>
+   <tr>
       <td rowspan="1">RGA3</td>
       <td>Orion</td>
       <td>RK3588</td>
@@ -226,6 +228,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="1">3 (by pass)<br/>2 (scale)</td>
    </tr>
 </table>
+
 
 
 > Note:
@@ -240,8 +243,6 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
 
 
 ### Image Format Supported
-
-------
 
 - Pixel Format conversion, BT.601/BT.709/BT.2020(only RGA3)
 - Dither operation
@@ -338,7 +339,7 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
       <td>RK1808</td>
    </tr>
    <tr>
-      <td rowspan="6">RGA2-Enhance</td>
+      <td rowspan="8">RGA2-Enhance</td>
       <td>Mclaren</td>
       <td>RK3399</td>
       <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
@@ -353,9 +354,9 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
    <tr>
       <td>Puma</td>
       <td>RV1126/ RV1109</td>
-      <td rowspan="4"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      <td rowspan="6"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
       </td>
-      <td rowspan="4">
+      <td rowspan="6">
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_RGBA_5551<br/>RK_FORMAT_BGRA_5551<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCbr_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCbr_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCbr_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCbr_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4
    	  </td>
    </tr>
@@ -371,6 +372,12 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
    <td>Otter</td>
       <td>RV1106/1103</td>
    </tr>
+   <td>Bull</td>
+      <td>RK3528</td>
+   </tr>
+   <td>Snipe</td>
+      <td>RK3562</td>
+   </tr>
    <tr>
       <td rowspan="1">RGA3</td>
       <td>Orion</td>
@@ -385,15 +392,16 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMA
 </table>
 
 
+
 > Note:
 >
-> 1). Y4 format is 2 to the 4th power grayscale, Y400 format is 2 to the 8th power grayscale.
+> 1). The "RK_FORMAT_YCbCr_400" format means that the YUV format only takes the Y channel, and is often used in 256 (2 to the 8th power) grayscale images. Here, it should be noted that since the YUV format exists in the RGB/YUV color space conversion, you need to pay attention to the color space configuration , for example, a full 256-level grayscale image needs to be configured as full range during conversion.
+>
+> 2). The "RK_FORMAT_Y4" format means that the YUV format only takes the Y channel and dithers to 4 bits. It is often used in 16 (2 to the 4th power) grayscale images. The precautions involved in the configuration of the color space conversion are the same as “RK_FORMAT_YCbCr_400”.
 
 
 
 ### Image Format Alignment Instructions
-
-------
 
 <table>
     <tr>
@@ -506,13 +514,14 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
     </tr>
     <tr>
         <td>FBC mode</td>
-        <td>In addition to the format alignment requirements above，width、height must be 16-aligned</td>
+        <td>In addition to the format alignment requirements above，width stride、height stride must be 16-aligned</td>
     </tr>
     <tr>
         <td>TILE8*8 mode</td>
         <td>In addition to the format alignment requirements above，width、height must be 8-aligned，input channel width stride、height stride must be 16-aligned。</td>
     </tr>
 </table>
+
 
 > Note:
 >
@@ -521,6 +530,8 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
 > 2). When loaded with multiple versions of hardware, chip platform constraints according to the most strict alignment requirements.
 
 
+
+---
 
 ## Version Description
 
@@ -705,6 +716,8 @@ When using RGA, you need to confirm that the current operating environment can w
 
 
 
+---
+
 ## API Description
 
 RGA library librga.so realizes 2D graphics operations  through the image buffer structure rga_info configuration. In order to obtain a better development experience, the common 2D image operation API is further encapsulated. The new API mainly contains the following features:
@@ -717,8 +730,6 @@ RGA library librga.so realizes 2D graphics operations  through the image buffer 
 
 
 ### Overview
-
-------
 
 The software support library provides the following API, asynchronous mode only supports C++ implementation.
 
@@ -780,8 +791,6 @@ The software support library provides the following API, asynchronous mode only 
 
 ### Obtain RGA Version and Support Information
 
-------
-
 #### querystring
 
 ```C++
@@ -800,8 +809,6 @@ const char* querystring(int name);
 
 ### header version check
 
-------
-
 #### imcheckHeader
 
 ```C++
@@ -819,8 +826,6 @@ IM_API IM_STATUS imcheckHeader(im_api_version_t header_version = RGA_CURRENT_API
 
 
 ### Image Buffer Preprocessing
-
-------
 
 #### importbuffer_T
 
@@ -929,8 +934,6 @@ rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle,
 
 ### Image processing job create
 
------
-
 #### imbeginJob
 
 ```c++
@@ -948,8 +951,6 @@ IM_API im_job_handle_t imbeginJob(uint64_t flags = 0);
 
 
 ### Image processing job submit
-
-----
 
 #### imendJob
 
@@ -975,8 +976,6 @@ IM_API IM_STATUS imendJob(im_job_handle_t job_handle,
 
 ### Image processing job cancel
 
----
-
 #### imcancelJob
 
 ```c++
@@ -994,8 +993,6 @@ IM_API IM_STATUS imcancelJob(im_job_handle_t job_handle);
 
 
 ### Image Copy
-
-------
 
 #### imcopy
 
@@ -1040,8 +1037,6 @@ IM_API IM_STATUS imcopyTask(im_job_handle_t job_handle,
 
 
 ### Image Resizing and Image Pyramid
-
-------
 
 #### imresize
 
@@ -1125,8 +1120,6 @@ IM_API IM_STATUS imresizeTask(im_job_handle_t job_handle,
 
 ### Image Cropping
 
-------
-
 #### imcrop
 
 ```C++
@@ -1174,8 +1167,6 @@ IM_API IM_STATUS imcropTask(im_job_handle_t job_handle,
 
 
 ### Image Translation
-
-------
 
 #### imtranslate
 
@@ -1228,8 +1219,6 @@ IM_API IM_STATUS imtranslateTask(im_job_handle_t job_handle,
 
 
 ### Image Format Conversion
-
-------
 
 #### imcvtcolor
 
@@ -1289,8 +1278,6 @@ IM_API IM_STATUS imcvtcolorTask(im_job_handle_t job_handle,
 
 ### Image Rotation
 
-------
-
 #### imrotate
 
 ```c++
@@ -1340,8 +1327,6 @@ IM_API IM_STATUS imrotateTask(im_job_handle_t job_handle,
 
 ### Image Mirror Flip
 
-------
-
 #### imfilp
 
 ```c++
@@ -1389,8 +1374,6 @@ IM_API IM_STATUS imflipTask(im_job_handle_t job_handle,
 
 
 ### Image Blending
-
-------
 
 #### imblend/imcomposite
 
@@ -1514,8 +1497,6 @@ IM_API IM_STATUS imcompositeTask(im_job_handle_t job_handle,
 
 ### Color Key
 
-------
-
 #### imcolorkey
 
 ```C++
@@ -1582,8 +1563,6 @@ IM_API IM_STATUS imcolorkeyTask(im_job_handle_t job_handle,
 
 ### OSD
 
-------
-
 #### imosd
 
 ```c++
@@ -1635,8 +1614,6 @@ IM_API IM_STATUS imosdTask(im_job_handle_t job_handle,
 
 
 ### Pre-processing of NN Operation Points (Quantization)
-
-------
 
 #### imquantize
 
@@ -1699,8 +1676,6 @@ IM_API IM_STATUS imquantizeTask(im_job_handle_t job_handle,
 
 ### Image ROP
 
-------
-
 #### imrop
 
 ```C++
@@ -1748,8 +1723,6 @@ IM_API IM_STATUS imropTask(im_job_handle_t job_handle,
 
 
 ### Image Color Filling
-
-------
 
 #### imfill
 
@@ -2015,8 +1988,6 @@ IM_API IM_STATUS immakeBorder(rga_buffer_t src,
 
 ### Image Mosaic
 
-----
-
 #### immosaic
 
 ```c++
@@ -2114,8 +2085,6 @@ IM_API IM_STATUS immosaicTaskArray(im_job_handle_t job_handle,
 
 
 ### Image Process
-
-------
 
 #### improcess
 
@@ -2235,8 +2204,6 @@ IM_API IM_STATUS improcessTask(im_job_handle_t job_handle,
 
 ### Parameter Check
 
----
-
 #### imcheck
 
 ```c++
@@ -2268,8 +2235,6 @@ IM_API IM_STATUS imcheck_composite(const rga_buffer_t src, const rga_buffer_t ds
 
 ### Synchronous operation
 
-------
-
 #### imsync
 
 ```C++
@@ -2289,8 +2254,6 @@ IM_STATUS imsync(int fence_fd);
 
 
 ### Thread Context Configuration
-
-------
 
 #### imconfig
 
@@ -2312,6 +2275,8 @@ IM_STATUS  imconfig(IM_CONFIG_NAME name, uint64_t value);
 **Return** IM_STATUS_SUCCESS on success or else negative error code
 
 
+
+---
 
 ## Data Structure
 
@@ -2606,6 +2571,8 @@ null
 
 
 
+---
+
 ## Test Cases and Debugging Methods
 
 > In order to make developers get started with the above new API more quickly, here by running demo and parsing the  source code to help developers to understand and use the API.
@@ -2613,9 +2580,6 @@ null
 
 
 ### Test File Description
-
-------
-
 
 > Input and output binary file for testing should be prepared in advance. The default source image file in RGBA8888 format is stored in directory /sample/sample_file.
 >
@@ -2657,8 +2621,6 @@ Parameter descriptions：
 
 
 ### Debugging Method Description
-
-------
 
 > After running demo, print log as follows (in image copying, for example):
 >
@@ -2758,8 +2720,6 @@ gr_color_x [0, 0, 0]
 
 ### Test Case Descriptions
 
-------
-
 - The test path is sample/im2d_API_demo. Developers can modify the demo configuration as required. It is recommended to use the default configuration when running demo for the first time.
 - The compilation of test cases varies on different platforms. On the Android platform, the 'mm' command can be used to compile the test cases. On the Linux platform, when librga.so is compiled using cmake, the corresponding test cases will be generated in the same directory
 
@@ -2769,8 +2729,6 @@ gr_color_x [0, 0, 0]
 
 
 #### Apply for Image Buffer
-
-------
 
 > The demo provides two types of buffer for RGA synthesis: Graphicbuffer and AHardwareBuffer. The two buffers are distinguished by the macro USE_AHARDWAREBUFFER.
 
@@ -2834,8 +2792,6 @@ endif
 
 #### Viewing Help Information
 
-------
-
 > Run the following command to obtain the help information about the test case:
 
 ```
@@ -2889,8 +2845,6 @@ ctx=0x7864d7c520,ctx->rgaFd=3
 
 #### Executing Demo in Loop
 
-------
-
 > Run the following command to loop demo. The loop command must precede all parameters. The number of cycles are of the type int and the default interval is 200ms.
 
 ```
@@ -2901,8 +2855,6 @@ rgaImDemo --while=6 --copy
 
 
 #### Obtain RGA Version and Support Information
-
-------
 
 > Run the following command to obtain the version and support information:
 
@@ -2940,8 +2892,6 @@ options：
 
 
 #### Image Resizing
-
-------
 
 > Use the following command to test image resizing.
 
@@ -2994,8 +2944,6 @@ options：
 
 #### Image Cropping
 
-------
-
 > Test image cropping using the following command.
 
 ```
@@ -3024,8 +2972,6 @@ rgaImDemo --crop
 
 
 #### Image Rotation
-
-------
 
 > Test image rotation using the following command.
 
@@ -3062,8 +3008,6 @@ options：
 
 #### Image Mirror Flip
 
-------
-
 > Use the following command to test mirror flipping
 
 ```
@@ -3096,8 +3040,6 @@ options：
 
 
 #### Image Color Fill
-
-------
 
 > Use the following command to test the color fill.
 
@@ -3140,8 +3082,6 @@ options：
 
 #### Image Translation
 
-------
-
 > Use the following command to test image translation.
 
 ```
@@ -3169,8 +3109,6 @@ rgaImDemo --translate
 
 #### Image Copying
 
-------
-
 > Use the following command to test image copying.
 
 ```
@@ -3194,8 +3132,6 @@ rgaImDemo --copy
 
 #### Image Blending
 
-------
-
 > Use the following command to test image blending.
 
 ```
@@ -3218,8 +3154,6 @@ rgaImDemo --blend
 
 
 #### Image Format Conversion
-
-------
 
 > Use the following command to test image format conversion.
 

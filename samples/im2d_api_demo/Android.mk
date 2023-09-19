@@ -15,6 +15,10 @@ ifeq (1,$(strip $(shell expr $(PLATFORM_SDK_VERSION) \> 25)))
 LOCAL_CFLAGS += -DUSE_AHARDWAREBUFFER=1
 endif
 
+ifeq (1,$(strip $(shell expr $(PLATFORM_SDK_VERSION) \> 31)))
+LOCAL_CFLAGS += -DUSE_HARDWARE_ROCKCHIP=1
+endif
+
 LOCAL_CFLAGS += -Wall -Werror -Wunreachable-code
 
 LOCAL_C_INCLUDES += \

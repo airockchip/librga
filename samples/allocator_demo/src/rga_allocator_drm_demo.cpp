@@ -92,7 +92,7 @@ int main(void) {
         printf ("open file %s so memset!\n", "fault");
         draw_rgba((char *)drm_src.drm_buf, src_width, src_height);
     }
-    memset(drm_dst.drm_buf, 0x33, drm_src.actual_size);
+    memset(drm_dst.drm_buf, 0x33, drm_dst.actual_size);
 
     /*
      * Import the allocated dma_fd into RGA by calling

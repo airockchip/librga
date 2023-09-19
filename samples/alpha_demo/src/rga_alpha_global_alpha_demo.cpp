@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Rockchip Electronics Co., Ltd.
+ * Copyright (C) 2023  Rockchip Electronics Co., Ltd.
  * Authors:
  *     YuQiaowei <cerf.yu@rock-chips.com>
  *
@@ -18,7 +18,7 @@
 
 #define LOG_NDEBUG 0
 #undef LOG_TAG
-#define LOG_TAG "rga_alpha_3channel_demo"
+#define LOG_TAG "rga_alpha_global_alpha_demo"
 
 #include <iostream>
 #include <fstream>
@@ -41,16 +41,14 @@ int main() {
     int ret = 0;
     int fg_width, fg_height, fg_format;
     int bg_width, bg_height, bg_format;
-    int output_width, output_height, output_format;
-    char *fg_buf, *bg_buf, *output_buf;
-    int fg_buf_size, bg_buf_size, output_buf_size;
+    char *fg_buf, *bg_buf;
+    int fg_buf_size, bg_buf_size;
 
-    rga_buffer_t fg_img, bg_img, output_img;
-    rga_buffer_handle_t fg_handle, bg_handle, output_handle;
+    rga_buffer_t fg_img, bg_img;
+    rga_buffer_handle_t fg_handle, bg_handle;
 
     memset(&fg_img, 0, sizeof(fg_img));
     memset(&bg_img, 0, sizeof(bg_img));
-    memset(&output_img, 0, sizeof(output_img));
 
     fg_width = 1280;
     fg_height = 720;
@@ -58,19 +56,13 @@ int main() {
 
     bg_width = 1280;
     bg_height = 720;
-    bg_format = RK_FORMAT_RGBA_8888;
-
-    output_width = 1280;
-    output_height = 720;
-    output_format = RK_FORMAT_RGBA_8888;
+    bg_format = RK_FORMAT_YCbCr_420_SP;
 
     fg_buf_size = fg_width * fg_height * get_bpp_from_format(fg_format);
     bg_buf_size = bg_width * bg_height * get_bpp_from_format(bg_format);
-    output_buf_size = output_width * output_height * get_bpp_from_format(output_format);
 
     fg_buf = (char *)malloc(fg_buf_size);
     bg_buf = (char *)malloc(bg_buf_size);
-    output_buf = (char *)malloc(output_buf_size);
 
     /* fill image data */
     if (0 != read_image_from_file(fg_buf, LOCAL_FILE_PATH, fg_width, fg_height, fg_format, 0)) {
@@ -81,37 +73,42 @@ int main() {
         printf("background image read err\n");
         memset(bg_buf, 0x66, bg_buf_size);
     }
-    memset(output_buf, 0x80, output_buf_size);
 
     fg_handle = importbuffer_virtualaddr(fg_buf, fg_buf_size);
     bg_handle = importbuffer_virtualaddr(bg_buf, bg_buf_size);
-    output_handle = importbuffer_virtualaddr(output_buf, output_buf_size);
-    if (fg_handle == 0 || bg_handle == 0 || output_handle == 0) {
+    if (fg_handle == 0 || bg_handle == 0) {
         printf("importbuffer failed!\n");
         goto release_buffer;
     }
 
     fg_img = wrapbuffer_handle(fg_handle, fg_width, fg_height, fg_format);
     bg_img = wrapbuffer_handle(bg_handle, bg_width, bg_height, bg_format);
-    output_img = wrapbuffer_handle(output_handle, output_width, output_height, output_format);
 
     /*
-     * Here are two RGBA8888 images of the same size for src_over overlay and
-     * output them to another buffer.
+     * Set the opacity from 0 to 0xFF (255), and use it as the global alpha for
+     * the current layer to guide the blending.
+     * If the current layer has per-pixel alpha, then the alpha value is calculated as
+     *   alpha = (per-pixel alpha * global alpha) >> 8.
+     */
+    imsetOpacity(&fg_img, 0x80);
+    imsetOpacity(&bg_img, 0xe0);
+
+    /*
+     * Here are two RGBA8888 images of the same size for src_over overlay.
         --------------        --------------      --------------
-        |            |        |            |      | output_img |
+        |            |        |            |      |            |
         |   fg_img   |    +   |   bg_img   |  =>  | fg over bg |
         |            |        |            |      |            |
         --------------        --------------      --------------
      */
 
-    ret = imcheck_composite(fg_img, output_img, bg_img, {}, {}, {});
+    ret = imcheck(fg_img, bg_img, {}, {});
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
         return -1;
     }
 
-    ret = imcomposite(fg_img, bg_img, output_img, IM_ALPHA_BLEND_SRC_OVER | IM_ALPHA_BLEND_PRE_MUL);
+    ret = imblend(fg_img, bg_img, IM_ALPHA_BLEND_SRC_OVER | IM_ALPHA_BLEND_PRE_MUL);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s running success!\n", LOG_TAG);
     } else {
@@ -119,22 +116,18 @@ int main() {
         goto release_buffer;
     }
 
-    write_image_to_file(output_buf, LOCAL_FILE_PATH, output_width, output_height, output_format, 0);
+    write_image_to_file(bg_buf, LOCAL_FILE_PATH, bg_width, bg_height, bg_format, 0);
 
 release_buffer:
     if (fg_handle)
         releasebuffer_handle(fg_handle);
     if (bg_handle)
         releasebuffer_handle(bg_handle);
-    if (output_handle)
-        releasebuffer_handle(output_handle);
 
     if (fg_buf)
         free(fg_buf);
     if (bg_buf)
         free(bg_buf);
-    if (output_buf)
-        free(output_buf);
 
     return ret;
 }

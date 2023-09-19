@@ -91,6 +91,8 @@ int main(void) {
         goto release_buffer;
     }
 
+    ts = get_cur_us();
+
     ret = immosaic(dst, dst_rect, IM_MOSAIC_32);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s running success! cost %ld us\n", LOG_TAG, get_cur_us() - ts);

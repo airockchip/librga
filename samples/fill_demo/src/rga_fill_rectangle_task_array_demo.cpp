@@ -40,7 +40,6 @@
 
 int main(void) {
     int ret = 0;
-    int64_t ts;
     int dst_width, dst_height, dst_format;
     int dst_buf_size;
     char *dst_buf;

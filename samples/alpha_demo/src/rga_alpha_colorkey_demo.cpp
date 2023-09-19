@@ -71,7 +71,7 @@ int main() {
         printf("foreground image read err\n");
         memset(fg_buf, 0xaa, fg_buf_size);
     }
-    if (0 != read_image_from_file(fg_buf, LOCAL_FILE_PATH, bg_width, bg_height, bg_format, 1)) {
+    if (0 != read_image_from_file(bg_buf, LOCAL_FILE_PATH, bg_width, bg_height, bg_format, 1)) {
         printf("background image read err\n");
         memset(bg_buf, 0x66, bg_buf_size);
     }

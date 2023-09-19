@@ -176,4 +176,7 @@ IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
                                       int wstride, int hstride);
 #endif
 
+void imsetOpacity(rga_buffer_t *buf, uint8_t alpha);
+void imsetColorSpace(rga_buffer_t *buf, IM_COLOR_SPACE_MODE mode);
+
 #endif /* #ifndef _im2d_buffer_h_ */
