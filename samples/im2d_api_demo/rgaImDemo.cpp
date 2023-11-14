@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <math.h>
 #include <fcntl.h>
 #include <memory.h>
 #include <unistd.h>

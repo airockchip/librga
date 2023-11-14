@@ -106,7 +106,8 @@ int main(void) {
     ret = imcheck({}, dst, {}, dst_rect[0], IM_COLOR_FILL);
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     ret = imrectangleTask(job_handle, dst, dst_rect[0], 0xff00ff00, -1);
@@ -114,7 +115,8 @@ int main(void) {
         printf("%s job[%d] add fill task success!\n", LOG_TAG, job_handle);
     } else {
         printf("%s job[%d] add fill task failed, %s\n", LOG_TAG, job_handle, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     /* Add a task to fill the rectangle border. */
@@ -123,7 +125,8 @@ int main(void) {
     ret = imcheck({}, dst, {}, dst_rect[0], IM_COLOR_FILL);
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     ret = imrectangleTask(job_handle, dst, dst_rect[0], 0xffff0000, 4);
@@ -131,7 +134,8 @@ int main(void) {
         printf("%s job[%d] add fill task success!\n", LOG_TAG, job_handle);
     } else {
         printf("%s job[%d] add fill task failed, %s\n", LOG_TAG, job_handle, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     /* Submit and wait for the job to complete. */
@@ -145,9 +149,6 @@ int main(void) {
 
     printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
     write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
-
-cancel_job:
-    imcancelJob(job_handle);
 
 release_buffer:
     if (dst_handle > 0)

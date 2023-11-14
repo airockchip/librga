@@ -26,7 +26,7 @@
 #define RGA_API_MAJOR_VERSION       1
 #define RGA_API_MINOR_VERSION       10
 #define RGA_API_REVISION_VERSION    0
-#define RGA_API_BUILD_VERSION       2
+#define RGA_API_BUILD_VERSION       5
 
 #define RGA_API_SUFFIX
 

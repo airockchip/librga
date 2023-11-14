@@ -76,6 +76,10 @@ int main(void) {
     dst_buf_size = dst_width * dst_height * get_bpp_from_format(dst_format);
 
     /* allocate GraphicBuffer */
+    src_gb_flags |= GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN;
+    dst_gb_flags |= GRALLOC_USAGE_SW_WRITE_OFTEN | GRALLOC_USAGE_SW_READ_OFTEN;
+
+    /* for CORE_RGA2 */
     src_gb_flags |= RK_GRALLOC_USAGE_WITHIN_4G;
     dst_gb_flags |= RK_GRALLOC_USAGE_WITHIN_4G;
 
@@ -90,7 +94,7 @@ int main(void) {
         return -1;
     }
 
-    ret = src_gb->lock(0, (void **)&src_buf);
+    ret = src_gb->lock(GRALLOC_USAGE_SW_WRITE_OFTEN, (void **)&src_buf);
     if (ret) {
         printf("lock buffer error : %s\n",strerror(errno));
         return -1;
@@ -108,7 +112,7 @@ int main(void) {
         return -1;
     }
 
-    ret = dst_gb->lock(0, (void **)&dst_buf);
+    ret = dst_gb->lock(GRALLOC_USAGE_SW_WRITE_OFTEN, (void **)&dst_buf);
     if (ret) {
         printf("lock buffer error : %s\n",strerror(errno));
         return -1;
@@ -154,7 +158,7 @@ int main(void) {
         goto release_buffer;
     }
 
-    ret = dst_gb->lock(0, (void **)&dst_buf);
+    ret = dst_gb->lock(GRALLOC_USAGE_SW_READ_OFTEN, (void **)&dst_buf);
     if (ret) {
         printf("lock buffer error : %s\n",strerror(errno));
         return -1;

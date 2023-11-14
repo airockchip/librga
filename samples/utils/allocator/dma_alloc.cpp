@@ -42,7 +42,6 @@
 #include <pthread.h>
 
 #include <stdint.h>
-#include <math.h>
 #include <memory.h>
 #include <sys/time.h>
 

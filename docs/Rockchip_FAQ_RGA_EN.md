@@ -565,16 +565,30 @@ rga2: 00000000 00000000 00000000 00000000
   rga2: sync one cmd end time 2414					//Print the RGA. hardware time of the work,in us.
   ```
 
-  - multi
+  - multi-rga
 
+  > Versions below 1.3.0
+  
   ```
   rga3_reg: set cmd use time = 196					//Time elapsed from start processing request to configuration register.
   rga_job: hw use time = 554							//Time-consuming from hardware startup to hardware interrupt return.
   rga_job: (pid:3197) job done use time = 751			//Time-consuming from the start of processing the request to the completion of the request.
   rga_job: (pid:3197) job clean use time = 933		//Time-consuming from the start of processing the request to the completion of the request resource processing.
   ```
-
-
+  
+  > Version 1.3.0 and above
+  
+  ```
+  rga_mm: request[3300], get buffer_handle info cost 188 us
+  rga3_reg: request[3300], generate register cost time 2 us
+  rga3_reg: request[3300], set register cost time 301 us
+  rga_job: request[3300], hardware[RGA3_core0] cost time 539 us
+  rga_mm: request[3300], put buffer_handle info cost 153 us
+  rga_job: request[3300], job done total cost time 1023 us
+  rga_job: request[3300], job cleanup total cost time 1030 us
+  ```
+  
+  
 
 ##### Version Information Query
 
@@ -807,7 +821,7 @@ This section introduces common questions about RGA in the form of Q&A. If the pr
 
 **Q1.4**：The efficiency of RGA cannot meet the needs of our products. Is there any way to improve it?
 
-**A1.4**：The RGA frequency of the factory firmware of some chips is not the highest frequency. For example, the RGA frequency of chips such as 3399 and 1126 can be up to 400M. The RGA frequency can be improved in the following two ways:
+**A1.4**：The RGA frequency of the factory firmware of some chips(Before 2021) is not the highest frequency. For example, the RGA frequency of chips such as 3399 and 1126 can be up to 400M. The RGA frequency can be improved in the following two ways:
 
 - Set by command (temporarily modified, frequency restored upon device restart)
 
@@ -916,6 +930,54 @@ Therefore, for this scenario, it is recommended to apply for memory within 4G to
  **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_dma32_demo.cpp**
 
  **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_graphicbuffer_demo.cpp**
+
+
+
+**Q1.10**: Why is the API time-consuming higher than the hardware time printed in the log?
+
+ **Q1.10.1**: Through the "TIME" running log, it is found that the map/unmap buffer takes too much time.
+ **Q1.10.2**: A comparison of the kernel log timestamps reveals a large gap between the timestamps of the "MSG" log and the "REG" log.
+ **Q1.10.3**: The same parameter configuration, but using different memory allocators only results in a large difference in running time.
+
+**A1.10**: The reasons for the time-consuming exception here are all caused by the memory mapping behavior (map/unmap) of the external buffer. All external buffers need to be mapped and bound to the RGA driver to ensure that the hardware can eventually access the specified buffer. The differences in the underlying implementations corresponding to the different allocators can lead to different time consumptions when the driver maps and binds the memory, resulting in a situation where it looks as if the API time consumptions will be much larger than the hardware time consumptions. Common dma-buf allocators with high extra time consumption are ION, V4L2, etc. Usually these differences are related to the synchronization of the cache, and this type of problem can be confirmed by comparing the time consumption of using different allocators.
+
+This type of issue can usually be optimized in the following ways:
+
+ 1). You can choose a memory allocator that is relatively more reasonable in terms of time consumption for the map/unmap process. Common ones are dma_heap, DRM, and the corresponding wrapper memory allocator. The following is sample code for calling RGA using memory allocated by these memory allocators:
+
+**<librga_souce_path>/samples/allocator_demo/src/rga_allocator_dma_demo.cpp**
+
+**<librga_souce_path>/samples/allocator_demo/src/rga_allocator_drm_demo.cpp**
+
+2). The calling scenario corresponding to this problem is to encapsulate rga_buffer_t through wrapbuffer_fd() or use importbuffer_fd to run only one frame and then immediately releasebuffer_handle. This is normal for temporary tests or scenarios where the buffer changes every frame, but it itself In actual products, repeated buffer reallocation has poor performance and is unreasonable. It is recommended to optimize the buffer process as a whole.
+
+Generally we recommend that the overall process be designed in the following way:
+
+> 1. Construct buffer_pool and allocate <n> buffers to be used as rotation buffers. The size of <n> is configured according to the actual scenario.
+> 2. Import this buffer into RGA through importbuffer_fd() and obtain the buffer_handle of RGA.
+> 3. Use the rotated buffer_handle to call RGA to perform image operations, and repeatedly rotate and loop.
+> 4. When the buffer in this buffer_pool is no longer needed, call releasebuffer_handle() to release the reference of this part of the buffer in RGA to ensure that the buffer can be released and destroyed subsequently.
+> 5. Release unnecessary buffers in buffer_pool.
+
+According to the above process design, even if the allocator's map/unmap behavior will cause abnormal time-consuming, it will be converged to the call of importbuffer_fd()/releasebuffer_handle(), and the call will no longer have an impact on each frame of the actual runtime. This is A good way to avoid performance differences due to differences in memory allocator implementation.
+
+ 3). For scenarios where the memory allocator and business process cannot be changed, the time-consuming optimization can only be done by modifying the map/unmap process of the memory allocator used. This is a very dangerous behavior, and you need to ensure that you are aware of all use of the memory. After applying the behavior of the allocator module, submit it to redmine to consult the corresponding memory allocator maintainer for technical support.
+
+
+
+**Q1.11**: Why is the importbuffer_fd()/importbuffer_virtualaddr() call time-consuming? Why do we need to call this API?
+
+**A1.11**: The related usage and instructions of this interface can be viewed in the "Overview" chapter of ["Rockchip_Developer_Guide_RGA_EN"](./Rockchip_Developer_Guide_RGA_EN.md) in the docs folder in the source code directory - "[Image Buffer Preprocessing ](./Rockchip_Developer_Guide_RGA_EN.md#Image Buffer Preprocessing)" for usage instructions. The function of importbuffer_xx() is to import the external buffer into the RGA driver, so that every subsequent frame RGA call can quickly access the buffer through buffer_handle. Importing an external buffer is a time-consuming operation. It is necessary to map the external buffer to the RGA driver and save the corresponding physical address and buffer information. This is indispensable behavior for calling RGA.
+
+
+
+**Q1.12**: Does RGA support parallel operations? Why does the time consumption of individual frames increase or double when calling RGA from multiple threads?
+
+**A1.12**: The RGA API can support parallel calls by multiple threads/processes, but whether image operations can be executed in parallel on the actual hardware depends on the number of RGA cores currently used on the chip. That is, the number of cores installed is the maximum supported number of parallel tasks. Tasks that exceed the number of cores will enter the waiting state until a core enters the idle state. Therefore, when the number of parallel calls exceeds the maximum number of parallel calls supported by the hardware, some frame calls will increase the time spent waiting for the hardware to become idle. Specifically, you can obtain the number of cores and supported functions of the current chip through the following debugging nodes (for specific instructions, please see the "Hardware Information Query" section in the "Drive Debugging Node" section):
+
+```shell
+/# cat hardware
+```
 
 
 

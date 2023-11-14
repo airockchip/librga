@@ -29,7 +29,6 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/mman.h>
-#include <math.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -139,7 +138,8 @@ int main() {
     ret = imcheck(left_img, dst_img, {}, left_rect);
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     ret = improcessTask(job_handle, left_img, dst_img, {}, {}, left_rect, {}, NULL, IM_SYNC);
@@ -147,7 +147,8 @@ int main() {
         printf("%s job[%d] add left task success!\n", LOG_TAG, job_handle);
     } else {
         printf("%s job[%d] add left task failed, %s\n", LOG_TAG, job_handle, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     /*
@@ -167,7 +168,8 @@ int main() {
     ret = imcheck(right_img, dst_img, {}, right_rect);
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     ret = improcessTask(job_handle, right_img, dst_img, {}, {}, right_rect, {}, NULL, IM_SYNC);
@@ -175,7 +177,8 @@ int main() {
         printf("%s job[%d] add right task success!\n", LOG_TAG, job_handle);
     } else {
         printf("%s job[%d] add right task failed, %s\n", LOG_TAG, job_handle, imStrError((IM_STATUS)ret));
-        goto cancel_job;
+        imcancelJob(job_handle);
+        goto release_buffer;
     }
 
     /*
@@ -192,17 +195,18 @@ int main() {
 	printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
     write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
-cancel_job:
-    imcancelJob(job_handle);
-
 release_buffer:
     if (left_handle)
         releasebuffer_handle(left_handle);
+    if (right_handle)
+        releasebuffer_handle(right_handle);
     if (dst_handle)
         releasebuffer_handle(dst_handle);
 
     if (left_buf)
         free(left_buf);
+    if (right_buf)
+        free(right_buf);
     if (dst_buf)
         free(dst_buf);
 
