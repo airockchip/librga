@@ -5,6 +5,7 @@ add_executable(rga_cvtcolor_demo
 target_link_libraries(rga_cvtcolor_demo
     utils_obj
     ${RGA_LIB}
+    dl
 )
 install(TARGETS rga_cvtcolor_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
 
@@ -15,6 +16,7 @@ add_executable(rga_cvtcolor_csc_demo
 target_link_libraries(rga_cvtcolor_csc_demo
     utils_obj
     ${RGA_LIB}
+    dl
 )
 install(TARGETS rga_cvtcolor_csc_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
 
@@ -25,5 +27,6 @@ add_executable(rga_cvtcolor_gray256_demo
 target_link_libraries(rga_cvtcolor_gray256_demo
     utils_obj
     ${RGA_LIB}
+    dl
 )
 install(TARGETS rga_cvtcolor_gray256_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
