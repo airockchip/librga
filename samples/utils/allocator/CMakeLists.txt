@@ -13,3 +13,5 @@ target_include_directories(utils_obj
         ${THIRD_PARTY_PATH}/libdrm/include/libdrm
         ${CMAKE_CURRENT_LIST_DIR}/include
 )
+
+target_link_libraries(utils_obj INTERFACE dl)

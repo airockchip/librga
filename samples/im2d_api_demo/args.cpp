@@ -37,24 +37,52 @@ void help_function() {
             "\t --querystring You can print the version or support information corresponding to the current version of RGA according to the options.\n"
             "\t               If there is no input options, all versions and support information of the current version of RGA will be printed.\n"
             "\t               <options>:\n"
-            "\t               vendor       \tPrint vendor information.\n"
-            "\t               version      \tPrint RGA version, and librga/im2d_api version.\n"
-            "\t               maxinput     \tPrint max input resolution.\n"
-            "\t               maxoutput    \tPrint max output resolution.\n"
-            "\t               scalelimit   \tPrint scale limit.\n"
-            "\t               inputformat  \tPrint supported input formats.\n"
-            "\t               outputformat \tPrint supported output formats.\n"
-            "\t               expected     \tPrint expected performance.\n"
-            "\t               all          \tPrint all information.\n"
+            "\t                 vendor       \tPrint vendor information.\n"
+            "\t                 version      \tPrint RGA version, and librga/im2d_api version.\n"
+            "\t                 maxinput     \tPrint max input resolution.\n"
+            "\t                 maxoutput    \tPrint max output resolution.\n"
+            "\t                 scalelimit   \tPrint scale limit.\n"
+            "\t                 inputformat  \tPrint supported input formats.\n"
+            "\t                 outputformat \tPrint supported output formats.\n"
+            "\t                 expected     \tPrint expected performance.\n"
+            "\t                 all          \tPrint all information.(Default)\n"
             "\t --copy        Copy the image by RGA.The default is 720p to 720p.\n"
             "\t --resize      resize the image by RGA.You can choose to up(720p->1080p) or down(720p->480p).\n"
+            "\t               <options>:\n"
+            "\t                 up           \tScaling up 720p(1280x720) -> 1080p(1920x1080).\n"
+            "\t                 down         \tScaling down 720p(1280x720) -> 480p(720x480).\n"
             "\t --crop        Crop the image by RGA.By default, a picture of 300*300 size is cropped from (100,100).\n"
             "\t --rotate      Rotate the image by RGA.You can choose to rotate 90/180/270 degrees.\n"
+            "\t               <options>:\n"
+            "\t                 90           \tRotate 90 degrees.\n"
+            "\t                 180          \tRotate 180 degrees.\n"
+            "\t                 270          \tRotate 270 degrees.\n"
             "\t --flip        Flip the image by RGA.You can choice of horizontal flip or vertical flip.\n"
+            "\t               <options>:\n"
+            "\t                 H            \tHorizontal mirror.\n"
+            "\t                 V            \tVertical mirror.\n"
             "\t --translate   Translate the image by RGA.Default translation (300,300).\n"
             "\t --blend       Blend the image by RGA.Default, Porter-Duff 'SRC over DST'.\n"
+            "\t               <options>:\n"
+            "\t                 src          \tPorter-Duff SRC mode.\n"
+            "\t                 dst          \tPorter-Duff DST mode.\n"
+            "\t                 src-over     \tPorter-Duff SRC-OVER mode.(Default)\n"
+            "\t                 dst-over     \tPorter-Duff DST-OVER mode.\n"
+            "\t                 src-in       \tPorter-Duff SRC-IN mode.\n"
+            "\t                 dst-in       \tPorter-Duff DST-IN mode.\n"
+            "\t                 src-out      \tPorter-Duff SRC-OUT mode.\n"
+            "\t                 dst-out      \tPorter-Duff DST-OUT mode.\n"
+            "\t                 src-atop     \tPorter-Duff SRC-ATOP mode.\n"
+            "\t                 dst-atop     \tPorter-Duff DST-ATOP mode.\n"
+            "\t                 xor          \tPorter-Duff XOR mode.\n"
             "\t --cvtcolor    Modify the image format and color space by RGA.The default is RGBA8888 to NV12.\n"
-            "\t --fill        Fill the image by RGA to blue, green, red, when you set the option to the corresponding color.\n");
+            "\t --fill        Fill the image by RGA to blue, green, red, when you set the option to the corresponding color.\n"
+            "\t               <options>:\n"
+            "\t                 red          \tFill in red.\n"
+            "\t                 blue         \tFill in blue.\n"
+            "\t                 green        \tFill in green.\n"
+            "\t                 <value>      \tFill in color value, red[0:7] green[8:15] blue[16:23] alpha[24:31].\n"
+          );
     printf("=============================================================================================\n\n");
 }
 
@@ -69,11 +97,11 @@ int readArguments(int argc, char *argv[], int* parm) {
         {      "rotate", required_argument, NULL, MODE_ROTATE_CHAR        },
         {        "flip", required_argument, NULL, MODE_FLIP_CHAR          },
         {   "translate",       no_argument, NULL, MODE_TRANSLATE_CHAR     },
-        {       "blend",       no_argument, NULL, MODE_BLEND_CHAR         },
+        {       "blend", optional_argument, NULL, MODE_BLEND_CHAR         },
         {    "cvtcolor",       no_argument, NULL, MODE_CVTCOLOR_CHAR      },
         {        "fill", required_argument, NULL, MODE_FILL_CHAR          },
-        {        "help",       no_argument, NULL, 'h'                     },
-        {		"while", required_argument, NULL, 'w'                     },
+        {		"while", required_argument, NULL, MODE_WHILE_CHAR         },
+        {        "help",       no_argument, NULL, MODE_HELP_CHAR          },
         {         NULL ,                 0, NULL, 0                       },
     };
 
@@ -144,6 +172,49 @@ int readArguments(int argc, char *argv[], int* parm) {
             case MODE_BLEND_CHAR :
                 printf("im2d blend ..\n");
 
+                if (optarg != NULL) {
+                    if (strcmp(optarg, "src") == 0 ) {
+                        printf("src mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC;
+                    } else if (strcmp(optarg, "dst") == 0) {
+                        printf("dst mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_DST;
+                    } else if (strcmp(optarg, "src-over") == 0) {
+                        printf("src-over mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_OVER;
+                    } else if (strcmp(optarg, "dst-over") == 0) {
+                        printf("dst-over mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_DST_OVER;
+                    } else if (strcmp(optarg, "src-in") == 0) {
+                        printf("src-in mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_IN;
+                    } else if (strcmp(optarg, "dst-in") == 0) {
+                        printf("dst-in mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_DST_IN;
+                    } else if (strcmp(optarg, "src-out") == 0) {
+                        printf("src-out mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_OUT;
+                    } else if (strcmp(optarg, "dst-out") == 0) {
+                        printf("dst-out mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_DST_OUT;
+                    } else if (strcmp(optarg, "src-atop") == 0) {
+                        printf("src-atop mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_ATOP;
+                    } else if (strcmp(optarg, "dst-atop") == 0) {
+                        printf("dst-atop mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_DST_ATOP;
+                    } else if (strcmp(optarg, "src-in") == 0) {
+                        printf("xor mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_XOR;
+                    } else {
+                        printf("default to src-over mode ...\n");
+                        parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_OVER;
+                    }
+                } else {
+                    printf("default to src-over mode ...\n");
+                    parm[MODE_FLIP] =  IM_ALPHA_BLEND_SRC_OVER;
+                }
+
                 mode_code |= MODE_BLEND;
                 return mode_code;
 
@@ -156,20 +227,37 @@ int readArguments(int argc, char *argv[], int* parm) {
             case MODE_FILL_CHAR :
                 printf("im2d fill ..\n");
 
-                if (optarg != NULL)
-                    parm[MODE_FILL] = readParm(optarg);
+                if (optarg != NULL) {
+                    if (strcmp(optarg,"blue") == 0) {
+                        printf("fill blue ...\n");
+                        parm[MODE_FILL] =  BLUE_COLOR;
+                    } else if (strcmp(optarg,"green") == 0) {
+                        printf("fill green ...\n");
+                        parm[MODE_FILL] =  GREEN_COLOR;
+                    } else if (strcmp(optarg,"red") == 0) {
+                        printf("fill red ...\n");
+                        parm[MODE_FILL] =  RED_COLOR;
+                    } else {
+                        if (sscanf(optarg, "%x", &parm[MODE_FILL]) != 1) {
+                            printf("0x%x is invaild color value\n", parm[MODE_FILL]);
+                            parm[MODE_FILL] = -1;
+                            goto out;
+                        }
+                        printf("fill 0x%x\n", parm[MODE_FILL]);
+                    }
+                }
                 if (parm[MODE_FILL] == -1)
                     goto out;
 
                 mode_code |= MODE_FILL;
                 return mode_code;
 
-            case 'h' :
+            case MODE_HELP_CHAR :
                 help_function();
-                mode_code |= MODE_NONE;
+                mode_code |= MODE_HELP;
                 return mode_code;
 
-            case 'w' :
+            case MODE_WHILE_CHAR :
                 printf("im2d while .. ");
 
                 if (optarg != NULL)

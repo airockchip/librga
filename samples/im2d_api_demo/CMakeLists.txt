@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
 if (EXISTS ${BUILD_TOOLCHAINS_PATH})
 message("load ${BUILD_TOOLCHAINS_PATH}")
@@ -42,6 +42,11 @@ if(CMAKE_BUILD_TARGET STREQUAL cmake_linux)
         message(FATAL_ERROR "RGA: CMAKE_CXX_COMPILER not define")
     endif()
 
+    set(RKRGA_TARGET_SOC rv1106)
+
+    if(RKRGA_TARGET_SOC STREQUAL rv1106)
+        add_definitions(-DUSE_RV1106_CMA=1)
+    endif()
 endif()
 
 if (EXISTS ${LIBRGA_FILE_LIB}/librga.so)
@@ -65,8 +70,12 @@ set(IM2D_DEMO_INCLUDE
     ../../include
     ../../im2d_api)
 
+if (NOT DEFINED RGA_SAMPLES_UTILS_COMPILED)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/../utils/CMakeLists.txt)
+endif()
+
 add_executable(${IM2D_DEMO_NAME} ${IM2D_DEMO_SRCS})
 target_include_directories(${IM2D_DEMO_NAME} PUBLIC ${IM2D_DEMO_INCLUDE})
-target_link_libraries(${IM2D_DEMO_NAME} ${RGA_LIB})
+target_link_libraries(${IM2D_DEMO_NAME} ${RGA_LIB} utils_obj)
 
 install(TARGETS ${IM2D_DEMO_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -104,9 +104,9 @@ API版本号分为主版本号、次版本号、修订版本号、编译版本�
 
     https://github.com/airockchip/librga
 
-  - 百度网盘链接：
-
-​				https://eyun.baidu.com/s/3jJ9Aiz0
+  - 联想网盘链接：
+  
+    https://console.zbox.filez.com/l/fuGojC（提取码：rkrga）
 
 
 
@@ -127,9 +127,9 @@ API版本号分为主版本号、次版本号、修订版本号、编译版本�
 
   当发现版本不满足要求时，可以通过以下方式获取源码更新kernel。
 
-  - 百度网盘链接：
-
-​				https://eyun.baidu.com/s/3dGhufEL
+  - 联想网盘链接：
+  
+    https://console.zbox.filez.com/l/7oOrKO（提取码：rkrga）
 
 
 
@@ -146,11 +146,11 @@ API版本号分为主版本号、次版本号、修订版本号、编译版本�
 
 通常发布的SDK中是版本是匹配的，但是出于一些应用对高版本librga.so的依赖，可以使用以下百度网盘链接获取RGA模块代码更新包：
 
-https://eyun.baidu.com/s/3i6sbsDR
+https://console.zbox.filez.com/l/mu2SOR（提取码：rkrga）
 
 - update-to-MULTI_RGA
 
-​		原有驱动为RGA Device Driver、RGA2 Device Driver时，使用该更新包更新驱动到RGA multicore Device Driver，并更新匹配版本的librga。
+  原有驱动为RGA Device Driver、RGA2 Device Driver时，使用该更新包更新驱动到RGA multicore Device Driver，并更新匹配版本的librga。
 
 - MUTIL_RGA
 

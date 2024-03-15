@@ -18,7 +18,7 @@
 
 #define LOG_NDEBUG 0
 #undef LOG_TAG
-#define LOG_TAG "rga_copy_tile8x8_demo"
+#define LOG_TAG "rga_copy_tile_demo"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -44,11 +44,11 @@ int main() {
     int ret = 0;
     int src_width, src_height, src_format;
     int dst_width, dst_height, dst_format;
-    char *src_buf, *dst_buf, *tile8_buf;
+    char *src_buf, *dst_buf, *tile_buf;
     int src_buf_size, dst_buf_size;
 
-    rga_buffer_t src_img, dst_img, tile8_img;
-    rga_buffer_handle_t src_handle, dst_handle, tile8_handle;
+    rga_buffer_t src_img, dst_img, tile_img;
+    rga_buffer_handle_t src_handle, dst_handle, tile_handle;
 
     memset(&src_img, 0, sizeof(src_img));
     memset(&dst_img, 0, sizeof(dst_img));
@@ -66,7 +66,7 @@ int main() {
 
     src_buf = (char *)malloc(src_buf_size);
     dst_buf = (char *)malloc(dst_buf_size);
-    tile8_buf = (char *)malloc(dst_buf_size);
+    tile_buf = (char *)malloc(dst_buf_size);
 
     /* fill image data */
     if (0 != read_image_from_file(src_buf, LOCAL_FILE_PATH, src_width, src_height, src_format, 0)) {
@@ -74,11 +74,11 @@ int main() {
         draw_YUV420(src_buf, src_width, src_height);
     }
     memset(dst_buf, 0x80, dst_buf_size);
-    memset(tile8_buf, 0x80, dst_buf_size);
+    memset(tile_buf, 0x80, dst_buf_size);
 
     src_handle = importbuffer_virtualaddr(src_buf, src_buf_size);
     dst_handle = importbuffer_virtualaddr(dst_buf, dst_buf_size);
-    tile8_handle = importbuffer_virtualaddr(tile8_buf, dst_buf_size);
+    tile_handle = importbuffer_virtualaddr(tile_buf, dst_buf_size);
     if (src_handle == 0 || dst_handle == 0) {
         printf("importbuffer failed!\n");
         goto release_buffer;
@@ -87,21 +87,24 @@ int main() {
 
     src_img = wrapbuffer_handle(src_handle, src_width, src_height, src_format);
     dst_img = wrapbuffer_handle(dst_handle, dst_width, dst_height, dst_format);
-    tile8_img = wrapbuffer_handle(tile8_handle, dst_width, dst_height, dst_format);
+    tile_img = wrapbuffer_handle(tile_handle, dst_width, dst_height, dst_format);
 
     /*
-     * Copy the src(raster) image to the tile8(tile8x8) image.
+     * Copy the src(raster) image to the tile image.
         --------------        --------------
         |            |        |            |
-        |  src_image |   =>   | tile8_image|
+        |  src_image |   =>   | tile_image |
         |            |        |            |
         --------------        --------------
      */
 
     src_img.rd_mode = IM_RASTER_MODE;
-    tile8_img.rd_mode = IM_TILE_MODE;
 
-    ret = imcopy(src_img, tile8_img);
+    /* Select the required TILE mode. */
+    tile_img.rd_mode = IM_TILE8x8_MODE;
+    // tile_img.rd_mode = IM_TILE4x4_MODE;
+
+    ret = imcopy(src_img, tile_img);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s raster -> tile8x8 running success!\n", LOG_TAG);
     } else {
@@ -109,22 +112,25 @@ int main() {
         goto release_buffer;
     }
 
-	printf("tile8x8 [0x%x, 0x%x, 0x%x, 0x%x]\n", tile8_buf[0], tile8_buf[1], tile8_buf[2], tile8_buf[3]);
-    write_image_to_file(tile8_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
+	printf("tile8x8 [0x%x, 0x%x, 0x%x, 0x%x]\n", tile_buf[0], tile_buf[1], tile_buf[2], tile_buf[3]);
+    write_image_to_file(tile_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
     /*
-     * Copy the tile8(tile8x8) image to the dst(raster) image.
+     * Copy the tile image to the dst(raster) image.
         --------------        --------------
         |            |        |            |
-        | tile8_image|   =>   |  dst_image |
+        | tile_image |   =>   |  dst_image |
         |            |        |            |
         --------------        --------------
      */
 
-    tile8_img.rd_mode = IM_TILE_MODE;
+    /* Select the required TILE mode. */
+    tile_img.rd_mode = IM_TILE8x8_MODE;
+    // tile_img.rd_mode = IM_TILE4x4_MODE;
+
     dst_img.rd_mode = IM_RASTER_MODE;
 
-    ret = imcopy(tile8_img, dst_img);
+    ret = imcopy(tile_img, dst_img);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s tile8x8 -> raster running success!\n", LOG_TAG);
     } else {
@@ -140,15 +146,15 @@ release_buffer:
         releasebuffer_handle(src_handle);
     if (dst_handle)
         releasebuffer_handle(dst_handle);
-    if (tile8_handle)
-        releasebuffer_handle(tile8_handle);
+    if (tile_handle)
+        releasebuffer_handle(tile_handle);
 
     if (src_buf)
         free(src_buf);
     if (dst_buf)
         free(dst_buf);
-    if (tile8_buf)
-        free(tile8_buf);
+    if (tile_buf)
+        free(tile_buf);
 
     return ret;
 }

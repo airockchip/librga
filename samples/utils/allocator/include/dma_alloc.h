@@ -21,9 +21,9 @@
 
 #define DMA_HEAP_UNCACHE_PATH           "/dev/dma_heap/system-uncached"
 #define DMA_HEAP_PATH                   "/dev/dma_heap/system"
-#define DMA_HEAP_DMA32_UNCACHE_PATCH    "/dev/dma_heap/system-uncached-dma32"
-#define DMA_HEAP_DMA32_PATCH            "/dev/dma_heap/system-dma32"
-#define CMA_HEAP_UNCACHE_PATH           "/dev/dma_heap/cma-uncached"
+#define DMA_HEAP_DMA32_UNCACHED_PATH    "/dev/dma_heap/system-uncached-dma32"
+#define DMA_HEAP_DMA32_PATH             "/dev/dma_heap/system-dma32"
+#define CMA_HEAP_UNCACHED_PATH          "/dev/dma_heap/cma-uncached"
 #define RV1106_CMA_HEAP_PATH	        "/dev/rk_dma_heap/rk-dma-heap-cma"
 
 int dma_sync_device_to_cpu(int fd);

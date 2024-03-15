@@ -69,8 +69,8 @@ int main(void) {
     dst_height = 720;
     dst_format = RK_FORMAT_RGBA_8888;
 
-    src_alloc_flags |= ROCKCHIP_BO_CONTIG;
-    dst_alloc_flags |= ROCKCHIP_BO_CONTIG;
+    src_alloc_flags |= RGA_UTILS_ROCKCHIP_BO_CONTIG;
+    dst_alloc_flags |= RGA_UTILS_ROCKCHIP_BO_CONTIG;
 
     /*
      * Allocate a physically continuous drm_buf, return dma_fd and

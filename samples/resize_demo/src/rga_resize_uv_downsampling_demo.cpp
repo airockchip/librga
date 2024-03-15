@@ -155,13 +155,13 @@ int main() {
     dst_buf_size = dst_width * dst_height * get_bpp_from_format(dst_format);
 
 #if USE_DMA_HEAP
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHE_PATCH, src_buf_size, &src_dma_fd, (void **)&src_buf);
+    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
     if (ret < 0) {
         printf("alloc src dma32_heap buffer failed!\n");
         return -1;
     }
 
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHE_PATCH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
+    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
     if (ret < 0) {
         printf("alloc dst dma32_heap buffer failed!\n");
         return -1;

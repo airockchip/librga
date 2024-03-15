@@ -28,6 +28,16 @@ target_link_libraries(rga_alpha_3channel_demo
 )
 install(TARGETS rga_alpha_3channel_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+# rga_alpha_3channel_demo
+add_executable(rga_alpha_rgba5551_demo
+    rga_alpha_rgba5551_demo.cpp
+)
+target_link_libraries(rga_alpha_rgba5551_demo
+    utils_obj
+    ${RGA_LIB}
+)
+install(TARGETS rga_alpha_rgba5551_demo DESTINATION ${CMAKE_INSTALL_BINDIR})
+
 # rga_alpha_yuv_demo
 add_executable(rga_alpha_yuv_demo
     rga_alpha_yuv_demo.cpp

@@ -23,14 +23,14 @@
 enum drm_rockchip_gem_mem_type
 {
     /* Physically Continuous memory and used as default. */
-    ROCKCHIP_BO_CONTIG = 1 << 0,
+    RGA_UTILS_ROCKCHIP_BO_CONTIG = 1 << 0,
     /* cachable mapping. */
-    ROCKCHIP_BO_CACHABLE = 1 << 1,
+    RGA_UTILS_ROCKCHIP_BO_CACHABLE = 1 << 1,
     /* write-combine mapping. */
-    ROCKCHIP_BO_WC = 1 << 2,
-    ROCKCHIP_BO_SECURE = 1 << 3,
-    ROCKCHIP_BO_MASK = ROCKCHIP_BO_CONTIG | ROCKCHIP_BO_CACHABLE |
-                       ROCKCHIP_BO_WC | ROCKCHIP_BO_SECURE
+    RGA_UTILS_ROCKCHIP_BO_WC = 1 << 2,
+    RGA_UTILS_ROCKCHIP_BO_SECURE = 1 << 3,
+    RGA_UTILS_ROCKCHIP_BO_MASK = RGA_UTILS_ROCKCHIP_BO_CONTIG | RGA_UTILS_ROCKCHIP_BO_CACHABLE |
+                                 RGA_UTILS_ROCKCHIP_BO_WC | RGA_UTILS_ROCKCHIP_BO_SECURE
 };
 
 void* drm_buf_alloc(int TexWidth, int TexHeight,int bpp, int *fd, int *handle, size_t *actual_size, int flags = 0);

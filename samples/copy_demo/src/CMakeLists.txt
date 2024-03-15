@@ -20,8 +20,8 @@ target_link_libraries(${DEMO_NAME}
 )
 install(TARGETS ${DEMO_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# rga_copy_tile8x8_demo
-SET(DEMO_NAME rga_copy_tile8x8_demo)
+# rga_copy_tile_demo
+SET(DEMO_NAME rga_copy_tile_demo)
 add_executable(${DEMO_NAME}
 ${DEMO_NAME}.cpp
 )

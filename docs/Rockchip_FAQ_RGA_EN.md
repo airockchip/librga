@@ -98,10 +98,10 @@ The API version number consists of major, minor, revision and build. The four le
 
     https://github.com/airockchip/librga
 
-  - Baidu Cloud：
-
-
-​				https://eyun.baidu.com/s/3jJ9Aiz0
+  - Zbox Cloud：
+  
+  
+    https://console.zbox.filez.com/l/fuGojC (fetch code: rkrga)
 
 
 
@@ -123,9 +123,9 @@ The driver version number consists of major, minor, revision and build. The four
 
   When it is found that the version does not meet the requirements, you can obtain the source code or precompiled library files in the following ways.
 
-  - Baidu Cloud：
-
-​				https://eyun.baidu.com/s/3dGhufEL
+  - Zbox Cloud：
+  
+    https://console.zbox.filez.com/l/7oOrKO (fetch code: rkrga)
 
 
 
@@ -142,11 +142,11 @@ When using RGA, you need to confirm that the current operating environment can w
 
 Usually the released SDK version matches, but because some applications depend on the higher version librga.so, you can use the following Baidu Cloud link to obtain the RGA module code update package:
 
-https://eyun.baidu.com/s/3i6sbsDR
+https://console.zbox.filez.com/l/mu2SOR (fetch code: rkrga)
 
 - update-to-MULTI_RGA
 
-​		When the original driver is RGA Device Driver or RGA2 Device Driver, use this update package to update the driver to RGA multicore Device Driver and update the matching version of librga.
+  When the original driver is RGA Device Driver or RGA2 Device Driver, use this update package to update the driver to RGA multicore Device Driver and update the matching version of librga.
 
 - MUTIL_RGA
 

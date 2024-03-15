@@ -6,7 +6,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
 #### RGA API
 
-- 当前预编译仓库API版本：1.10.0
+- 当前预编译仓库API版本：1.10.1
 
 - 获取源码方式：
 

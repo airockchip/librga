@@ -71,9 +71,11 @@ ifeq ($(strip $(TARGET_BOARD_PLATFORM)),rk3188)
 LOCAL_CFLAGS += -DRK3188
 endif
 
-LOCAL_SRC_FILES:= \
+LOCAL_SRC_FILES := \
     rgaImDemo.cpp \
     args.cpp
+
+include $(LOCAL_PATH)/../utils/utils.mk
 
 LOCAL_MODULE:= rgaImDemo
 

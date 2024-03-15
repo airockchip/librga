@@ -34,6 +34,7 @@ typedef enum _mode_code {
     MODE_CVTCOLOR,
     MODE_FILL,
     MODE_WHILE,
+    MODE_HELP,
     MODE_NONE,
     MODE_MAX
 } MODE_CODE;
@@ -48,6 +49,8 @@ typedef enum _mode_code {
 #define MODE_BLEND_CHAR           (char) (MODE_BLEND      +'0')
 #define MODE_CVTCOLOR_CHAR        (char) (MODE_CVTCOLOR   +'0')
 #define MODE_FILL_CHAR            (char) (MODE_FILL       +'0')
+#define MODE_WHILE_CHAR           'w'
+#define MODE_HELP_CHAR            'h'
 #define MODE_NONE_CHAR            (char) (MODE_NONE       +'0')
 
 #define BLUE_COLOR  0xffff0000

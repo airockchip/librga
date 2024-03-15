@@ -60,7 +60,7 @@ int main(void) {
      * return dma_fd and virtual address.
      * ColorFill can only be used on buffers within 4G.
      */
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHE_PATCH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
+    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
     if (ret < 0) {
         printf("alloc dma32_heap buffer failed!\n");
         return -1;
