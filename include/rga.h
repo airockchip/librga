@@ -19,15 +19,6 @@
 #ifndef _RGA_DRIVER_H_
 #define _RGA_DRIVER_H_
 
-
-#ifndef ENABLE
-#define ENABLE 1
-#endif
-
-#ifndef DISABLE
-#define DISABLE 0
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {

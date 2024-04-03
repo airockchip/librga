@@ -1146,8 +1146,6 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 
 ​			该问题的解决方案有两种，一为更新SDK或RGA驱动，保持librga与驱动是匹配的即可，第二种则是如若无需新版本librga才有的功能，可以使用SDK自带的librga即可。
 
-​			rga模块源码更新包可以通过百度网盘获取：https://eyun.baidu.com/s/3i6sbsDR
-
 
 
 **Q2.12**：RGA如何实现OSD叠加字幕？

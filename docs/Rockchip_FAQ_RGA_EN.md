@@ -100,7 +100,6 @@ The API version number consists of major, minor, revision and build. The four le
 
   - Zbox Cloud：
   
-  
     https://console.zbox.filez.com/l/fuGojC (fetch code: rkrga)
 
 
@@ -1132,8 +1131,6 @@ Date:   Tue Nov 24 19:50:17 2020 +0800
 **A2.11**：This is usually caused by a mismatch between librga and kernel. For detailed version description, see **A2.4**. The problem usually occurs after librga available on Github is used in SDK released before November 2020. Librga on Github is of new version, which does not match the older version RGA driver. Here, some configurations about color space have been changed, which causes the obvious color deviation.
 
 ​			There are two solutions to this problem: one is to update the SDK or RGA driver and keep librga matching with the driver; the other is to use the librga provided with SDK if the functions only available in the new version librga are not needed.
-
-​			The rga module source code update package can be obtained through Baidu Netdisk: https://eyun.baidu.com/s/3i6sbsDR
 
 
 

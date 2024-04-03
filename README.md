@@ -24,11 +24,11 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
       <SDK_path>/external/linux-rga
       ```
 
-  - 百度网盘
+  - 联想网盘
 
-    可通过以下链接选择对应版本驱动源码更新至SDK对应目录下，或独立编译使用。
+    可通过以下链接选择对应版本源码更新至SDK对应目录下，或独立编译使用。
 
-    https://eyun.baidu.com/s/3jJ9Aiz0
+    https://console.zbox.filez.com/l/fuGojC（提取码：rkrga）
 
 #### 驱动版本适配：
 
@@ -89,20 +89,20 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
       <kernel_path>/driver/video/rockchip/rga3
       ```
 
-  - 百度网盘
+  - 联想网盘
 
     可通过以下链接选择对应版本驱动源码更新至SDK对应目录下。
 
-    https://eyun.baidu.com/s/3dGhufEL
+    https://console.zbox.filez.com/l/7oOrKO（提取码：rkrga）
 
 
 ### 适用芯片平台
 
-Rockchip RK3128 | RK3126c | RK3288 | RK3288w | RV1108 | RK3368 | RK3326 | RK3228 | RK3228H | RK3326 | RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RK3326S | RV1106 | RV1103 | RK3528 | RK3562
+Rockchip RK3128 | RK3126c | RK3288 | RK3288w | RV1108 | RK3368 | RK3326 | RK3228 | RK3228H | RK3326 | RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RK3326S | RV1106 | RV1103 | RK3528 | RK3562 |RK3576
 
 >  本仓库预编译文件只支持以下芯片平台，其他芯片平台可以使用SDK中源码进行编译。
 
-Rockchip RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RV1106 | RV1103 | RK3528 | RK3562
+Rockchip RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RV1106 | RV1103 | RK3528 | RK3562 |RK3576
 
 ### 目录说明
 
