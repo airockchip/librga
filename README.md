@@ -28,7 +28,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
     可通过以下链接选择对应版本源码更新至SDK对应目录下，或独立编译使用。
 
-    https://console.zbox.filez.com/l/fuGojC（提取码：rkrga）
+    https://console.zbox.filez.com/l/fuGojC （提取码：rkrga）
 
 #### 驱动版本适配：
 
@@ -93,7 +93,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
     可通过以下链接选择对应版本驱动源码更新至SDK对应目录下。
 
-    https://console.zbox.filez.com/l/7oOrKO（提取码：rkrga）
+    https://console.zbox.filez.com/l/7oOrKO （提取码：rkrga）
 
 
 ### 适用芯片平台
