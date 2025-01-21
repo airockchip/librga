@@ -70,6 +70,10 @@ set(IM2D_DEMO_INCLUDE
     ../../include
     ../../im2d_api)
 
+if(RGA_SOURCE_CODE_TYPE STREQUAL c)
+    set_source_files_properties(${IM2D_DEMO_SRCS} PROPERTIES LANGUAGE C COMPILE_FLAGS "-x c")
+endif()
+
 if (NOT DEFINED RGA_SAMPLES_UTILS_COMPILED)
     include(${CMAKE_CURRENT_SOURCE_DIR}/../utils/CMakeLists.txt)
 endif()

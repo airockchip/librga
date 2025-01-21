@@ -69,7 +69,7 @@ static void drm_deinit(int drm_fd)
     }
 }
 
-void *drm_buf_alloc(int TexWidth, int TexHeight, int bpp, int *fd,  int *handle, size_t *actual_size, int flags=0)
+void *drm_buf_alloc(int TexWidth, int TexHeight, int bpp, int *fd,  int *handle, size_t *actual_size, int flags)
 {
     int ret;
     char *map = NULL;

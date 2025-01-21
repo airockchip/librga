@@ -176,8 +176,15 @@ IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
                                       int wstride, int hstride);
 #endif
 
-void imsetAlphaBit(rga_buffer_t *buf, uint8_t alpha0, uint8_t alpha1);
-void imsetOpacity(rga_buffer_t *buf, uint8_t alpha);
-void imsetColorSpace(rga_buffer_t *buf, IM_COLOR_SPACE_MODE mode);
+IM_EXPORT_API void imsetAlphaBit(rga_buffer_t *buf, uint8_t alpha0, uint8_t alpha1);
+IM_EXPORT_API void imsetOpacity(rga_buffer_t *buf, uint8_t alpha);
+IM_EXPORT_API void imsetColorSpace(rga_buffer_t *buf, IM_COLOR_SPACE_MODE mode);
+
+IM_EXPORT_API void imsetOptGaussianBlur(im_opt_t *opt,
+                                        int gauss_width, int gauss_height,
+                                        int sigma_x, int sigma_y);
+IM_EXPORT_API void imsetOptGaussianBlurMatrix(im_opt_t *opt,
+                                              int gauss_width, int gauss_height,
+                                              double *matrix);
 
 #endif /* #ifndef _im2d_buffer_h_ */

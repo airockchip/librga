@@ -2,9 +2,9 @@
 
 ID: RK-KF-YF-403
 
-Release Version: V2.2.3
+Release Version: V2.2.5
 
-Release Date: 2024-03-06
+Release Date: 2024-11-18
 
 Security Level: □Top-Secret   □Secret   □Internal   ■Public
 
@@ -54,6 +54,8 @@ This document (this guide) is mainly intended for:
 | 2023/02/09 | 2.2.1 | Yu Qiaowei | Format document. |
 | 2023/06/28 | 2.2.2 | Yu Qiaowei | - Add chip RK3562 introduction<br/>- Improve the precautions for grayscale images |
 | 2024/03/06 | 2.2.3 | Yu Qiaowei | Add chip RK3576 introduction |
+| 2024/08/22 | 2.2.4 | Yu Qiaowei | - Add chip RK3506、RV1103B introduction |
+| 2024/11/18 | 2.2.5 | Yu Qiaowei | Add the support status of APIs in different environments. |
 
 ---
 
@@ -165,6 +167,28 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="4">4096x4096</td>
       <td rowspan="4">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/8~8 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>IOMMU(32bit)</td>
       <td rowspan="4">2</td>
+   </tr>
+   <tr>
+      <td rowspan="1">RGA2-Lite2</td>
+      <td>Libra</td>
+      <td>RK3506</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">1280x1280</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">1280x1280</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>Guassion blur<br/>alpha-8bit</td>
+      <td rowspan="1">2</td>
+   </tr>
+   <tr>
+      <td rowspan="1">RGA2-Lite3</td>
+      <td>Pather</td>
+      <td>RK1103B</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">2880x1620</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">2880x1620</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear)<br/>scale-down(bi-linear/average)<br/>Color fill</td>
+      <td rowspan="1">2</td>
    </tr>
    <tr>
       <td>Infiniti</td>
@@ -350,6 +374,26 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
       <td>RK1808</td>
    </tr>
    <tr>
+      <td rowspan="1">RGA2-Lite2</td>
+      <td>Libra</td>
+      <td>RK3506</td>
+      <td rowspan="1"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_A8<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="1">
+RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4
+   	  </td>
+   </tr>
+   <tr>
+      <td rowspan="1">RGA2-Lite2</td>
+      <td>Pather</td>
+      <td>RV1103B</td>
+      <td rowspan="1"> RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400
+      </td>
+      <td rowspan="1">
+RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400
+   	  </td>
+   </tr>
+   <tr>
       <td rowspan="8">RGA2-Enhance</td>
       <td>Mclaren</td>
       <td>RK3399</td>
@@ -457,7 +501,7 @@ RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/
         <td>width stride must be 4-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
     <tr>
-        <td rowspan="6">RGA2<br/>RGA2-Lite0<br/>RGA2-Lite1<br/>RGA2-Enhance<br/>RGA2-Pro</td>
+        <td rowspan="6">RGA2<br/>RGA2-Lite0<br/>RGA2-Lite1<br/><br/>RGA2-Lite2<br/>RGA2-Lite3<br/>RGA2-Enhance<br/>RGA2-Pro</td>
         <td rowspan="6">4</td>
         <td>
 RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888
@@ -805,6 +849,558 @@ The software support library provides the following API, asynchronous mode only 
 - **imcheck**： Verify whether the parameters are valid and whether the current hardware supports the operation.
 - **imsync**： Synchronize task completion status in asynchronous mode.
 - **imconfig**： Add default configuration to current thread context.
+
+Support status of each API in different environments:
+
+<table><thead>
+  <tr>
+    <th>Item</th>
+    <th>API</th>
+    <th>Language</th>
+    <th>System</th>
+    <th>librga</th>
+    <th>RGA2 driver</th>
+    <th>Multi_RGA driver</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td rowspan="6">common API</td>
+    <td>querystring</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>imcheckHeader</td>
+    <td>C++</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>≥1.9.0</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>imcheck</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imStrError</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>imsync</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.6.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imconfig</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.6.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td rowspan="8">buffer API</td>
+    <td>importbuffer_virtualaddr</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.7.2</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>importbuffer_physicaladdr</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.7.2</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>importbuffer_fd</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.7.2</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>releasebuffer_handle</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.7.2</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_handle</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.7.2</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_virtualaddr</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_physicaladdr</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_fd</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td rowspan="22">single process API</td>
+    <td>imcopy</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imresize</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>impyramind</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imcrop</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imtranslate</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imcvtcolor</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imrotate</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imflip</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imblend</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imcomposite</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imcolorkey</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imosd</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>≥1.8.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imquantize</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imrop</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imfill</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imfillArray</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imrectangle</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>imrectangleArray</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>immakeBorder</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>immosaic</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>≥1.8.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>immosaicArray</td>
+    <td>C++/C</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td>improcess</td>
+    <td>C++/C</td>
+    <td>Android / Linux / QNX / RT-thread</td>
+    <td>√</td>
+    <td>√</td>
+    <td>√</td>
+  </tr>
+  <tr>
+    <td rowspan="24">task process API</td>
+    <td>imbeginJob</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imendJob</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcancelJob</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcopyTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imresizeTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcropTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imtranslateTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcvtcolorTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imrotateTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imflipTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imblendTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcompositeTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imcolorkeyTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imosdTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imquantizeTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imropTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imfillTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imfillTaskArray</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imrectangleTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>imrectangleTaskArray</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>immosaicTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>immosaicTaskArray</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>immosaicTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td>improcessTask</td>
+    <td>C++</td>
+    <td>Android / Linux</td>
+    <td>≥1.9.0</td>
+    <td>×</td>
+    <td>≥1.2.25</td>
+  </tr>
+  <tr>
+    <td rowspan="6">expand API</td>
+    <td>importbuffer_GraphicBuffer</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>importbuffer_GraphicBuffer_handle</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>importbuffer_AHardwareBuffer</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_GraphicBuffer</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_handle（GraphicBuffer handle）</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+  <tr>
+    <td>wrapbuffer_AHardwareBuffer</td>
+    <td>C++</td>
+    <td>Android</td>
+    <td>√</td>
+    <td>/</td>
+    <td>/</td>
+  </tr>
+</tbody></table>
+
+> Note:
+>
+> (√): Supported, (×): Not supported, (/): Not applicable.
 
 
 

@@ -48,10 +48,12 @@
 #include "drmrga.h"
 #include "rga.h"
 
+typedef std::vector<uint64_t> rga_gralloc_attr_t;
+
 // -------------------------------------------------------------------------------
 int         RkRgaGetHandleFd(buffer_handle_t handle, int *fd);
 int         RkRgaGetHandleAttributes(buffer_handle_t handle,
-                                     std::vector<int> *attrs);
+                                     rga_gralloc_attr_t *attrs);
 int         RkRgaGetHandleMapAddress(buffer_handle_t handle,
                                      void **buf);
 #endif  //Android

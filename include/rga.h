@@ -110,8 +110,8 @@ typedef enum _Rga_SURF_FORMAT {
                                              * or
                                              * plane 1: 2x1 subsampled [0:23] Cr:Cb 16: 16 */
     /* For compatibility with misspellings */
-    RK_FORMAT_YCbCr_422_10b_SP = RK_FORMAT_YCbCr_422_SP_10B << 8,
-    RK_FORMAT_YCrCb_422_10b_SP = RK_FORMAT_YCrCb_422_SP_10B << 8,
+    RK_FORMAT_YCbCr_422_10b_SP = RK_FORMAT_YCbCr_422_SP_10B,
+    RK_FORMAT_YCrCb_422_10b_SP = RK_FORMAT_YCrCb_422_SP_10B,
 
     RK_FORMAT_BGR_565      = 0x24 << 8, /* [0:16] B:G:R 5:6:5 little endian */
     RK_FORMAT_BGRA_5551    = 0x25 << 8, /* [0:16] B:G:R:A 5:5:5:1 little endian */

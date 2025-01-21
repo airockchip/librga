@@ -29,6 +29,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <cinttypes>
 
 #include "im2d.hpp"
 #include "RgaUtils.h"
@@ -152,7 +153,7 @@ int main(void) {
 
     ret = imcopy(src, dst);
     if (ret == IM_STATUS_SUCCESS) {
-        printf("%s running success! cost %ld us\n", LOG_TAG, get_cur_us() - ts);
+        printf("%s running success! cost %" PRIi64" us\n", LOG_TAG, get_cur_us() - ts);
     } else {
         printf("%s running failed, %s\n", LOG_TAG, imStrError((IM_STATUS)ret));
         goto release_buffer;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Rockchip Electronics Co., Ltd.
+ * Copyright (C) 2024  Rockchip Electronics Co., Ltd.
  * Authors:
  *     YuQiaowei <cerf.yu@rock-chips.com>
  *
@@ -18,7 +18,7 @@
 
 #define LOG_NDEBUG 0
 #undef LOG_TAG
-#define LOG_TAG "rga_resize_config_interpolation_demo"
+#define LOG_TAG "rga_gauss_demo"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -29,7 +29,6 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/mman.h>
-#include <math.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -37,8 +36,8 @@
 
 #include "RgaUtils.h"
 #include "im2d.hpp"
-
 #include "utils.h"
+#include "dma_alloc.h"
 
 #define LOCAL_FILE_PATH "/data"
 
@@ -47,29 +46,44 @@ int main() {
     int src_width, src_height, src_format;
     int dst_width, dst_height, dst_format;
     char *src_buf, *dst_buf;
+    int src_dma_fd, dst_dma_fd;
     int src_buf_size, dst_buf_size;
-    im_opt opt;
 
     rga_buffer_t src_img, dst_img;
     rga_buffer_handle_t src_handle, dst_handle;
+    im_handle_param_t src_param;
+    im_handle_param_t dst_param;
 
     memset(&src_img, 0, sizeof(src_img));
     memset(&dst_img, 0, sizeof(dst_img));
-    memset(&opt, 0, sizeof(opt));
 
     src_width = 1280;
     src_height = 720;
     src_format = RK_FORMAT_RGBA_8888;
 
-    dst_width = 1920;
-    dst_height = 1080;
+    dst_width = 1280;
+    dst_height = 720;
     dst_format = RK_FORMAT_RGBA_8888;
 
     src_buf_size = src_width * src_height * get_bpp_from_format(src_format);
     dst_buf_size = dst_width * dst_height * get_bpp_from_format(dst_format);
 
-    src_buf = (char *)malloc(src_buf_size);
-    dst_buf = (char *)malloc(dst_buf_size);
+    src_param = {(uint32_t)src_width, (uint32_t)src_height, (uint32_t)src_format};
+    dst_param = {(uint32_t)dst_width, (uint32_t)dst_height, (uint32_t)dst_format};
+
+    /* Allocate dma_buf from CMA, return dma_fd and virtual address */
+    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
+    if (ret < 0) {
+        printf("alloc src CMA buffer failed!\n");
+        return -1;
+    }
+
+    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
+    if (ret < 0) {
+        printf("alloc dst CMA buffer failed!\n");
+        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
+        return -1;
+    }
 
     /* fill image data */
     if (0 != read_image_from_file(src_buf, LOCAL_FILE_PATH, src_width, src_height, src_format, 0)) {
@@ -78,10 +92,11 @@ int main() {
     }
     memset(dst_buf, 0x80, dst_buf_size);
 
-    src_handle = importbuffer_virtualaddr(src_buf, src_buf_size);
-    dst_handle = importbuffer_virtualaddr(dst_buf, dst_buf_size);
+    src_handle = importbuffer_fd(src_dma_fd, &src_param);
+    dst_handle = importbuffer_fd(dst_dma_fd, &dst_param);
     if (src_handle == 0 || dst_handle == 0) {
-        printf("importbuffer failed!\n");
+        printf("import dma_fd error!\n");
+        ret = -1;
         goto release_buffer;
     }
 
@@ -89,26 +104,23 @@ int main() {
     dst_img = wrapbuffer_handle(dst_handle, dst_width, dst_height, dst_format);
 
     /*
-     * Scale up the src image to 1920*1080.
-        --------------    ---------------------
-        |            |    |                   |
-        |  src_img   |    |     dst_img       |
-        |            | => |                   |
-        --------------    |                   |
-                          |                   |
-                          ---------------------
+     * After performing Gaussian blur on the source data, output it to the target buffer.
+        --------------        --------------
+        |            | guass  |            |
+        |  src_image |   =>   |   result   |
+        |            |        |            |
+        --------------        --------------
      */
 
-    ret = imcheck(src_img, dst_img, {}, {});
+    imsetOpacity(&src_img, 0xff);
+
+    ret = imcheck(src_img, dst_img, (im_rect){}, (im_rect){});
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
         return -1;
     }
 
-    opt.version = RGA_CURRENT_API_VERSION;
-    opt.interp = IM_INTERP(IM_INTERP_LINEAR, IM_INTERP_LINEAR);
-
-    ret = improcess(src_img, dst_img, {}, {}, {}, {}, 0, NULL, &opt, 0);
+    ret = imgaussianBlur(src_img, dst_img, 3, 3, 1);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s running success!\n", LOG_TAG);
     } else {
@@ -116,6 +128,7 @@ int main() {
         goto release_buffer;
     }
 
+	printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
     write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
 
 release_buffer:
@@ -125,9 +138,9 @@ release_buffer:
         releasebuffer_handle(dst_handle);
 
     if (src_buf)
-        free(src_buf);
+        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
     if (dst_buf)
-        free(dst_buf);
+        dma_buf_free(dst_buf_size, &dst_dma_fd, dst_buf);
 
     return ret;
 }

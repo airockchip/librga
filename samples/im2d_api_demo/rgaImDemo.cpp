@@ -18,6 +18,7 @@
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -26,8 +27,11 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+#ifdef __cplusplus
 #include "im2d.hpp"
-#include "RockchipRga.h"
+#else
+#include "im2d.h"
+#endif
 #include "RgaUtils.h"
 #include "args.h"
 
@@ -183,6 +187,7 @@ int main(int argc, char*  argv[]) {
             goto free_buffer;
         }
 
+#ifdef __cplusplus
         src_handle = importbuffer_fd(src_dma_fd, src_buf_size);
         if (src_handle == 0) {
             printf("Failed to import CMA buffer fd for src channel! %s\n", imStrError());
@@ -193,6 +198,18 @@ int main(int argc, char*  argv[]) {
             printf("Failed to import CMA buffer fd for dst channel! %s\n", imStrError());
             goto free_buffer;
         }
+#else
+        src_handle = importbuffer_fd(src_dma_fd, &(im_handle_param_t){src_width, src_height, src_format});
+        if (src_handle == 0) {
+            printf("Failed to import CMA buffer fd for src channel! %s\n", imStrError());
+            goto free_buffer;
+        }
+        dst_handle = importbuffer_fd(dst_dma_fd, &(im_handle_param_t){dst_width, dst_height, dst_format});
+        if (dst_handle == 0) {
+            printf("Failed to import CMA buffer fd for dst channel! %s\n", imStrError());
+            goto free_buffer;
+        }
+#endif
     } else {
         printf("\"%s\" does not exist, so use malloc.\n", heap_name);
 
@@ -203,6 +220,7 @@ int main(int argc, char*  argv[]) {
             goto free_buffer;
         }
 
+#ifdef __cplusplus
         src_handle = importbuffer_virtualaddr(src_buf, src_buf_size);
         if (src_handle == 0) {
             printf("Failed to import virtualaddr for src channel! %s\n", imStrError());
@@ -215,6 +233,20 @@ int main(int argc, char*  argv[]) {
             ret = -1;
             goto free_buffer;
         }
+#else
+        src_handle = importbuffer_virtualaddr(src_buf, &(im_handle_param_t){src_width, src_height, src_format});
+        if (src_handle == 0) {
+            printf("Failed to import virtualaddr for src channel! %s\n", imStrError());
+            ret = -1;
+            goto free_buffer;
+        }
+        dst_handle = importbuffer_virtualaddr(dst_buf, &(im_handle_param_t){dst_width, dst_height, dst_format});
+        if (dst_handle == 0) {
+            printf("Failed to import virtualaddr for dst channel! %s\n", imStrError());
+            ret = -1;
+            goto free_buffer;
+        }
+#endif
     }
 
     /* invalid CPU cache */

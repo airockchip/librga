@@ -56,7 +56,7 @@ int main() {
 
     bg_width = 1280;
     bg_height = 720;
-    bg_format = RK_FORMAT_YCbCr_420_SP;
+    bg_format = RK_FORMAT_RGBA_8888;
 
     fg_buf_size = fg_width * fg_height * get_bpp_from_format(fg_format);
     bg_buf_size = bg_width * bg_height * get_bpp_from_format(bg_format);
