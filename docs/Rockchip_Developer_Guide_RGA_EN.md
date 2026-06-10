@@ -2,9 +2,9 @@
 
 ID: RK-KF-YF-403
 
-Release Version: V2.2.8
+Release Version: V2.2.10
 
-Release Date: 2025-06-10
+Release Date: 2026-05-13
 
 Security Level: □Top-Secret   □Secret   □Internal   ■Public
 
@@ -59,6 +59,8 @@ This document (this guide) is mainly intended for:
 | 2025/03/27 | 2.2.6 | Yu Qiaowei | Add chip RV1126B introduction |
 | 2025/04/30 | 2.2.7 | Yu Qiaowei | Fixed over-constraints on actual_height in the description of RK3506/RV1103B |
 | 2025/06/10 | 2.2.8 | Yu Qiaowei | - Add chip RK1820 introduction<br />- Remove chip codename |
+| 2025/12/24 | 2.2.9 | Yu Qiaowei | Add chip RK3538 introduction |
+| 2026/05/13 | 2.2.10 | Yu Qiaowei | - Add chip RK3572 introduction<br/>- Update description of the flags parameter in imbeginJob()<br/>- Add descriptions for newly added member variables in im_opt_t |
 
 ---
 
@@ -175,7 +177,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
       <td rowspan="1">1280x8192</td>
       <td rowspan="1">2x2</td>
       <td rowspan="1">1280x4096</td>
-      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>Guassion blur<br/>alpha-8bit</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>Gaussian blur<br/>alpha-8bit</td>
       <td rowspan="1">2</td>
    </tr>
    <tr>
@@ -220,7 +222,7 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
        <td>RK3562</td>
     </tr>
     <tr>
-      <td rowspan="3">RGA2-Pro</td>
+      <td rowspan="5">RGA2-Pro</td>
       <td>RK3576</td>
       <td rowspan="3">2x2</td>
       <td rowspan="3">8192x8192</td>
@@ -234,6 +236,24 @@ RGA (Raster Graphic Acceleration Unit) is an independent 2D hardware accelerator
    </tr>
    <tr>
       <td>RK1820</td>
+   </tr>
+   <tr>
+      <td>RK3538</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(bi-linear/average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>osd<br/>mosaic<br/>ARGB5551 alpha bit map<br/>rkfbc64x4 input<br/>afbc32x8(without src1)<br/>security<br/>IOMMU(40bit)</td>
+      <td rowspan="1">2</td>
+   </tr>
+   <tr>
+      <td>RK3572</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(bi-linear/average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>osd<br/>mosaic<br/>ARGB5551 alpha bit map<br/>rkfbc64x4 input<br/>afbc32x8<br/>security<br/>RKCFA<br/>IOMMU(40bit)</td>
+      <td rowspan="1">2</td>
    </tr>
    <tr>
       <td rowspan="1">RGA3</td>
@@ -391,7 +411,7 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
       <td>RK3562</td>
    </tr>
    <tr>
-      <td rowspan="3">RGA2-Pro</td>
+      <td rowspan="5">RGA2-Pro</td>
       <td>RK3576</td>
       <td rowspan="3"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMA_A8 (only src for alpha blend)<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
       </td>
@@ -403,6 +423,16 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
    </tr>
    <tr>
       <td>RK1820</td>
+   </tr>
+   <tr>
+      <td>RK3538</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_Y210 (only AFBC)<br>RK_FORMA_A8 (only src for alpha blend)<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4 <br/>RK_FORMAT_Y8<br/>RK_FORMAT_RGBA_1010102 (only AFBC)<br/>RK_FORMAT_BGRA_1010102 (only AFBC)<br/>RK_FORMAT_ARGB_2101010 (only AFBC)<br/>RK_FORMAT_ABGR_2101010 (only AFBC)<br/>RK_FORMAT_RGBX_1010102 (only AFBC)<br/>RK_FORMAT_BGRX_1010102 (only AFBC)<br/>RK_FORMAT_XRGB_2101010 (only AFBC)<br/>RK_FORMAT_XBGR_2101010 (only AFBC)<br/>RK_FORMAT_YCbCr_420_SP_10B (only AFBC)<br/>RK_FORMAT_YCrCb_420_SP_10B (only AFBC)<br/>RK_FORMAT_YCbCr_422_SP_10B (only AFBC)<br/>RK_FORMAT_YCrCb_422_SP_10B (only AFBC)<br/>RK_FORMAT_Y210 (only AFBC)<br>RK_FORMAT_YUV_444_10B (only AFBC)
+      </td>
+   </tr>
+   <tr>
+      <td>RK3572</td>
    </tr>
    <tr>
       <td rowspan="1">RGA3</td>
@@ -426,6 +456,8 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMA
 
 
 ### Image Format Alignment Instructions
+
+#### Raster Pixel Format Alignment
 
 <table>
     <tr>
@@ -476,7 +508,7 @@ RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMA
     </tr>
     <tr>
     	<td>
-RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420
+RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420<br/>RK_FORMAT_Y210
         </td>
         <td>width stride must be 2-aligned，x_offset、y_offset、width、height、height stride must be 2-aligned</td>
     </tr>
@@ -494,7 +526,7 @@ RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/
     </tr>
     <tr>
         <td>
-RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_YUV_444_10B
         </td>
         <td>width stride must be 16-aligned，x_offset、y_offset must be 64-aligned，width、height、height stride must be 2-aligned</td>
     </tr>
@@ -546,11 +578,43 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
     </tr>
 </table>
 
+
 > Note:
 >
 > 1). Alignment requirement formula: lcm(bpp，byte_stride * 8) / pixel_stride.
 >
 > 2). When loaded with multiple versions of hardware, chip platform constraints according to the most strict alignment requirements.
+
+
+
+#### None-Linear Mode Alignment
+
+In addition to the formatting requirements themselves, the following non-linear modes will have additional alignment requirements:
+
+<table>
+	<tr>
+		<td rowspan="5">FBC/TILE</td>
+        <td>AFBC16x16</td>
+        <td>width stride、height_stride must be 16-aligned.</td>
+    </tr>
+    <tr>
+        <td>AFBC32x8</td>
+        <td>width stride must be 32-aligned，height_stride must be 8-aligned</td>
+    </tr>
+    <tr>
+        <td>RFBC64x4</td>
+        <td>width stride must be 64-aligned，height_stride must be 4-aligned</td>
+    </tr>
+    <tr>
+        <td>TILE8x8</td>
+        <td>width stride、height_stride must be 8-aligned</td>
+    </tr>
+    <tr>
+        <td>TILE4x4</td>
+        <td>width stride、height_stride must be 4-aligned</td>
+    </tr>
+</table>
+
 
 
 
@@ -1312,7 +1376,7 @@ Support status of each API in different environments:
     <td>importbuffer_GraphicBuffer</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1320,7 +1384,7 @@ Support status of each API in different environments:
     <td>importbuffer_GraphicBuffer_handle</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1328,7 +1392,7 @@ Support status of each API in different environments:
     <td>importbuffer_AHardwareBuffer</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1515,11 +1579,11 @@ rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle,
 IM_API im_job_handle_t imbeginJob(uint64_t flags = 0);
 ```
 
-> Create an RGA image processing job, which will return a job handle, job_handle can be used to add/remove RGA image operations, submit/execute the job.
+> Create an RGA image processing job, which will return a job handle, job_handle can be used to add/remove RGA image operations, submit/execute the job. When multiple image processing tasks have sequential dependencies, it is recommended to add the IM_JOB_FLAGS_EXEC_SEQUENTIAL option to flags to ensure that multiple tasks are executed in order.
 
-| Parameter | **Description**          |
-| --------- | ------------------------ |
-| flags     | **[optional]** job flags |
+| Parameter | **Description**                                             |
+| --------- | ----------------------------------------------------------- |
+| flags     | **[optional]** job flags：<br/>IM_JOB_FLAGS_EXEC_SEQUENTIAL |
 
 **Returns** im_job_handle_t to describe the job handle.
 
@@ -2892,7 +2956,6 @@ typedef struct {
     void* vir_addr;                     /* virtual address */
     void* phy_addr;                     /* physical address */
     int fd;                             /* shared fd */
-    rga_buffer_handle_t handle;         /* buffer handle */
 
     int width;                          /* width */
     int height;                         /* height */
@@ -2903,6 +2966,11 @@ typedef struct {
     int color_space_mode;               /* color_space_mode */
     int global_alpha;                   /* global_alpha */
     int rd_mode;
+
+    /* legacy */
+    ...
+
+    rga_buffer_handle_t handle;         /* buffer handle */
 } rga_buffer_t;
 ```
 
@@ -2911,7 +2979,6 @@ typedef struct {
 | vir_addr         | Virtual address of image buffer.                    |
 | phy_addr         | Contiguous physical address of the image buffer.    |
 | fd               | File descriptor of image buffer DMA.             |
-| handle           | Import handle corresponding to the image buffer of the RGA driver. |
 | width            | The width of the actual operating area of image,in pixels.  |
 | height           | The height of the actual operating area of image,in pixels. |
 | wstride          | The stride of the image width, in pixels.          |
@@ -2920,6 +2987,7 @@ typedef struct {
 | color_space_mode | Image color space mode.                         |
 | global_alpha     | Global Alpha configuration.                         |
 | rd_mode          | The mode in which the current channel reads data.                  |
+| handle           | Import handle corresponding to the image buffer of the RGA driver. |
 
 - **Note**
 
@@ -2975,6 +3043,7 @@ im2d_api/im2d_type.h
 
 ```c++
 typedef struct im_opt {
+    im_api_version_t version DEFAULT_INITIALIZER(RGA_CURRENT_API_HEADER_VERSION);
     int color;                          /* color, used by color fill */
     im_colorkey_range colorkey_range;   /* range value of color key */
     im_nn_t nn;
@@ -2982,17 +3051,32 @@ typedef struct im_opt {
 
     int priority;
     int core;
+    int mosaic_mode;
+    im_osd_t osd_config;
+    im_intr_config_t intr_config;
+    int interp;
+    im_gauss_t gauss_config;
+    im_cfa_t cfa_config;
+    char reserve[48];
 } im_opt_t;
 ```
 
 | Parameter       | Description                       |
 | -------------- | -------------------------- |
+| version        | Current header file version.        |
 | color          | Image color-fill configuration.         |
 | colorkey_range | Colorkey range configuration.   |
 | nn             | Operation point preprocessing (quantization) configuration. |
 | rop_code       | ROP operation code configuration.    |
 | priority       | Current task priority configuration.       |
 | core           | Specify the hardware core of current task.     |
+| mosaic_mode    | Mosaic mode configuration.           |
+| osd_config     | OSD subtitle overlay invert/statistics configuration. |
+| intr_config    | Early interrupt mode configuration.  |
+| interp         | Horizontal and vertical interpolation algorithm configuration. |
+| gauss_config   | Gaussian blur configuration.         |
+| cfa_config     | CFA configuration.                   |
+| reserve        | Reserved bits.                       |
 
 - **Note**
 
@@ -3092,12 +3176,12 @@ im2d_api/im2d_type.h
 
 ```c++
 typedef struct im_nn {
-    int scale_r;                /* scaling factor on R channal */
-    int scale_g;                /* scaling factor on G channal */
-    int scale_b;                /* scaling factor on B channal */
-    int offset_r;               /* offset on R channal */
-    int offset_g;               /* offset on G channal */
-    int offset_b;               /* offset on B channal */
+  int scale_r;                /* scaling factor on R channel */
+  int scale_g;                /* scaling factor on G channel */
+  int scale_b;                /* scaling factor on B channel */
+  int offset_r;               /* offset on R channel */
+  int offset_g;               /* offset on G channel */
+  int offset_b;               /* offset on B channel */
 } im_nn_t;
 ```
 
@@ -3139,6 +3223,383 @@ typedef struct {
 | -------- | ------------------ |
 | max      | The Maximum value of the color key. |
 | min      | The minimum value of the color key. |
+
+- **Note**
+
+null
+
+
+
+#### im_color_t
+
+- **description**
+
+Color value configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_color {
+    union {
+        struct {
+            uint8_t red;
+            uint8_t green;
+            uint8_t blue;
+            uint8_t alpha;
+        };
+        uint32_t value;
+    };
+} im_color_t;
+```
+
+| Parameter | Description                                |
+| --------- | ------------------------------------------ |
+| red       | Red channel value (0~255).                 |
+| green     | Green channel value (0~255).               |
+| blue      | Blue channel value (0~255).                |
+| alpha     | Alpha channel value (0~255).               |
+| value     | Full color value (RGBA packed as uint32_t). |
+
+- **Note**
+
+null
+
+
+
+#### im_osd_block_t
+
+- **description**
+
+OSD block description parameter configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_osd_block {
+    int width_mode;                 // normal or different
+                                    //   IM_OSD_BLOCK_MODE_NORMAL
+                                    //   IM_OSD_BLOCK_MODE_DIFFERENT
+    union {
+        int width;                  // normal_mode block width
+        int width_index;            // different_mode block width index in RAM
+    };
+
+    int block_count;                // block count
+
+    int background_config;          // background config is bright or dark
+                                    //   IM_OSD_BACKGROUND_DEFAULT_BRIGHT
+                                    //   IM_OSD_BACKGROUND_DEFAULT_DARK
+
+    int direction;                  // osd block direction
+                                    //   IM_OSD_MODE_HORIZONTAL
+                                    //   IM_OSD_MODE_VERTICAL
+
+    int color_mode;                 // using src1 color or config color
+                                    //   IM_OSD_COLOR_PIXEL
+                                    //   IM_OSD_COLOR_EXTERNAL
+    im_color_t normal_color;        // config color: normal
+    im_color_t invert_color;        // config color: invert
+} im_osd_block_t;
+```
+
+| Parameter         | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| width_mode        | Block width mode：<br />    All blocks same width：IM_OSD_BLOCK_MODE_NORMAL<br />    Blocks with different widths：IM_OSD_BLOCK_MODE_DIFFERENT |
+| width/width_index | width：Used in normal mode, specifies the OSD block width for the current task.<br />width_index：Used in different mode, specifies the index into the width table stored in RAM. |
+| block_count       | Number of blocks.                                            |
+| background_config | Background brightness description：<br />    Light background (dark text)：IM_OSD_BACKGROUND_DEFAULT_BRIGHT<br />    Dark background (light text)：IM_OSD_BACKGROUND_DEFAULT_DARK |
+| direction         | OSD direction：<br />    Vertical：IM_OSD_MODE_VERTICAL<br />    Horizontal：IM_OSD_MODE_HORIZONTAL |
+| color_mode        | OSD block color mode：<br />    Pixel color：IM_OSD_COLOR_PIXEL<br />    External configured color：IM_OSD_COLOR_EXTERNAL |
+| normal_color      | External configured color for normal (non-invert) state.     |
+| invert_color      | External configured color for inverted state.                |
+
+- **Note**
+
+null
+
+
+
+#### im_osd_invert_factor_t
+
+- **description**
+
+OSD color inversion formula configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_osd_invert_factor {
+    uint8_t alpha_max;
+    uint8_t alpha_min;
+    uint8_t yg_max;
+    uint8_t yg_min;
+    uint8_t crb_max;
+    uint8_t crb_min;
+} im_osd_invert_factor_t;
+```
+
+The inversion formula is:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**MAX**(channel_min_factor, channel_max_factor - channel_value)
+
+- **Note**
+
+null
+
+
+
+#### im_osd_invert_t
+
+- **description**
+
+OSD color inversion function configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_osd_invert {
+    int invert_channel;         // invert channel config:
+                                //   IM_OSD_INVERT_CHANNEL_NONE
+                                //   IM_OSD_INVERT_CHANNEL_Y_G
+                                //   IM_OSD_INVERT_CHANNEL_C_RB
+                                //   IM_OSD_INVERT_CHANNEL_ALPHA
+                                //   IM_OSD_INVERT_CHANNEL_COLOR
+                                //   IM_OSD_INVERT_CHANNEL_BOTH
+    int flags_mode;             // use external or internal RAM invert flags
+                                //   IM_OSD_FLAGS_EXTERNAL
+                                //   IM_OSD_FLAGS_INTERNAL
+    int flags_index;            // flags index when using internal RAM invert flags
+
+    uint64_t invert_flags;      // external invert flags
+    uint64_t current_flags;     // current flags
+
+    int invert_mode;            // invert use swap or factor
+                                //   IM_OSD_INVERT_USE_FACTOR
+                                //   IM_OSD_INVERT_USE_SWAP
+    im_osd_invert_factor_t factor;
+
+    int threshold;
+} im_osd_invert_t;
+```
+
+| Parameter      | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| invert_channel | Invert channel configuration：<br />    No channel invert：IM_OSD_INVERT_CHANNEL_NONE<br />    Y/G component invert：IM_OSD_INVERT_CHANNEL_Y_G<br />    C(UV)/RB component invert：IM_OSD_INVERT_CHANNEL_C_RB<br />    Alpha component invert：IM_OSD_INVERT_CHANNEL_ALPHA<br />    Color value invert：IM_OSD_INVERT_CHANNEL_COLOR<br />    &nbsp;&nbsp;&nbsp;&nbsp;i.e. (IM_OSD_INVERT_CHANNEL_Y_G \| IM_OSD_INVERT_CHANNEL_C_RB).<br />    All channels invert：IM_OSD_INVERT_CHANNEL_BOTH<br />    &nbsp;&nbsp;&nbsp;&nbsp;i.e. (IM_OSD_INVERT_CHANNEL_COLOR \| IM_OSD_INVERT_CHANNEL_ALPHA). |
+| flags_mode     | Invert guide mode：<br />    IM_OSD_FLAGS_EXTERNAL: use externally provided invert flags.<br />    IM_OSD_FLAGS_INTERNAL: use invert flags from internal RAM statistics. |
+| flags_index    | Index into the invert flag table stored in internal RAM.     |
+| invert_flags   | Externally provided invert flag table, 64 bits total.        |
+| current_flags  | Invert flag table accumulated by the current task, 64 bits; read after task completion. |
+| invert_mode    | Invert mode：<br />    Custom formula：IM_OSD_INVERT_USE_FACTOR<br />    Default swap：IM_OSD_INVERT_USE_SWAP — swaps U/V for YUV or R/B for RGB. |
+| factor         | Invert formula configuration.                                |
+| threshold      | Invert threshold.   |
+
+- **Note**
+
+null
+
+
+
+#### im_osd_bpp2_t
+
+- **description**
+
+OSD BPP2 RGB format color mapping configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_osd_bpp2 {
+    uint8_t  ac_swap;       // ac swap flag
+                            // 0: CA
+                            // 1: AC
+    uint8_t  endian_swap;   // rgba2bpp endian swap
+                            // 0: Big endian
+                            // 1: Little endian
+    im_color_t color0;
+    im_color_t color1;
+} im_osd_bpp2_t;
+```
+
+| Parameter   | Description                                  |
+| ----------- | -------------------------------------------- |
+| ac_swap     | AC layout mode.                              |
+| endian_swap | Endianness configuration.                    |
+| color0      | Color mapped when color bit value is 0.      |
+| color1      | Color mapped when color bit value is 1.      |
+
+- **Note**
+
+null
+
+
+
+#### im_osd_t
+
+- **description**
+
+OSD function configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_osd {
+
+  int osd_mode;                   // osd mode: statistics or auto_invert
+  im_osd_block_t block_parm;      // osd block info config
+  im_osd_invert_t invert_config;
+  im_osd_bpp2_t bpp2_info;
+} im_osd_t;
+```
+
+| Parameter     | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| osd_mode      | OSD mode：<br />    Statistics mode：IM_OSD_MODE_STATISTICS<br />    Auto-invert mode：IM_OSD_MODE_AUTO_INVERT |
+| block_parm    | OSD block parameter configuration.                           |
+| invert_config | Color inversion function configuration.                      |
+| bpp2_info     | BPP2-RGB format configuration.                               |
+
+- **Note**
+
+null
+
+
+
+#### im_size_t
+
+- **description**
+
+Size (width × height) configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_size {
+    int width;
+    int height;
+} im_size_t;
+```
+
+| Parameter | Description   |
+| --------- | ------------- |
+| width     | Width value.  |
+| height    | Height value. |
+
+- **Note**
+
+null
+
+
+
+#### im_gauss_t
+
+- **description**
+
+Gaussian Blur function configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_gauss {
+    im_size_t ksize;
+
+    double sigma_x;
+    double sigma_y;
+
+    double *matrix;
+} im_gauss_t;
+```
+
+| Parameter | Description                              |
+| --------- | ---------------------------------------- |
+| ksize     | Gaussian kernel size, e.g. 3x3.          |
+| sigma_x   | Standard deviation in X direction of the Gaussian kernel. |
+| sigma_y   | Standard deviation in Y direction of the Gaussian kernel. |
+| matrix    | Custom Gaussian kernel matrix.           |
+
+- **Note**
+
+null
+
+
+
+#### im_cfa_t
+
+- **description**
+
+RKCFA function configuration.
+
+- **path**
+
+im2d_api/im2d_type.h
+
+- **definitions**
+
+```c++
+typedef struct im_cfa {
+    uint32_t type;
+    uint32_t pattern;
+
+    uint32_t filter;
+    uint32_t dither;
+    uint32_t a2_modulate;
+
+    uint32_t saturation_gain; // [0, 128], default 64
+    uint32_t sharpen_gain; // [0, 128], default 64
+
+    uint32_t comps_level; // [0, 128], default 64
+
+    rga_buffer_handle_t src1_handle;
+    rga_buffer_handle_t dst1_handle;
+
+    uint8_t bcsh_en;
+} im_cfa_t;
+```
+
+| Parameter       | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| type            | CFA working type：<br/>  Default mode：IM_CFA_TYPE_DEFAULT<br/>  Regal mode：IM_CFA_TYPE_REGAL<br/>  A2 mode：IM_CFA_TYPE_A2 |
+| pattern         | Pattern mode：<br/>  IM_CFA_PATTERN_GRAY<br/>  IM_CFA_PATTERN_3x3_RGBGBRBRG<br/>  IM_CFA_PATTERN_3x3_GBRBRGRGB<br/>  IM_CFA_PATTERN_3x3_RBGGRBBGR<br/>  IM_CFA_PATTERN_2x2_BWGR<br/>  IM_CFA_PATTERN_2x2_RGWB<br/>  IM_CFA_PATTERN_2x6_GBBRRGRRGGBB |
+| filter          | Filter mode：<br/>  Median filter：IM_CFA_FILTER_MEDIAN<br/>  High-pass filter：IM_CFA_FILTER_HIGH_PASS |
+| dither          | Dither mode：<br/>  Enable dither algorithm：IM_CFA_DITHER_FLAG_ENABLE<br/>  Enable low 4-bit discard：IM_CFA_DITHER_FLAG_CLEAR_LOW_4BITS |
+| a2_modulate     | A2 modulation configuration：<br/>  Low-pass modulation：IM_CFA_A2_MODULATE_LPS<br/>  High-pass modulation：IM_CFA_A2_MODULATE_HPS<br/>  Error modulation：IM_CFA_A2_MODULATE_ERR |
+| saturation_gain | Saturation gain.                                             |
+| sharpen_gain    | Sharpening gain.                                             |
+| comps_level     | Compensation level.                                          |
+| src1_handle     | Input compensation channel buffer_handle.                    |
+| dst1_handle     | Output compensation channel buffer_handle.                   |
+| bcsh_en         | BCSH enable.                                                 |
 
 - **Note**
 

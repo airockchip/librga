@@ -2,9 +2,9 @@
 
 文件标识：RK-KF-YF-403
 
-发布版本：V2.2.8
+发布版本：V2.2.10
 
-日期：2025-06-10
+日期：2026-05-13
 
 文件密级：□绝密   □秘密   □内部资料   ■公开
 
@@ -65,6 +65,8 @@ Rockchip Electronics Co., Ltd.
 | 2025/03/27 | 2.2.6 | 余乔伟 | 增加芯片R1126B介绍 |
 | 2025/04/30 | 2.2.7 | 余乔伟 | 更正RK3506、RV1103B描述中对实高的过度约束 |
 | 2025/06/10 | 2.2.8 | 余乔伟 | - 增加芯片RK1820介绍<br />- 移除芯片代号 |
+| 2025/12/24 | 2.2.9 | 余乔伟 | 增加芯片RK3538介绍 |
+| 2026/05/13 | 2.2.10 | 余乔伟 | - 增加芯片RK3572介绍<br/>- 更新 imbeginJob() 函数中 flags 参数的描述<br/>- 补齐im_opt_t 成员变量描述 |
 
 ---
 
@@ -181,7 +183,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
       <td rowspan="1">1280x8192</td>
       <td rowspan="1">2x2</td>
       <td rowspan="1">1280x4096</td>
-      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>Guassion blur<br/>alpha-8bit</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>Gaussian blur<br/>alpha-8bit</td>
       <td rowspan="1">2</td>
    </tr>
    <tr>
@@ -226,7 +228,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
        <td>RK3562</td>
     </tr>
     <tr>
-      <td rowspan="3">RGA2-Pro</td>
+      <td rowspan="5">RGA2-Pro</td>
       <td>RK3576</td>
       <td rowspan="3">2x2</td>
       <td rowspan="3">8192x8192</td>
@@ -240,6 +242,24 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
    </tr>
    <tr>
       <td>RK1820</td>
+   </tr>
+   <tr>
+      <td>RK3538</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(bi-linear/average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>osd<br/>mosaic<br/>ARGB5551 alpha bit map<br/>rkfbc64x4 input<br/>afbc32x8(without src1)<br/>security<br/>IOMMU(40bit)</td>
+      <td rowspan="1">2</td>
+   </tr>
+   <tr>
+      <td>RK3572</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">2x2</td>
+      <td rowspan="1">8192x8192</td>
+      <td rowspan="1">90/180/270 Rotate<br/>X/Y Mirror<br/>Crop<br/>1/16~16 scale<br/>scale-up(bi-linear/bi-cubic)<br/>scale-down(bi-linear/average)<br/>Alpha blend<br/>Color key<br/>Color fill<br/>Color palette<br/>osd<br/>mosaic<br/>ARGB5551 alpha bit map<br/>rkfbc64x4 input<br/>afbc32x8<br/>security<br/>RKCFA<br/>IOMMU(40bit)</td>
+      <td rowspan="1">2</td>
    </tr>
    <tr>
       <td rowspan="1">RGA3</td>
@@ -396,7 +416,7 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
       <td>RK3562</td>
    </tr>
    <tr>
-      <td rowspan="3">RGA2-Pro</td>
+      <td rowspan="5">RGA2-Pro</td>
       <td>RK3576</td>
       <td rowspan="3"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMA_A8 (only src for alpha blend)<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
       </td>
@@ -408,6 +428,16 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMA
    </tr>
    <tr>
       <td>RK1820</td>
+   </tr>
+   <tr>
+      <td>RK3538</td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_Y210 (only AFBC)<br>RK_FORMA_A8 (only src for alpha blend)<br/>RK_FORMAT_BPP1 (only for color palette)<br/>RK_FORMAT_BPP2 (only for color palette)<br/>RK_FORMAT_BPP4 (only for color palette)<br/>RK_FORMAT_BPP8 (only for color palette)
+      </td>
+      <td rowspan="2"> RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_ARGB_8888<br/>RK_FORMAT_ABGR_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMAT_BGRX_8888<br/>RK_FORMAT_XRGB_8888<br/>RK_FORMAT_XBGR_8888<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMAT_ABGR_4444<br/>RK_FORMAT_ARGB_5551<br/>RK_FORMAT_ABGR_5551<br/>RK_FORMAT_RGB_888<br/>RK_FORMAT_BGR_888<br/>RK_FORMAT_RGB_565<br/>RK_FORMAT_BGR_565<br>RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/>RK_FORMAT_YCrCb_422_SP<br/>RK_FORMAT_YCbCr_444_SP<br/>RK_FORMAT_YCrCb_444_SP<br/>RK_FORMAT_YCbCr_420_P<br/>RK_FORMAT_YCrCb_420_P<br/>RK_FORMAT_YCbCr_422_P<br/>RK_FORMAT_YCrCb_422_P<br/>RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YCbCr_400<br/>RK_FORMAT_Y4 <br/>RK_FORMAT_Y8<br/>RK_FORMAT_RGBA_1010102 (only AFBC)<br/>RK_FORMAT_BGRA_1010102 (only AFBC)<br/>RK_FORMAT_ARGB_2101010 (only AFBC)<br/>RK_FORMAT_ABGR_2101010 (only AFBC)<br/>RK_FORMAT_RGBX_1010102 (only AFBC)<br/>RK_FORMAT_BGRX_1010102 (only AFBC)<br/>RK_FORMAT_XRGB_2101010 (only AFBC)<br/>RK_FORMAT_XBGR_2101010 (only AFBC)<br/>RK_FORMAT_YCbCr_420_SP_10B (only AFBC)<br/>RK_FORMAT_YCrCb_420_SP_10B (only AFBC)<br/>RK_FORMAT_YCbCr_422_SP_10B (only AFBC)<br/>RK_FORMAT_YCrCb_422_SP_10B (only AFBC)<br/>RK_FORMAT_Y210 (only AFBC)<br>RK_FORMAT_YUV_444_10B (only AFBC)
+      </td>
+   </tr>
+   <tr>
+      <td>RK3572</td>
    </tr>
    <tr>
       <td rowspan="1">RGA3</td>
@@ -431,6 +461,8 @@ RK_FORMAT_RGBA_8888<br/>RK_FORMAT_BGRA_8888<br/>RK_FORMAT_RGBX_8888<br/>RK_FORMA
 
 
 ### 图像格式对齐说明
+
+#### Raster像素格式对齐
 
 <table>
     <tr>
@@ -481,7 +513,7 @@ RK_FORMAT_RGBA_4444<br/>RK_FORMAT_BGRA_4444<br/>RK_FORMAT_ARGB_4444<br/>RK_FORMA
     </tr>
     <tr>
     	<td>
-RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420
+RK_FORMAT_YUYV_422<br/>RK_FORMAT_YVYU_422<br/>RK_FORMAT_UYVY_422<br/>RK_FORMAT_VYUY_422<br/>RK_FORMAT_YUYV_420<br/>RK_FORMAT_YVYU_420<br/>RK_FORMAT_UYVY_420<br/>RK_FORMAT_VYUY_420<br/>RK_FORMAT_Y210
         </td>
         <td>width stride须2对齐，x_offset、y_offset、width、height、height stride均须2对齐</td>
     </tr>
@@ -499,7 +531,7 @@ RK_FORMAT_YCbCr_420_SP<br/>RK_FORMAT_YCrCb_420_SP<br/>RK_FORMAT_YCbCr_422_SP<br/
     </tr>
     <tr>
         <td>
-RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B
+RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_422_SP_10B<br/>RK_FORMAT_YCrCb_422_SP_10B<br/>RK_FORMAT_YUV_444_10B
         </td>
         <td>width stride须16对齐，x_offset、y_offset均须64对齐，width、height、height stride均须2对齐</td>
     </tr>
@@ -551,11 +583,42 @@ RK_FORMAT_YCbCr_420_SP_10B<br/>RK_FORMAT_YCrCb_420_SP_10B<br/>RK_FORMAT_YCbCr_42
     </tr>
 </table>
 
+
 > 注：
 >
 > 1). 对齐要求计算公式：lcm(bpp，byte_stride * 8) / pixel_stride。
 >
 > 2). 当芯片平台搭载多版本硬件时，为了保证硬件利用率，librga会按最严格的对齐要求进行约束。
+
+
+
+#### 非线性模式对齐
+
+除了格式本身的要求外，以下非线性模式还有额外的对齐要求：
+
+<table>
+	<tr>
+		<td rowspan="5">FBC/TILE</td>
+        <td>AFBC16x16</td>
+        <td>除像素格式对齐要求外，width stride、height_stride须16对齐</td>
+    </tr>
+    <tr>
+        <td>AFBC32x8</td>
+        <td>除像素格式对齐要求外，width stride须32对齐，height_stride须8对齐</td>
+    </tr>
+    <tr>
+        <td>RFBC64x4</td>
+        <td>除像素格式对齐要求外，width stride须64对齐，height_stride须4对齐</td>
+    </tr>
+    <tr>
+        <td>TILE8x8</td>
+        <td>除像素格式对齐要求外，width stride、height_stride须8对齐</td>
+    </tr>
+    <tr>
+        <td>TILE4x4</td>
+        <td>除像素格式对齐要求外，width stride、height_stride须4对齐</td>
+    </tr>
+</table>
 
 
 
@@ -1320,7 +1383,7 @@ RGA模块支持库为librga.so，通过对图像缓冲区结构体struct rga_inf
     <td>importbuffer_GraphicBuffer</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1328,7 +1391,7 @@ RGA模块支持库为librga.so，通过对图像缓冲区结构体struct rga_inf
     <td>importbuffer_GraphicBuffer_handle</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1336,7 +1399,7 @@ RGA模块支持库为librga.so，通过对图像缓冲区结构体struct rga_inf
     <td>importbuffer_AHardwareBuffer</td>
     <td>C++</td>
     <td>Android</td>
-    <td>√</td>
+    <td>≥1.7.2</td>
     <td>/</td>
     <td>/</td>
   </tr>
@@ -1523,11 +1586,11 @@ rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle,
 IM_API im_job_handle_t imbeginJob(uint64_t flags = 0);
 ```
 
-> 创建一个RGA图像处理任务，将返回一个任务句柄，job_handle 可用于添加/删除RGA图像操作、提交/执行该任务。
+> 创建一个RGA图像处理任务，将返回一个任务句柄，job_handle 可用于添加/删除RGA图像操作、提交/执行该任务。当多个图像处理任务存在前后依赖关系时，建议将flags增加IM_JOB_FLAGS_EXEC_SEQUENTIAL选项，以保证多任务按序执行。
 
-| Parameter | **Description**          |
-| --------- | ------------------------ |
-| flags     | **[optional]** job flags |
+| Parameter | **Description**                                             |
+| --------- | ----------------------------------------------------------- |
+| flags     | **[optional]** job flags：<br/>IM_JOB_FLAGS_EXEC_SEQUENTIAL |
 
 **Returns** im_job_handle_t to describe the job handle.
 
@@ -1635,7 +1698,7 @@ IM_STATUS imresize(const rga_buffer_t src,
 
 > 根据不同的应用场景，可选择配置dst来描述缩放的目标图像大小，或配置缩放系数fx/fy实现缩放指定倍率的效果。同时配置dst和缩放系数fx/fy时，将采用缩放系数fx/fy计算后的结果作为目标图像大小。
 >
-> interpolation不同硬件支持情况不同，可根据《设计指标》小节中不同硬件支持算法进行配置。 
+> interpolation不同硬件支持情况不同，可根据《设计指标》小节中不同硬件支持算法进行配置。
 >
 > 注意：使用缩放系数fx/fy进行倍率缩放时，YUV等对宽高对齐有要求的格式将强制向下对齐至符合要求，使用该功能有可能会改变预期缩放效果。
 
@@ -2899,7 +2962,6 @@ typedef struct {
     void* vir_addr;                     /* virtual address */
     void* phy_addr;                     /* physical address */
     int fd;                             /* shared fd */
-    rga_buffer_handle_t handle;         /* buffer handle */
 
     int width;                          /* width */
     int height;                         /* height */
@@ -2910,6 +2972,11 @@ typedef struct {
     int color_space_mode;               /* color_space_mode */
     int global_alpha;                   /* global_alpha */
     int rd_mode;
+
+    /* legacy */
+    ...
+
+    rga_buffer_handle_t handle;         /* buffer handle */
 } rga_buffer_t;
 ```
 
@@ -2918,7 +2985,6 @@ typedef struct {
 | vir_addr         | 图像缓冲区虚拟地址。                    |
 | phy_addr         | 图像缓冲区连续的物理地址。              |
 | fd               | 图像缓冲区DMA的文件描述符。             |
-| handle           | 导入RGA驱动的图像缓冲区对应的内存句柄。 |
 | width            | 图像实际操作区域的宽度，以像素为单位。  |
 | height           | 图像实际操作区域的高度，以像素为单位。  |
 | wstride          | 图像宽度的步幅，以像素为单位。          |
@@ -2927,6 +2993,7 @@ typedef struct {
 | color_space_mode | 图像色域空间。                          |
 | global_alpha     | 全局Alpha配置。                         |
 | rd_mode          | 当前通道读取数据模式。                  |
+| handle           | 导入RGA驱动的图像缓冲区对应的内存句柄。 |
 
 - **注意事项**
 
@@ -2992,23 +3059,29 @@ typedef struct im_opt {
     int mosaic_mode;
     im_osd_t osd_config;
     im_intr_config_t intr_config;
-    char reserve[128];
+    int interp;
+    im_gauss_t gauss_config;
+    im_cfa_t cfa_config;
+    char reserve[48];
 } im_opt_t;
 ```
 
-| 成员参数       | 描述                       |
-| -------------- | -------------------------- |
-| version        | 当前头文件版本             |
-| color          | 填充图像颜色配置。         |
-| colorkey_range | Colorkey关键色范围配置。   |
-| nn             | 运算点前处理（量化）配置。 |
-| rop_code       | 光栅操作ROP操作码配置。    |
-| priority       | 当前任务优先级配置。       |
-| core           | 当前任务指定硬件核心。     |
-| mosaic_mode    | 马赛克模式配置。           |
-| osd_config     | osd字幕叠加反色/统计配置。 |
-| intr_config    | 提前中断模式配置。         |
-| reserve        | 预留位。                   |
+| 成员参数       | 描述                         |
+| -------------- | ---------------------------- |
+| version        | 当前头文件版本               |
+| color          | 填充图像颜色配置。           |
+| colorkey_range | Colorkey关键色范围配置。     |
+| nn             | 运算点前处理（量化）配置。   |
+| rop_code       | 光栅操作ROP操作码配置。      |
+| priority       | 当前任务优先级配置。         |
+| core           | 当前任务指定硬件核心。       |
+| mosaic_mode    | 马赛克模式配置。             |
+| osd_config     | osd字幕叠加反色/统计配置。   |
+| intr_config    | 提前中断模式配置。           |
+| interp         | 水平、垂直方向插值算法配置。 |
+| gauss_config   | 高斯模糊配置。               |
+| cfa_config     | CFA配置。                    |
+| reserve        | 预留位。                     |
 
 - **注意事项**
 
@@ -3106,12 +3179,12 @@ im2d_api/im2d_type.h
 
 ```c++
 typedef struct im_nn {
-    int scale_r;                /* scaling factor on R channal */
-    int scale_g;                /* scaling factor on G channal */
-    int scale_b;                /* scaling factor on B channal */
-    int offset_r;               /* offset on R channal */
-    int offset_g;               /* offset on G channal */
-    int offset_b;               /* offset on B channal */
+  int scale_r;                /* scaling factor on R channel */
+  int scale_g;                /* scaling factor on G channel */
+  int scale_b;                /* scaling factor on B channel */
+  int offset_r;               /* offset on R channel */
+  int offset_g;               /* offset on G channel */
+  int offset_b;               /* offset on B channel */
 } im_nn_t;
 ```
 
@@ -3153,6 +3226,46 @@ typedef struct {
 | -------- | ------------------ |
 | max      | 关键色范围最大值。 |
 | min      | 关键色范围最小值。 |
+
+- **注意事项**
+
+无
+
+
+
+#### im_color_t
+
+- **说明**
+
+颜色值配置。
+
+- **路径**
+
+im2d_api/im2d_type.h
+
+- **定义**
+
+```c++
+typedef struct im_color {
+    union {
+        struct {
+            uint8_t red;
+            uint8_t green;
+            uint8_t blue;
+            uint8_t alpha;
+        };
+        uint32_t value;
+    };
+} im_color_t;
+```
+
+| 成员参数 | 描述                                |
+| -------- | ----------------------------------- |
+| red      | 红色通道值（0~255）。               |
+| green    | 绿色通道值（0~255）。               |
+| blue     | 蓝色通道值（0~255）。               |
+| alpha    | Alpha 通道值（0~255）。             |
+| value    | 完整颜色值（RGBA 打包为 uint32_t）。 |
 
 - **注意事项**
 
@@ -3272,7 +3385,7 @@ typedef struct im_osd_invert {
                                 //   IM_OSD_INVERT_CHANNEL_ALPHA
                                 //   IM_OSD_INVERT_CHANNEL_COLOR
                                 //   IM_OSD_INVERT_CHANNEL_BOTH
-    int flags_mode;             // use external or inertnal RAM invert flags
+    int flags_mode;             // use external or internal RAM invert flags
                                 //   IM_OSD_FLAGS_EXTERNAL
                                 //   IM_OSD_FLAGS_INTERNAL
     int flags_index;            // flags index when using internal RAM invert flags
@@ -3285,20 +3398,20 @@ typedef struct im_osd_invert {
                                 //   IM_OSD_INVERT_USE_SWAP
     im_osd_invert_factor_t factor;
 
-    int threash;
+    int threshold;
 } im_osd_invert_t;
 ```
 
 | 成员参数       | 描述                                                         |
 | -------------- | ------------------------------------------------------------ |
 | invert_channel | 反色通道配置：<br />    默认无通道反色使能：IM_OSD_INVERT_CHANNEL_NONE<br />    Y/G分量反色使能：IM_OSD_INVERT_CHANNEL_Y_G<br />    C（UV）/RB分量反色使能：IM_OSD_INVERT_CHANNEL_C_RB<br />    Alpha分量反色使能：IM_OSD_INVERT_CHANNEL_ALPHA<br />    颜色值反色使能：IM_OSD_INVERT_CHANNEL_COLOR<br />                                   即(IM_OSD_INVERT_CHANNEL_Y_G \| IM_OSD_INVERT_CHANNEL_C_RB)。<br />    全部通道反色使能：IM_OSD_INVERT_CHANNEL_BOTH<br />                                       即(IM_OSD_INVERT_CHANNEL_COLOR \| IM_OSD_INVERT_CHANNEL_ALPHA)。 |
-| flags_mode     | 反色指导模式：<br />    内部指导：IM_OSD_FLAGS_EXTERNAL，使用内部RAM统计的反色flag指导反色功能。<br />    外部指导：IM_OSD_FLAGS_INTERNAL，由外部指导反色功能。 |
+| flags_mode     | 反色指导模式：<br />    外部指导：IM_OSD_FLAGS_EXTERNAL，由外部指导反色功能。<br />    内部指导：IM_OSD_FLAGS_INTERNAL，使用内部RAM统计的反色flag指导反色功能。 |
 | flags_index    | 当前使用RAM内部的反色指导flag表的索引。                      |
 | invert_flags   | 外部指导反色配置表，共64个bit。                              |
 | current_flags  | 当前task统计的反色配置表，共64个bit，task执行结束后读取。    |
 | invert_mode    | 反色模式：<br />    自定义公式：IM_OSD_INVERT_USE_FACTOR<br />    默认公式：IM_OSD_INVERT_USE_SWAP，YUV格式对U、V分量进行交换，RGB格式对R、B分量进行交换。 |
 | factor         | 反色公式配置。                                               |
-| threash        | 反色阈值。                                                   |
+| threshold      | 反色阈值。          |
 
 - **注意事项**
 
@@ -3374,6 +3487,125 @@ typedef struct im_osd {
 | bpp2_info     | bpp2-rgb格式配置。                                           |
 
 - **注意事项**
+
+无
+
+
+
+#### im_size_t
+
+- **说明**
+
+尺寸（宽×高）配置。
+
+- **路径**
+
+im2d_api/im2d_type.h
+
+- **定义**
+
+```c++
+typedef struct im_size {
+    int width;
+    int height;
+} im_size_t;
+```
+
+| 成员参数 | 描述     |
+| -------- | -------- |
+| width    | 宽度值。 |
+| height   | 高度值。 |
+
+- **注意事项**
+
+无
+
+
+
+#### im_gauss_t
+
+- 说明
+
+Gaussian Blur功能配置。
+
+- 路径
+
+im2d_api/im2d_type.h
+
+- 定义
+
+```c++
+typedef struct im_gauss {
+    im_size_t ksize;
+
+    double sigma_x;
+    double sigma_y;
+
+    double *matrix;
+} im_gauss_t;
+```
+
+| 成员参数 | 描述                  |
+| -------- | --------------------- |
+| ksize    | 高斯核尺寸，例如3x3。 |
+| sigma_x  | 高斯核X方向上标准差。 |
+| sigma_y  | 高斯核Y方向上标准差。 |
+| matrix   | 自定义高斯核矩阵。    |
+
+- 注意事项
+
+无
+
+
+
+#### im_cfa_t
+
+- 说明
+
+RKCFA功能配置。
+
+- 路径
+
+im2d_api/im2d_type.h
+
+- 定义
+
+```c++
+typedef struct im_cfa {
+    uint32_t type;
+    uint32_t pattern;
+
+    uint32_t filter;
+    uint32_t dither;
+    uint32_t a2_modulate;
+
+    uint32_t saturation_gain; // [0, 128], default 64
+    uint32_t sharpen_gain; // [0, 128], default 64
+
+    uint32_t comps_level; // [0, 128], default 64
+
+    rga_buffer_handle_t src1_handle;
+    rga_buffer_handle_t dst1_handle;
+
+    uint8_t bcsh_en;
+} im_cfa_t;
+```
+
+| 成员参数        | 描述                                                         |
+| --------------- | ------------------------------------------------------------ |
+| type            | CFA工作类型：<br/>  默认模式：IM_CFA_TYPE_DEFAULT<br/>  regal模式：IM_CFA_TYPE_REGAL<br/>  A2模式：IM_CFA_TYPE_A2 |
+| pattern         | pattern模式：<br/>  IM_CFA_PATTERN_GRAY<br/>  IM_CFA_PATTERN_3x3_RGBGBRBRG<br/>  IM_CFA_PATTERN_3x3_GBRBRGRGB<br/>  IM_CFA_PATTERN_3x3_RBGGRBBGR<br/>  IM_CFA_PATTERN_2x2_BWGR<br/>  IM_CFA_PATTERN_2x2_RGWB<br/>  IM_CFA_PATTERN_2x6_GBBRRGRRGGBB |
+| filter          | 滤波模式：<br/>  中值滤波：IM_CFA_FILTER_MEDIAN<br/>  高通滤波：IM_CFA_FILTER_HIGH_PASS |
+| dither          | dither模式：<br/>  dither算法使能：IM_CFA_DITHER_FLAG_ENABLE<br/>  低4bit舍弃使能：IM_CFA_DITHER_FLAG_CLEAR_LOW_4BITS |
+| a2_modulate     | A2调制配置：<br/>  低通调制：IM_CFA_A2_MODULATE_LPS<br/>  高通调制：IM_CFA_A2_MODULATE_HPS<br/>  误差调制：IM_CFA_A2_MODULATE_ERR |
+| saturation_gain | 饱和增益。                                                   |
+| sharpen_gain    | 锐化增益。                                                   |
+| comps_level     | 补偿等级。                                                   |
+| src1_handle     | 输入补偿通道buffer_handle。                                  |
+| dst1_handle     | 输出补偿通道buffer_handle。                                  |
+| bcsh_en         | BCSH使能。                                                   |
+
+- 注意事项
 
 无
 

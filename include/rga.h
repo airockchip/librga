@@ -109,9 +109,6 @@ typedef enum _Rga_SURF_FORMAT {
                                              * plane 1: 2x1 subsampled [0:19] Cr:Cb 10:10  (default)
                                              * or
                                              * plane 1: 2x1 subsampled [0:23] Cr:Cb 16: 16 */
-    /* For compatibility with misspellings */
-    RK_FORMAT_YCbCr_422_10b_SP = RK_FORMAT_YCbCr_422_SP_10B,
-    RK_FORMAT_YCrCb_422_10b_SP = RK_FORMAT_YCrCb_422_SP_10B,
 
     RK_FORMAT_BGR_565      = 0x24 << 8, /* [0:16] B:G:R 5:6:5 little endian */
     RK_FORMAT_BGRA_5551    = 0x25 << 8, /* [0:16] B:G:R:A 5:5:5:1 little endian */
@@ -119,11 +116,11 @@ typedef enum _Rga_SURF_FORMAT {
 
     RK_FORMAT_ARGB_8888    = 0x28 << 8, /* [0:31] A:R:G:B 8:8:8:8 little endian */
     RK_FORMAT_XRGB_8888    = 0x29 << 8, /* [0:31] X:R:G:B 8:8:8:8 little endian */
-    RK_FORMAT_ARGB_5551    = 0x2a << 8, /* [0:16] A:R:G:B 5:5:5:1 little endian */
+    RK_FORMAT_ARGB_1555    = 0x2a << 8, /* [0:16] A:R:G:B 1:5:5:5 little endian */
     RK_FORMAT_ARGB_4444    = 0x2b << 8, /* [0:16] A:R:G:B 4:4:4:4 little endian */
     RK_FORMAT_ABGR_8888    = 0x2c << 8, /* [0:31] A:B:G:R 8:8:8:8 little endian */
     RK_FORMAT_XBGR_8888    = 0x2d << 8, /* [0:31] X:B:G:R 8:8:8:8 little endian */
-    RK_FORMAT_ABGR_5551    = 0x2e << 8, /* [0:16] A:B:G:R 5:5:5:1 little endian */
+    RK_FORMAT_ABGR_1555    = 0x2e << 8, /* [0:16] A:B:G:R 1:5:5:5 little endian */
     RK_FORMAT_ABGR_4444    = 0x2f << 8, /* [0:16] A:B:G:R 4:4:4:4 little endian */
 
     RK_FORMAT_RGBA2BPP     = 0x30 << 8, /* [0:1] Color:Alpha 1:1 little endian */
@@ -136,8 +133,35 @@ typedef enum _Rga_SURF_FORMAT {
                                          * plane 0: [0:7] Y
                                          * plane 1: non-subsampled [0:15] Cr:Cb 8:8  */
     RK_FORMAT_Y8           = 0x34 << 8, /* [0:7] zero:Y 4:4 little endian */
+    RK_FORMAT_Y1           = 0x35 << 8, /* [0] little endian */
+
+    RK_FORMAT_RGBA_1010102 = 0x36 << 8, /* [0:31] R:G:B:A 10:10:10:2 little endian */
+    RK_FORMAT_BGRA_1010102 = 0x37 << 8, /* [0:31] B:G:R:A 10:10:10:2 little endian */
+    RK_FORMAT_ARGB_2101010 = 0x38 << 8, /* [0:31] A:R:G:B 2:10:10:10 little endian */
+    RK_FORMAT_ABGR_2101010 = 0x39 << 8, /* [0:31] A:B:G:R 2:10:10:10 little endian */
+
+    RK_FORMAT_RGBX_1010102 = 0x3a << 8, /* [0:31] R:G:B:X 10:10:10:2 little endian */
+    RK_FORMAT_BGRX_1010102 = 0x3b << 8, /* [0:31] B:G:R:X 10:10:10:2 little endian */
+    RK_FORMAT_XRGB_2101010 = 0x3c << 8, /* [0:31] X:R:G:B 2:10:10:10 little endian */
+    RK_FORMAT_XBGR_2101010 = 0x3d << 8, /* [0:31] X:B:G:R 2:10:10:10 little endian */
+
+    RK_FORMAT_YUV_444_10B  = 0x3e << 8, /* [0:31] Y:Cr:cb 10:10:10 little endian */
+
+    RK_FORMAT_Y210         = 0x3f << 8,  /* [0:63] 0:Y0:0:Cb0:0:Cr0:0:Y1 6:10:6:10:6:10:6:10 little endian per 2 Y pixels */
+    RK_FORMAT_P010         = 0x40 << 8,  /* 2 plane YUV 4:2:0 little endian
+                                          * plane 0: [0:15] x:Y 6:10
+                                          * plane 1: 2x2 subsampled [0:31] x:Cb:x:Cr 6:10:6:10 */
+    RK_FORMAT_P210         = 0x41 << 8,  /* 2 plane YUV 4:2:2 little endian
+                                          * plane 0: [0:15] x:Y 6:10
+                                          * plane 1: 2x1 subsampled [0:31] x:Cb:x:Cr 6:10:6:10 */
 
     RK_FORMAT_UNKNOWN      = 0x100 << 8,
+
+    /* For compatibility with misspellings */
+    RK_FORMAT_YCbCr_422_10b_SP = RK_FORMAT_YCbCr_422_SP_10B,
+    RK_FORMAT_YCrCb_422_10b_SP = RK_FORMAT_YCrCb_422_SP_10B,
+    RK_FORMAT_ABGR_5551 = RK_FORMAT_ABGR_1555,
+    RK_FORMAT_ARGB_5551 = RK_FORMAT_ARGB_1555,
 } RgaSURF_FORMAT;
 
 enum {

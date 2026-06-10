@@ -18,7 +18,7 @@
 
 #define LOG_NDEBUG 0
 #undef LOG_TAG
-#define LOG_TAG "rga_cvtcolor_csc_demo"
+#define LOG_TAG "rga_cfa_demo"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -38,7 +38,6 @@
 #include "im2d.hpp"
 
 #include "utils.h"
-#include "dma_alloc.h"
 
 #define LOCAL_FILE_PATH "/data"
 
@@ -46,15 +45,17 @@ int main() {
     int ret = 0;
     int src_width, src_height, src_format;
     int dst_width, dst_height, dst_format;
-    int src_dma_fd, dst_dma_fd;
-    char *src_buf, *dst_buf;
-    int src_buf_size, dst_buf_size;
+    char *src_buf, *dst_buf, *pattern_buf;
+    int src_buf_size, dst_buf_size, pattern_buf_size;
 
-    rga_buffer_t src_img, dst_img;
-    rga_buffer_handle_t src_handle, dst_handle;
+    rga_buffer_t src_img, dst_img, pattern_img;
+    rga_buffer_handle_t src_handle, dst_handle, pattern_handle;
+    im_cfa_t cfa;
 
     memset(&src_img, 0, sizeof(src_img));
     memset(&dst_img, 0, sizeof(dst_img));
+    memset(&pattern_img, 0, sizeof(pattern_img));
+    memset(&cfa, 0, sizeof(cfa));
 
     src_width = 1280;
     src_height = 720;
@@ -62,51 +63,74 @@ int main() {
 
     dst_width = 1280;
     dst_height = 720;
-    dst_format = RK_FORMAT_YCbCr_420_SP;
+    dst_format = RK_FORMAT_Y8;
 
     src_buf_size = src_width * src_height * get_bpp_from_format(src_format);
     dst_buf_size = dst_width * dst_height * get_bpp_from_format(dst_format);
+    pattern_buf_size = dst_width * dst_height;
 
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
-    if (ret < 0) {
-        printf("alloc src dma_heap buffer failed!\n");
-        return -1;
-    }
-
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
-    if (ret < 0) {
-        printf("alloc dst dma_heap buffer failed!\n");
-        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
-        return -1;
-    }
+    src_buf = (char *)malloc(src_buf_size);
+    dst_buf = (char *)malloc(dst_buf_size);
+    pattern_buf = (char *)malloc(pattern_buf_size);
 
     /* fill image data */
     if (0 != read_image_from_file(src_buf, LOCAL_FILE_PATH, src_width, src_height, src_format, 0)) {
         printf("src image read err\n");
-        memset(src_buf, 0xaa, src_buf_size);
+        draw_rgba(src_buf, src_width, src_height);
     }
-    memset(dst_buf, 0x80, dst_buf_size);
+    memset(dst_buf, 0x11, dst_buf_size);
+    memset(pattern_buf, 0x22, pattern_buf_size);
 
-    src_handle = importbuffer_fd(src_dma_fd, src_buf_size);
-    dst_handle = importbuffer_fd(dst_dma_fd, dst_buf_size);
-    if (src_handle == 0 || dst_handle == 0) {
+    src_handle = importbuffer_virtualaddr(src_buf, src_buf_size);
+    dst_handle = importbuffer_virtualaddr(dst_buf, dst_buf_size);
+    pattern_handle = importbuffer_virtualaddr(pattern_buf, pattern_buf_size);
+    if (src_handle == 0 || dst_handle == 0 || pattern_handle == 0) {
         printf("importbuffer failed!\n");
         goto release_buffer;
     }
 
     src_img = wrapbuffer_handle(src_handle, src_width, src_height, src_format);
     dst_img = wrapbuffer_handle(dst_handle, dst_width, dst_height, dst_format);
+    pattern_img = wrapbuffer_handle(pattern_handle, dst_width, dst_height, dst_format);
 
-    imsetColorSpace(&src_img, IM_RGB_FULL_RANGE);
-    imsetColorSpace(&dst_img, IM_YUV_BT709_LIMIT_RANGE);
+    /* config cfa */
+    cfa.type = IM_CFA_TYPE_DEFAULT;
+    cfa.pattern = IM_CFA_PATTERN_3x3_RGBGBRBRG;
+
+    cfa.saturation_gain = 64; //[0, 128], default 64
+    cfa.sharpen_gain = 32; //[0, 128], default 32
+
+    cfa.filter = 0;
+    cfa.filter |= IM_CFA_FILTER_MEDIAN; //remove falsecolor effect
+    if (cfa.sharpen_gain < 64)
+        cfa.filter |= IM_CFA_FILTER_HIGH_PASS;
+
+    cfa.dither = 0;
+    cfa.dither |= IM_CFA_DITHER_FLAG_ENABLE;
+
+    /*
+     * Convert src to Y8 and get pattern image.
+        src_img  => dst_img
+                 => pattern_img
+        --------------    --------------
+        |            |    |            |
+        |  src_img   | => |     Y8     |
+        |            | |  |            |
+        -------------- |  --------------
+                       |  --------------
+                       |  |            |
+                       => |  pattern   |
+                          |            |
+                          --------------
+     */
 
     ret = imcheck(src_img, dst_img, {}, {});
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-        goto release_buffer;
+        return -1;
     }
 
-    ret = imcvtcolor(src_img, dst_img, src_format, dst_format);
+    ret = imcfa(src_img, dst_img, {}, pattern_img, &cfa);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s running success!\n", LOG_TAG);
     } else {
@@ -115,15 +139,22 @@ int main() {
     }
 
     write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
+    write_image_to_file(pattern_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 1);
 
 release_buffer:
     if (src_handle)
         releasebuffer_handle(src_handle);
     if (dst_handle)
         releasebuffer_handle(dst_handle);
+    if (pattern_handle)
+        releasebuffer_handle(pattern_handle);
 
-    dma_buf_free(dst_buf_size, &dst_dma_fd, dst_buf);
-    dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
+    if (src_buf)
+        free(src_buf);
+    if (dst_buf)
+        free(dst_buf);
+    if (pattern_buf)
+        free(pattern_buf);
 
     return ret;
 }

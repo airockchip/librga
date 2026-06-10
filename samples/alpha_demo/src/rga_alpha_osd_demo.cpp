@@ -145,7 +145,7 @@ int main() {
     osd_config.invert_config.flags_mode = IM_OSD_FLAGS_EXTERNAL;
     osd_config.invert_config.invert_flags = 0x000000000000002a;
     osd_config.invert_config.flags_index = 1;
-    osd_config.invert_config.threash = 40;
+    osd_config.invert_config.threshold = 40;
     osd_config.invert_config.invert_mode = IM_OSD_INVERT_USE_SWAP;
 
     ret = imcheck(fg_img, bg_img, {}, bg_rect);

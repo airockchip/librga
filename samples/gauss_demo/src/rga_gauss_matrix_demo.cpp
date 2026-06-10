@@ -114,7 +114,7 @@ int main() {
 
     /*
      * After performing Gaussian blur on the source data, output it to the target buffer.
-        --------------  guass  --------------
+        --------------  gauss  --------------
         |            | matrix  |            |
         |  src_image |   =>    |   result   |
         |            |         |            |

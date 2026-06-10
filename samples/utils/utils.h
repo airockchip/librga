@@ -19,6 +19,7 @@
 #ifndef __RGA_SAMPLES_UTILS_H__
 #define __RGA_SAMPLES_UTILS_H__
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/time.h>
 

@@ -6,7 +6,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
 #### RGA API
 
-- 当前预编译仓库API版本：1.10.5
+- 当前预编译仓库API版本：1.10.6
 
 - 获取源码方式：
 
@@ -51,7 +51,7 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 - 当前API版本适配以下驱动：
 
   - RGA multicore Device Driver
-    - 该版本驱动所有版本均支持获取版本号，最低适配1.2.4驱动版本，建议更新至1.3.9及以上驱动版本。
+    - 该版本驱动所有版本均支持获取版本号，最低适配1.2.4驱动版本，建议更新至1.3.13及以上驱动版本。
 
   - RGA2 Device Driver
     - 支持兼容模式运行，API版本1.3.2以后新增接口无法使用，最佳兼容适配驱动版本为v2.1.0。
@@ -98,11 +98,11 @@ RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可�
 
 ### 适用芯片平台
 
-Rockchip RK3128 | RK3126c | RK3288 | RK3288w | RV1108 | RK3368 | RK3326 | RK3228 | RK3228H | RK3326 | RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RK3326S | RV1106 | RV1103 | RK3528 | RK3562 |RK3576 | RK3506 | RV1103B | RK1820
+Rockchip RK3128 | RK3126c | RK3288 | RK3288w | RV1108 | RK3368 | RK3326 | RK3228 | RK3228H | RK3326 | RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RK3326S | RV1106 | RV1103 | RK3528 | RK3562 |RK3576 | RK3506 | RV1103B | RK1820 |RK3538 | RK3572
 
 >  本仓库预编译文件只支持以下芯片平台，其他芯片平台可以使用SDK中源码进行编译。
 
-Rockchip RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RV1106 | RV1103 | RK3528 | RK3562 |RK3576 | RK3506 | RV1103B
+Rockchip RK1808 | RV1126 | RV1109 | RK3399 | RK3399pro | RK3566 | RK3568 | RK3588 | RV1106 | RV1103 | RK3528 | RK3562 |RK3576 | RK3506 | RV1103B | RK3538 | RK3572
 
 ### 目录说明
 

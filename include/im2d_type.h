@@ -150,6 +150,7 @@ typedef enum {
     IM_RGB_TO_YUV_BT601_LIMIT   = 2 << 2,
     IM_RGB_TO_YUV_BT709_LIMIT   = 3 << 2,
     IM_RGB_TO_YUV_MASK          = 3 << 2,
+    IM_LEGACY_CSC_MASK          = (IM_YUV_TO_RGB_MASK | IM_RGB_TO_YUV_MASK),
     IM_RGB_TO_Y4                = 1 << 4,
     IM_RGB_TO_Y4_DITHER         = 2 << 4,
     IM_RGB_TO_Y1_DITHER         = 3 << 4,
@@ -160,6 +161,12 @@ typedef enum {
     IM_YUV_BT601_FULL_RANGE     = 4 << 8,
     IM_YUV_BT709_LIMIT_RANGE    = 5 << 8,
     IM_YUV_BT709_FULL_RANGE     = 6 << 8,
+    IM_YUV_BT2020_LIMIT_RANGE   = 7 << 8,
+    IM_YUV_BT2020_FULL_RANGE    = 8 << 8,
+    IM_RGB_FULL_RANGE           = IM_RGB_FULL,
+    IM_RGB_LIMIT_RANGE          = IM_RGB_CLIP,
+    IM_RGB_BT2020_LIMIT_RANGE   = 9 << 8,
+    IM_RGB_BT2020_FULL_RANGE    = 10 << 8,
     IM_FULL_CSC_MASK            = 0xf << 8,
     IM_COLOR_SPACE_DEFAULT      = 0,
 } IM_COLOR_SPACE_MODE;
@@ -257,6 +264,44 @@ typedef enum {
     IM_CONTEXT_DST_CACHE_INFO   = 0x1 << 5,
 } IM_CONTEXT_FLAGS;
 
+#define IM_JOB_FLAGS_EXEC_SEQUENTIAL   ((uint32_t)(1 << 6))
+
+/* CFA */
+typedef enum {
+    IM_CFA_TYPE_DEFAULT = 0,
+    IM_CFA_TYPE_REGAL,
+    IM_CFA_TYPE_A2,
+} IM_CFA_TYPE;
+
+typedef enum {
+    IM_CFA_PATTERN_GRAY = 0,                /* grayscale */
+    IM_CFA_PATTERN_3x3_RGBGBRBRG = 0x1000,  /* 3x3 CFA pattern: RGB; GBR; BRG */
+    IM_CFA_PATTERN_3x3_GBRBRGRGB,           /* 3x3 CFA pattern: GBR; BRG; RGB */
+    IM_CFA_PATTERN_3x3_RBGGRBBGR,           /* 3x3 CFA pattern: RBG; GRB; BGR */
+
+    IM_CFA_PATTERN_2x2_BWGR = 0x2000,       /* 2x2 CFA pattern: BW; GR */
+    IM_CFA_PATTERN_2x2_RGWB,                /* 2x2 CFA pattern: RG; WB */
+
+    IM_CFA_PATTERN_2x6_GBBRRGRRGGBB = 0x3000,   /* 2x6 CFA pattern: GBBRRG; RRGGBB */
+    IM_CFA_PATTERN_UNKNOWN = 0xFFFFFFFF,    /* unknown pattern */
+} IM_CFA_PATTERN;
+
+typedef enum {
+    IM_CFA_FILTER_MEDIAN = 0x1 << 0,
+    IM_CFA_FILTER_HIGH_PASS = 0x1 << 1,
+} IM_CFA_FILTER_FLAG;
+
+typedef enum {
+    IM_CFA_A2_MODULATE_LPS = 0x1 << 0,
+    IM_CFA_A2_MODULATE_HPS = 0x1 << 1,
+    IM_CFA_A2_MODULATE_ERR = 0x1 << 2,
+} IM_CFA_A2_MODULATE_FLAG;
+
+typedef enum {
+    IM_CFA_DITHER_FLAG_ENABLE = 0x1 << 0,
+    IM_CFA_DITHER_FLAG_CLEAR_LOW_4BITS = 0x1 << 1,
+} IM_CFA_DITHER_FLAG;
+
 /* Get RGA basic information index */
 typedef enum {
     RGA_VENDOR = 0,
@@ -311,12 +356,12 @@ typedef struct {
 
 
 typedef struct im_nn {
-    int scale_r;                /* scaling factor on R channal */
-    int scale_g;                /* scaling factor on G channal */
-    int scale_b;                /* scaling factor on B channal */
-    int offset_r;               /* offset on R channal */
-    int offset_g;               /* offset on G channal */
-    int offset_b;               /* offset on B channal */
+    int scale_r;                /* scaling factor on R channel */
+    int scale_g;                /* scaling factor on G channel */
+    int scale_b;                /* scaling factor on B channel */
+    int offset_r;               /* offset on R channel */
+    int offset_g;               /* offset on G channel */
+    int offset_b;               /* offset on B channel */
 } im_nn_t;
 
 /* im_info definition */
@@ -416,7 +461,7 @@ typedef struct im_osd_invert {
                                 //   IM_OSD_INVERT_CHANNEL_ALPHA
                                 //   IM_OSD_INVERT_CHANNEL_COLOR
                                 //   IM_OSD_INVERT_CHANNEL_BOTH
-    int flags_mode;             // use external or inertnal RAM invert flags
+    int flags_mode;             // use external or internal RAM invert flags
                                 //   IM_OSD_FLAGS_EXTERNAL
                                 //   IM_OSD_FLAGS_INTERNAL
     int flags_index;            // flags index when using internal RAM invert flags
@@ -429,7 +474,10 @@ typedef struct im_osd_invert {
                                 //   IM_OSD_INVERT_USE_SWAP
     im_osd_invert_factor_t factor;
 
-    int threash;
+    union {
+        int threash;            // Deprecated typo, do not use.
+        int threshold;
+    };
 } im_osd_invert_t;
 
 typedef struct im_osd {
@@ -465,6 +513,25 @@ typedef struct im_gauss {
     double *matrix;
 } im_gauss_t;
 
+typedef struct im_cfa {
+    uint32_t type;
+    uint32_t pattern;
+
+    uint32_t filter;
+    uint32_t dither;
+    uint32_t a2_modulate;
+
+    uint32_t saturation_gain; // [0, 128], default 64
+    uint32_t sharpen_gain; // [0, 128], default 64
+
+    uint32_t comps_level; // [0, 128], default 64
+
+    rga_buffer_handle_t src1_handle;
+    rga_buffer_handle_t dst1_handle;
+
+    uint8_t bcsh_en;
+} im_cfa_t;
+
 typedef struct im_opt {
     im_api_version_t version DEFAULT_INITIALIZER(RGA_CURRENT_API_HEADER_VERSION);
 
@@ -486,7 +553,9 @@ typedef struct im_opt {
 
     im_gauss_t gauss_config;
 
-    char reserve[92];
+    im_cfa_t cfa_config;
+
+    char reserve[48];
 } im_opt_t;
 
 typedef struct im_handle_param {

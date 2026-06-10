@@ -21,7 +21,6 @@
 
 #include <stdint.h>
 #include <errno.h>
-#include <sys/cdefs.h>
 
 #include "rga.h"
 

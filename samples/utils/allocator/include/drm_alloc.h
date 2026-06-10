@@ -19,6 +19,9 @@
 #ifndef __RGA_SAMPLES_ALLOCATOR_DRM_ALLOC_H__
 #define __RGA_SAMPLES_ALLOCATOR_DRM_ALLOC_H__
 
+#include <stddef.h>
+#include <stdint.h>
+
 /* memory type definitions. */
 enum drm_rockchip_gem_mem_type
 {

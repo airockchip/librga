@@ -92,7 +92,6 @@ int dma_sync_cpu_to_device(int fd) {
 
 int dma_buf_alloc(const char *path, size_t size, int *fd, void **va) {
     int ret;
-    int prot;
     void *mmap_va;
     int dma_heap_fd = -1;
     struct dma_heap_allocation_data buf_data;
@@ -112,19 +111,18 @@ int dma_buf_alloc(const char *path, size_t size, int *fd, void **va) {
     ret = ioctl(dma_heap_fd, DMA_HEAP_IOCTL_ALLOC, &buf_data);
     if (ret < 0) {
         printf("RK_DMA_HEAP_ALLOC_BUFFER failed\n");
+
+        close(dma_heap_fd);
         return ret;
     }
 
-    /* mmap va */
-    if (fcntl(buf_data.fd, F_GETFL) & O_RDWR)
-        prot = PROT_READ | PROT_WRITE;
-    else
-        prot = PROT_READ;
-
     /* mmap contiguors buffer to user */
-    mmap_va = (void *)mmap(NULL, buf_data.len, prot, MAP_SHARED, buf_data.fd, 0);
+    mmap_va = (void *)mmap(NULL, buf_data.len, PROT_READ | PROT_WRITE, MAP_SHARED, buf_data.fd, 0);
     if (mmap_va == MAP_FAILED) {
         printf("mmap failed: %s\n", strerror(errno));
+
+        close(buf_data.fd);
+        close(dma_heap_fd);
         return -errno;
     }
 

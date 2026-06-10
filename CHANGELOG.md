@@ -1,5 +1,74 @@
 # 更新日志
 
+## 1.10.6 (2026-05-13)
+
+该版本RGA驱动建议更新至1.3.13及以上版本，最低支持1.2.4。
+
+### 新增
+
+- 新增支持芯片RK3538、RK3572。
+- 新增 IM_JOB_FLAGS_EXEC_SEQUENTIAL 标志，保证task-API 处理存在前后依赖关系的任务时按序执行。
+- 新增格式定义
+  - RK_FORMAT_RGBA_1010102/RK_FORMAT_BGRA_1010102
+  - RK_FORMAT_ARGB_2101010/RK_FORMAT_ABGR_2101010
+  - RK_FORMAT_RGBX_1010102/RK_FORMAT_BGRX_1010102
+  - RK_FORMAT_XRGB_2101010/RK_FORMAT_XBGR_2101010
+  - RK_FORMAT_YUV_444_10B
+  - RK_FORMAT_Y210
+  - RK_FORMAT_P010/RK_FORMAT_P210
+  - RK_FORMAT_Y1
+- 新增支持更多DRM fourcc格式
+  - DRM_FORMAT_P010/P210
+  - DRM_FORMAT_Y210
+  - DRM_FORMAT_NV20/NV24/NV42
+  - DRM_FORMAT_YUV420_8BIT/YUV420_10BIT
+- 新增 CFA 图像处理API imcfa() 以及对应示例代码。
+- 新增 C-API
+  - immakeborder()
+  - immakeBorderAsync()
+  - improcessOpt()
+- 新增支持DRM fourcc、modifie的重载函数wrapbuffer_handle。
+- 支持输出通道全色彩空间转换（RGB2YUV、RGB2RGB、YUV2RGB、YUV2YUV）。
+- 支持gralloc5。
+- 支持NDK编译版本日志输出至logcat。
+- 新增示例代码
+  - rga_transform_center_rotate_demo
+  - rga_copy_drm_fourcc_demo
+- 新增 SECURITY.md。
+
+### 优化
+
+- 优化 im2d_api 输入/输出缓冲区预处理流程。
+- 优化 gralloc4 获取参数日志，移除冗余的日志输出。
+- 统一色彩空间配置流程，完善色彩空间合法性检查。
+- 调试日志属性支持运行时动态更新。
+
+### 变更
+
+- imresize()宏函数中插值算法默认值由INTER_LINEAR变更为IM_INTERP_DEFAULT。
+- RT-Thread中librga的init_level由APP变更为COMPONENT。
+- 移除对 x/y 偏移的过度约束（原约束为x/y必须大于等于2）。
+- 移除对 sys/cdefs.h 的不必要头文件依赖。
+- NDK版本日志输出至logcat。
+- 更新应用手册中对importbuffer_Graphicbuffer API支持的最低版本。
+- 内部usage变更为64bit。
+
+### 修复
+
+- 修复 task-API 中 acquire_fence_fd 泄漏问题。
+- 修复legacy API在Android 12及更早版本中关于“hardware/hardware.h”的定义冲突。
+- 修复RT_Thread平台使能C++后重复初始化的问题。
+- 修复Android GraphicBuffer获取参数异常的问题。
+- 修复设备节点在单进程内被重复打开的问题。
+- 修复 Y8 格式无法被识别为 YUV 的问题。
+- 修复 "unknown type name '\__BEGIN_DECLS'/'\__END_DECLS'"的编译报错。
+- 修复 RK_FORMAT_ARGB1555/ABGR1555 格式定义命名错误。
+- 修复示例代码dma_alloc分配内存失败fd泄漏的问题。
+- 修复 slt rd_mode不生效的问题。
+- 修复 slt ‘--perf’ 参数导致 crash 的问题。
+
+
+
 ## 1.10.5 (2025-07-29)
 
 该版本RGA驱动建议更新至1.3.10及以上版本，最低支持1.2.4。

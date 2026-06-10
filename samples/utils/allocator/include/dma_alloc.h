@@ -19,6 +19,8 @@
 #ifndef __RGA_SAMPLES_ALLOCATOR_DMA_ALLOC_H__
 #define __RGA_SAMPLES_ALLOCATOR_DMA_ALLOC_H__
 
+#include <stddef.h>
+
 #define DMA_HEAP_UNCACHE_PATH           "/dev/dma_heap/system-uncached"
 #define DMA_HEAP_PATH                   "/dev/dma_heap/system"
 #define DMA_HEAP_DMA32_UNCACHED_PATH    "/dev/dma_heap/system-uncached-dma32"

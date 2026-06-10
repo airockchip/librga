@@ -69,8 +69,8 @@ int main(int argc, char*  argv[]) {
     int mode;
     int parm_data[MODE_MAX] = {0};
 
-    IM_USAGE rotate;
-    IM_USAGE flip;
+    int rotate;
+    int flip;
     im_color_t color;
 
     im_rect src_rect;
@@ -370,7 +370,7 @@ int main(int argc, char*  argv[]) {
                 break;
 
             case MODE_ROTATE :    //rgaImDemo --rotate=90/180/270
-                rotate = (IM_USAGE)parm_data[MODE_ROTATE];
+                rotate = parm_data[MODE_ROTATE];
 
                 if (IM_HAL_TRANSFORM_ROT_90 ==  rotate || IM_HAL_TRANSFORM_ROT_270 == rotate) {
                     dst.width   = src.height;
@@ -400,7 +400,7 @@ int main(int argc, char*  argv[]) {
                 break;
 
             case MODE_FLIP :      //rgaImDemo --flip=H/V
-                flip = (IM_USAGE)parm_data[MODE_FLIP];
+                flip = parm_data[MODE_FLIP];
 
                 ret = imcheck(src, dst, src_rect, dst_rect);
                 if (ret != IM_STATUS_NOERROR) {

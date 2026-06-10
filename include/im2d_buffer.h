@@ -174,6 +174,9 @@ IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
 IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t  handle,
                                       int width, int height, int format,
                                       int wstride, int hstride);
+IM_API rga_buffer_t wrapbuffer_handle(rga_buffer_handle_t handle, int width, int height,
+                                      uint32_t drm_fourcc, uint64_t drm_modifier,
+                                      int wstride, int hstride);
 #endif
 
 IM_EXPORT_API void imsetAlphaBit(rga_buffer_t *buf, uint8_t alpha0, uint8_t alpha1);

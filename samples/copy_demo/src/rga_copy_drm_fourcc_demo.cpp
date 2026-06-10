@@ -18,7 +18,7 @@
 
 #define LOG_NDEBUG 0
 #undef LOG_TAG
-#define LOG_TAG "rga_cvtcolor_csc_demo"
+#define LOG_TAG "rga_copy_drm_fourcc_demo"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -36,17 +36,17 @@
 
 #include "RgaUtils.h"
 #include "im2d.hpp"
-
 #include "utils.h"
-#include "dma_alloc.h"
+
+#include "drm_fourcc.h"
 
 #define LOCAL_FILE_PATH "/data"
 
 int main() {
     int ret = 0;
-    int src_width, src_height, src_format;
-    int dst_width, dst_height, dst_format;
-    int src_dma_fd, dst_dma_fd;
+    uint32_t src_width, src_height, src_format;
+    uint32_t dst_width, dst_height, dst_format;
+    uint64_t src_modifier, dst_modifier;
     char *src_buf, *dst_buf;
     int src_buf_size, dst_buf_size;
 
@@ -58,47 +58,52 @@ int main() {
 
     src_width = 1280;
     src_height = 720;
-    src_format = RK_FORMAT_RGBA_8888;
+    src_format = DRM_FORMAT_ABGR8888;
+    src_modifier = 0;
 
     dst_width = 1280;
     dst_height = 720;
-    dst_format = RK_FORMAT_YCbCr_420_SP;
+    dst_format = DRM_FORMAT_ABGR8888;
+    dst_modifier = 0;
+    // dst_modifier = DRM_FORMAT_MOD_ARM_AFBC(AFBC_FORMAT_MOD_BLOCK_SIZE_32x8 | AFBC_FORMAT_MOD_SPLIT);
 
-    src_buf_size = src_width * src_height * get_bpp_from_format(src_format);
-    dst_buf_size = dst_width * dst_height * get_bpp_from_format(dst_format);
+    src_buf_size = src_width * src_height * 4;
+    dst_buf_size = dst_width * dst_height * 4;
+    dst_buf_size = dst_buf_size * 1.5;
 
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
-    if (ret < 0) {
-        printf("alloc src dma_heap buffer failed!\n");
-        return -1;
-    }
-
-    ret = dma_buf_alloc(DMA_HEAP_DMA32_UNCACHED_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
-    if (ret < 0) {
-        printf("alloc dst dma_heap buffer failed!\n");
-        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
-        return -1;
-    }
+    src_buf = (char *)malloc(src_buf_size);
+    dst_buf = (char *)malloc(dst_buf_size);
 
     /* fill image data */
-    if (0 != read_image_from_file(src_buf, LOCAL_FILE_PATH, src_width, src_height, src_format, 0)) {
-        printf("src image read err\n");
-        memset(src_buf, 0xaa, src_buf_size);
-    }
+    memset(src_buf, 0xff, src_buf_size);
     memset(dst_buf, 0x80, dst_buf_size);
 
-    src_handle = importbuffer_fd(src_dma_fd, src_buf_size);
-    dst_handle = importbuffer_fd(dst_dma_fd, dst_buf_size);
+    src_handle = importbuffer_virtualaddr(src_buf, src_buf_size);
+    dst_handle = importbuffer_virtualaddr(dst_buf, dst_buf_size);
     if (src_handle == 0 || dst_handle == 0) {
         printf("importbuffer failed!\n");
         goto release_buffer;
     }
 
-    src_img = wrapbuffer_handle(src_handle, src_width, src_height, src_format);
-    dst_img = wrapbuffer_handle(dst_handle, dst_width, dst_height, dst_format);
+    src_img = wrapbuffer_handle(src_handle, src_width, src_height,
+                                src_format, src_modifier,
+                                src_width, src_height);
+    dst_img = wrapbuffer_handle(dst_handle, dst_width, dst_height,
+                                dst_format, dst_modifier,
+                                dst_width, dst_height);
+    if (src_img.handle == 0 || dst_img.handle == 0) {
+        printf("wrapbuffer failed! %s\n", imStrError());
+        goto release_buffer;
+    }
 
-    imsetColorSpace(&src_img, IM_RGB_FULL_RANGE);
-    imsetColorSpace(&dst_img, IM_YUV_BT709_LIMIT_RANGE);
+    /*
+     * Copy the src image to the dst buffer.
+        --------------        --------------
+        |            |        |            |
+        |  src_image |   =>   |  dst_image |
+        |            |        |            |
+        --------------        --------------
+     */
 
     ret = imcheck(src_img, dst_img, {}, {});
     if (IM_STATUS_NOERROR != ret) {
@@ -106,7 +111,7 @@ int main() {
         goto release_buffer;
     }
 
-    ret = imcvtcolor(src_img, dst_img, src_format, dst_format);
+    ret = imcopy(src_img, dst_img);
     if (ret == IM_STATUS_SUCCESS) {
         printf("%s running success!\n", LOG_TAG);
     } else {
@@ -114,7 +119,7 @@ int main() {
         goto release_buffer;
     }
 
-    write_image_to_file(dst_buf, LOCAL_FILE_PATH, dst_width, dst_height, dst_format, 0);
+	printf("output [0x%x, 0x%x, 0x%x, 0x%x]\n", dst_buf[0], dst_buf[1], dst_buf[2], dst_buf[3]);
 
 release_buffer:
     if (src_handle)
@@ -122,8 +127,10 @@ release_buffer:
     if (dst_handle)
         releasebuffer_handle(dst_handle);
 
-    dma_buf_free(dst_buf_size, &dst_dma_fd, dst_buf);
-    dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
+    if (src_buf)
+        free(src_buf);
+    if (dst_buf)
+        free(dst_buf);
 
     return ret;
 }
