@@ -1437,6 +1437,18 @@ When this error occurs, there are usually the following scenarios and correspond
 
      **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_graphicbuffer_demo.cpp**
 
+    `rga_allocator_dma32_demo.cpp` assumes that the kernel already provides a
+    DMA32 heap. Check the available heaps before running the sample:
+
+    ```shell
+    ls -l /dev/dma_heap
+    ```
+
+    If neither `system-dma32` nor `system-uncached-dma32` is present, enable or
+    port DMA32 heap support in the platform kernel/BSP. The sample does not
+    create the heap. Do not silently fall back to the regular system heap,
+    because it cannot guarantee a physical address below 4 GB.
+
     If you use other allocators, such as mpp_buffer, v4l2_buffer, drm_buffer, etc., please check whether the corresponding allocator supports the limited allocation of memory space within 4G, and apply for the memory required by the composite RGA hardware according to the corresponding method.
 
 3. On chip platforms that only carry one RGA (such as RK3399, RK3568, and Rk3566 that only carry RGA2):
