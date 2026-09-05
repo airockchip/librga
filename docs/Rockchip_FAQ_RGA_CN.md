@@ -1448,6 +1448,16 @@ Failed to call RockChipRga interface, please use 'dmesg' command to view driver 
 
     **<librga_souce_path>/samples/allocator_demo/src/rga_allocator_graphicbuffer_demo.cpp**
 
+   `rga_allocator_dma32_demo.cpp` 假设内核已经提供 DMA32 heap。运行示例前可先检查：
+
+   ```shell
+   ls -l /dev/dma_heap
+   ```
+
+   如果不存在 `system-dma32` 或 `system-uncached-dma32` 节点，需要在对应平台的
+   kernel/BSP 中启用或移植 DMA32 heap 支持。该示例不会创建 heap，也不要静默
+   回退到普通 system heap，因为普通 heap 不能保证分配到4G以内的物理内存。
+
    如果使用的其他分配器，例如mpp_buffer、v4l2_buffer、drm_buffer等，请查询对应分配器是否支持限制分配4G以内内存空间内存，并按照对应方式申请复合RGA硬件要求的内存。
 
 3. 仅搭载一种RGA的芯片平台（例如仅搭载RGA2的RK3399、RK3568、Rk3566）上：
